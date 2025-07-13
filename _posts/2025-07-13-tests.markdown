@@ -1,0 +1,30 @@
+---
+layout: post
+title: Random tests
+---
+
+{% include mathjax.html %}
+
+# Just testing markdown features in Jekyll
+
+Some text, and code:
+```Cpp
+int main() {
+  return 0;
+}
+```
+
+Some math from [the nice post](https://jojozhuang.github.io/tutorial/jekyll-math-symbols-with-mathjax/):
+
+$ a^2 + b^2 = c^2 $ <a name="eq1">(1)</a>
+
+More text:
+> On the consumer side, you hear a clear promise to deliver a silver bullet for software development. Complexity has been one of fundamental problems of software, but now you hear something like “software is just plumbing” and that AI can automate it.
+>
+> The point is that a “just plumbing” part shouldn’t be the core value in your software. It’s great if something can be automated and maintained through AI. It would be even better to figure out how to eliminate it completely. However, the other side of this coin is that by automating or eliminating a routine component the software overall gets denser and more complex. That’s one of the 4 fundamental problems of software development, described in the “No silver bullet” paper by Fred Brooks long ago [3].
+>
+> Software becomes a condensed concentration of the know how of your application or organisation. Hopefully, the software is as complex as the know how and not more than that. The software also encodes the complexity of the hardware or whatever platform that runs the application. It’s just another part of your know how. Even if you do no-code, it’s probably better to actually know the capabilities of these services.
+>
+> Now, with AI boom, you hear the promise that there is finally the silver bullet that can automate and solve this concentration of complexity and know how.
+
+Reference to [Formula 1](#eq1)
