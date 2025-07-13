@@ -1,0 +1,631 @@
+html { color-scheme: dark light; }
+
+:root.light {
+  --text-color: black;
+  --text-bkg-color: white;
+}
+
+:root.dark {
+  --text-color: light;
+  --text-bkg-color: dark;
+}
+
+/*
+
+:root {
+  color-scheme: light;
+  --text-color: dark;
+  --text-bkg-color: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text-color: light;
+    --text-bkg-color: dark;
+    color-scheme: dark;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --text-color: black;
+    --text-bkg-color: white;
+    color-scheme: light;
+  }
+}
+
+body {
+    background-color: linen;
+}
+*/
+
+/*
+html {
+  overflow: auto;
+  margin-left: calc(100vw - 100%);
+  margin-right: 0;
+}
+*/
+
+/*
+@media screen and (min-width: 960px) {
+    html {
+            margin-left: calc(100vw - 100%);
+            margin-right: 0;
+        }
+}
+*/
+
+
+html {
+	margin-top: 0;
+	margin-bottom: 0;
+	margin-left: calc(100vw - 100%);
+	margin-right: 0;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	height: 100%;
+}
+
+body {
+	/*outline: 1px dashed red;
+	display: table;*/
+	margin: 0 auto;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	padding: 0;
+	/*font-size: 10pt;*/
+	font-size: 0.8rem;
+	font-family: Merriweather, Times, serif;
+    text-align: justify;
+}
+
+code {
+    text-align: left;
+	display: inline-block;
+}
+
+.font-small {
+	font-size: 0.5rem;
+}
+
+/*
+	overflow-wrap: break-word;
+
+body h4 {font-size: 0.8rem }
+body h3 {font-size: 1.2rem }
+body h2 {font-size: 1.6rem }
+body h1 {font-size: 2.0rem }
+*/
+
+section {
+	float: left;
+	/*
+	padding-left: 3rem;
+	*/
+	padding-bottom: 2rem;
+}
+
+section>h1 {font-size: 2.4rem }
+article>h1 {font-size: 1.2rem }
+
+body button {
+	font-size: 1.0rem;
+}
+
+a {
+	font-family: Helvetica, sans-serif; /* and inferited */
+}
+
+/*
+a.internal {
+	text-decoration: none;
+}
+*/
+
+a.smallcaps {
+	font-size: 1.0rem;
+}
+
+/* This makes sure that the padding and border are included in the total width and height of the elements. */
+* {
+  box-sizing: border-box;
+  /* default gridding for any content */
+}
+
+:root {
+  /* variable for em-based coloumn sizes */
+  --colem: 4rem;
+  --col: 3; /* one regular site coloumn = --col * --colrem */
+}
+
+/* making 5 regular coloumns wide site
+   other dimensions:
+   4 3 2 coloumns
+ */
+
+/* --var and calc don't work on old mobile browsers? -- yep, that's true
+.colem-10 {width: calc(10 * var(--colem));}
+*/
+
+.colem-1  {width:  5rem;}
+.colem-2  {width: 10rem;}
+.colem-3  {width: 15rem;}
+.colem-4  {width: 20rem;}
+.colem-5  {width: 25rem;}
+.colem-6  {width: 30rem;}
+.colem-7  {width: 35rem;}
+.colem-8  {width: 40rem;}
+.colem-9  {width: 45rem;}
+.colem-10 {width: 50rem;}
+.colem-11 {width: 55rem;}
+.colem-12 {width: 60rem;}
+.colem-13 {width: 65rem;}
+.colem-14 {width: 70rem;}
+.colem-15 {width: 75rem;}
+
+.clear-left {clear:left;}
+
+.left-1  {left:  4rem;}
+.left-2  {left:  8rem;}
+.left-3  {left: 12rem;}
+.left-4  {left: 16rem;}
+.left-5  {left: 20rem;}
+.left-6  {left: 24rem;}
+.left-7  {left: 28rem;}
+.left-8  {left: 32rem;}
+.left-9  {left: 36rem;}
+.left-10 {left: 40rem;}
+.left-11 {left: 44rem;}
+.left-12 {left: 48rem;}
+.left-13 {left: 52rem;}
+.left-14 {left: 56rem;}
+.left-15 {left: 60rem;}
+
+.centered {
+	margin: auto;
+	display: block;
+}
+
+
+/* flow-boxs don't have gutters */
+.flow-box {
+  padding: 0px;
+  outline: 1px solid orange;
+}
+
+/* absolute flow-boxes also don't have gutters */
+.abs-flow-box {
+  position: absolute;
+  padding: 0px;
+  outline: 1px solid orange;
+}
+
+/* does calc work on original iPad browsers? */
+
+.right-flow-box-1  {width: calc(100% -  4rem);}
+.right-flow-box-2  {width: calc(100% -  8rem);}
+.right-flow-box-3  {width: calc(100% - 12rem);}
+.right-flow-box-4  {width: calc(100% - 16rem);}
+.right-flow-box-5  {width: calc(100% - 20rem);}
+.right-flow-box-6  {width: calc(100% - 24rem);}
+.right-flow-box-7  {width: calc(100% - 28rem);}
+.right-flow-box-8  {width: calc(100% - 32rem);}
+.right-flow-box-9  {width: calc(100% - 36rem);}
+.right-flow-box-10 {width: calc(100% - 40rem);}
+.right-flow-box-11 {width: calc(100% - 44rem);}
+.right-flow-box-12 {width: calc(100% - 48rem);}
+.right-flow-box-13 {width: calc(100% - 52rem);}
+.right-flow-box-14 {width: calc(100% - 56rem);}
+.right-flow-box-15 {width: calc(100% - 60rem);}
+
+
+[class*="right-flow-box-"] {
+  padding: 0px;
+  outline: 1px dashed red;
+  float: right;
+  /*position: absolute;*/
+  /*left: calc(4 * var(--colem));*/
+  /*right: 0;*/
+  /*height: 100%;*/
+  /*overflow: hidden;*/
+}
+
+/*
+   25rem is 1 standard column, at 75rem screen width goes from 3 to 2 columns
+-- it goes earlier, because now there are margins on 3rem
+   84 rem
+ */
+@media only screen and (max-width: 75rem) {
+
+	.colem-1  {width:  5rem;}
+	.colem-2  {width: 10rem;}
+	.colem-3  {width: 15rem;}
+	.colem-4  {width: 20rem;}
+	.colem-5  {width: 25rem;}
+	.colem-6  {width: 30rem;}
+	.colem-7  {width: 35rem;}
+	.colem-8  {width: 40rem;}
+	.colem-9  {width: 45rem;}
+	.colem-10 {width: 50rem;}
+	.colem-11 {width: 50rem;}
+	.colem-12 {width: 50rem;}
+	.colem-13 {width: 50rem;}
+	.colem-14 {width: 50rem;}
+	.colem-15 {width: 50rem;}
+
+	[class*="right-flow-box-"] {
+		width: 100%; /* or maybe something else? */
+	}
+}
+
+/* I use colem-5 = 25rem for sections and article width
+   so I tune how that gets adjusted
+
+   Screen width 50rem is tricky because we go to less than 2 standard column widths
+
+ */
+@media only screen and (max-width: 50rem) {
+
+	.colem-1  {width:  5rem;}
+	.colem-2  {width: 10rem;}
+	.colem-3  {width: 15rem;}
+	.colem-4  {width: 20rem;}
+	.colem-5  {width: 20rem;} /* first adjustment 1 */
+	.colem-6  {width: 30rem;}
+	.colem-7  {width: 35rem;}
+	.colem-8  {width: 40rem;}
+	.colem-9  {width: 40rem;}
+	.colem-10 {width: 40rem;}
+	.colem-11 {width: 40rem;}
+	.colem-12 {width: 40rem;}
+	.colem-13 {width: 40rem;}
+	.colem-14 {width: 40rem;}
+	.colem-15 {width: 40rem;}
+
+	[class*="right-flow-box-"] {
+		width: 100%; /* or maybe something else? */
+	}
+	/*#articles { width: 300px; }
+	#description { width: 300px; }*/
+}
+
+/* second adjustment, tricky case when it gets to full width*/
+@media only screen and (max-width: 40rem) {
+	/* 3 coloumn screen -- max 2 coloumns
+	 */
+
+	.colem-1  {width:  5rem;}
+	.colem-2  {width: 10rem;}
+	.colem-3  {width: 15rem;}
+	.colem-4  {width: 20rem;}
+	.colem-5  {width: 30rem;}
+	.colem-6  {width: 30rem;}
+	.colem-7  {width: 30rem;}
+	.colem-8  {width: 30rem;}
+	.colem-9  {width: 30rem;}
+	.colem-10 {width: 30rem;}
+	.colem-11 {width: 30rem;}
+	.colem-12 {width: 30rem;}
+	.colem-13 {width: 30rem;}
+	.colem-14 {width: 30rem;}
+	.colem-15 {width: 30rem;}
+
+	[class*="right-flow-box-"] {
+		width: 100%; /* or maybe something else? */
+	}
+	/*#articles { width: 300px; }
+	#description { width: 300px; }*/
+}
+
+@media only screen and (max-width: 30rem) {
+	/* 2 coloumn screen -- max 2 coloumns
+	   width adjusted coloumn width
+	 */
+
+	.colem-1  {width:  20%;}
+	.colem-2  {width:  40%;}
+	.colem-3  {width:  50%;}
+	.colem-4  {width:  80%;}
+	.colem-5  {width: 100%;}
+	.colem-6  {width: 100%;}
+	.colem-7  {width: 100%;}
+	.colem-8  {width: 100%;}
+	.colem-9  {width: 100%;}
+	.colem-10 {width: 100%;}
+	.colem-11 {width: 100%;}
+	.colem-12 {width: 100%;}
+	.colem-13 {width: 100%;}
+	.colem-14 {width: 100%;}
+	.colem-15 {width: 100%;}
+
+	[class*="right-flow-box-"] {
+		width: 100%; /* or maybe something else? */
+	}
+	/*#articles { width: 300px; }
+	#description { width: 300px; }*/
+}
+
+@media only screen and (max-width: 24rem) {
+	/* 1.5 coloumn screen -- max 1 coloumns
+	   width adjusted coloumn width
+
+	   so, the coloumn size may adjust
+	   from 0 to 18rem, then 1/2 of (18rem to 24rem) -- so from 9 to 12 rem,
+	   and then it is always 12 rem
+	 */
+	[class*="colem-"] {
+		width: 100%;
+		left: 0;
+	}
+
+	[class*="right-flow-box-"] {
+		width: 100%; /* or maybe something else? */
+	}
+	/*#articles { width: 300px; }
+	#description { width: 300px; }*/
+}
+
+/* percentage spacings */
+
+.width-50 {width: 50%;}
+.width-100 {width: 100%;}
+
+/* And the overlapping, the z-index */
+/* 5 layers for now */
+.z_2 {z-index:  2;}
+.z_1 {z-index:  1;}
+.z-1 {z-index: -1;}
+.z-2 {z-index: -2;}
+
+/*
+body {
+	background-image: url(/pics/graphy-dark.png);
+	background-repeat: repeat;
+}
+	background-image: url(/pics/aiga-bg.png);
+	margin: 0 auto;
+*/
+
+.bottom-gutter-1 {
+	padding-bottom: 1.5rem;
+}
+
+.guttered {
+  padding-left:  2.0rem;
+  padding-right: 2.0rem;
+/*
+  */
+}
+
+.tag {
+  padding-left:  0.5rem;
+  display: inline-block;
+  float:   right;
+}
+
+article {
+	overflow: auto;
+}
+
+/*
+article:hover {
+	background: yellow;
+}
+*/
+
+article.full {
+	width: 100%;
+}
+
+/*
+article:not(.full):not(.disable):hover {
+	background: yellow;
+}
+
+article.full {
+	position: fixed;
+	margin: 2rem auto 0;
+	right: 0;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	background: white;
+	z-index: 2;
+	width: calc(15 * var(--colem));
+}
+*/
+
+.clear-a-line {
+	margin-top: 1rem;
+}
+
+article {
+	margin-top: 1rem;
+	margin-bottom: 2rem;
+}
+
+article  p {
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+}
+
+article .margins {
+	margin-top: 0.5rem;
+	margin-bottom: 1rem;
+}
+
+article ol p {
+	margin-top: 0.5rem;
+	margin-bottom: 0.5rem;
+}
+
+.fulart {
+	display: none;
+}
+
+.fulart.full {
+	display: block;
+}
+
+.full.short {
+	display: none;
+}
+
+.flow-right {
+	float: right;
+}
+
+#activity-surface {
+	position: fixed;
+	top: 0;
+	right: 0;
+	left: 0;
+	bottom: 0;
+	/*background:*/
+	z-index:  -2;
+	background-image: url(/pics/carbon-fibre.png);
+	background-repeat: repeat;
+	display: none;
+}
+
+
+#activity-surface.disable {
+	display: block;
+	z-index: 1;
+}
+
+img.Figure { width: 100%; }
+
+/* hierarchy and fonts */
+.tweet {
+	font-family:  Oswald;
+}
+
+h1 {
+	margin-top:    0.2em;
+	margin-bottom: 0.2em;
+}
+
+ol, ul {
+	padding-left: 0;
+}
+
+p, ol, ul {
+	/*list-style-position: inside;*/
+	margin-top:    0.2em;
+	margin-bottom: 0.2em;
+}
+
+/*
+ul > li.article::marker {
+    content: "#";
+}
+*/
+
+/* clickable stuff
+   small caps and underline does it enough
+   for next gen the tests with overlaying */
+
+.smallcaps {
+	font-variant: small-caps;
+	text-decoration: underline;
+}
+
+/* links refer to exact name of the source,
+   in capitals or not
+   they do need propper underlines, with overlayed descenders,
+   which among other stuff creates a bit of volume, the text is clickable,
+   these underlines are for next gen */
+
+a {
+	font-family: Helvetica, sans-serif; /* and inferited */
+	font-weight: bold;
+	/*font-variant: small-caps;*/
+	text-decoration: underline;
+}
+
+/*
+@media (prefers-color-scheme: light) {
+  a:link {
+    color: black;
+  }
+
+  a:visited {
+    color: black;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  a:link {
+    color: white;
+  }
+
+  a:visited {
+    color: white;
+  }
+}
+*/
+
+a:link {
+  color: var(--text-color);
+}
+
+a:visited {
+  color: var(--text-color);
+}
+
+/* button should just look clickable
+   small caps and underline does it enough
+   for next gen the tests with overlaying */
+
+button {
+	/*
+	border: 1px solid #0066cc;
+	background-color: #0099cc;
+	color: #ffffff;
+	padding: 5px 10px;
+	background-color: #0099cc;
+	color: #ffffff;
+	text-decoration: underline;
+	*/
+	padding: 0px 0px;
+
+	cursor: pointer;
+
+	font-family: Helvetica, sans-serif; /* and inferited */
+	font-size: 0.8rem;
+	font-weight: bold;
+	font-variant: small-caps;
+
+	float: right;
+	padding-left: 0.5rem;
+}
+
+  /*
+@media (prefers-color-scheme: light) {
+  button {
+    border: 0px solid #0066cc;
+    background-color: #ffffff;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  button {
+    border: 1px solid light;
+    background-color: dark;
+  }
+}
+*/
+
+button {
+  border: 0px solid var(--text-color);
+  background-color: var(--text-bkg-color);
+}
+
+
