@@ -313,8 +313,8 @@ allowfullscreen></iframe>
 		<a name="ai-silver-bullet"></a>
 		<h1>
 			<a href="#ai-silver-bullet">
-      {% assign feature_post_ai = site.posts | find: "slug", "ai_silver_bullet" %}
-      {{ feature_post_ai.title }}
+        {% assign feature_post_ai = site.posts | where: "slug", "ai_silver_bullet" | first %}
+        {{ feature_post_ai.title }}
 			</a>
 		</h1>
       {{ feature_post_ai.excerpt }}
