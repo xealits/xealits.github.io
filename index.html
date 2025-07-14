@@ -27,7 +27,7 @@ title: home
 <body class="colem-15">
 
 
-<section class="colem-5 bottom-gutter-1" id="description">
+<section class="colem-10 bottom-gutter-1" id="description">
 	<h1><a name="intro"></a><a class="internal" href="#intro">Introduction</a></h1>
 
 	<p class="guttered">
@@ -274,7 +274,7 @@ allowfullscreen></iframe>
 		<article class="colem-5 guttered">
 		<a name="blog"></a>
 		<h1>
-			<a href="#blog">
+			<a href="/blog.html">
 			Blog
 			</a>
 		</h1>
@@ -319,14 +319,14 @@ allowfullscreen></iframe>
 		</h1>
       {{ feature_post_ai.excerpt }}
 
-		<div class="tag">
+    <a class="smallcaps" href="{{feature_post_ai.url}}">rest>></a>
     {% if feature_post_ai.tags %}
-    {%- for tag in feature_post_ai.tags -%} <span> </span> <a class="smallcaps" href="{{site.baseurl}}/tags.html#{{tag | slugize}}">#{{tag | downcase}}</a> {%- endfor -%}
+    {%- for tag in feature_post_ai.tags -%} <a class="smallcaps tag" href="{{site.baseurl}}/tags.html#{{tag | slugize}}">#{{tag}}</a> {%- endfor -%}
     {% endif %}
-      <a class="smallcaps" href="{{feature_post_ai.url}}">full>></a>
-    </div>
     </article>
     <!--
+		<div class="tag">
+    </div>
 		<div class="tag"><a class="smallcaps" href="#index">software</a> </div>
 		<br>
 		<div class="fulart">
