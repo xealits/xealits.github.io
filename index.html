@@ -321,7 +321,7 @@ allowfullscreen></iframe>
 
 		<div class="tag">
     {% if feature_post_ai.tags %}
-    {%- for tag in feature_post_ai.tags -%} <span> </span> <a class="smallcaps" href="{{site.baseurl}}/tags.html#{{tag | slugize}}">#{{tag}}</a> {%- endfor -%}
+    {%- for tag in feature_post_ai.tags -%} <span> </span> <a class="smallcaps" href="{{site.baseurl}}/tags.html#{{tag | slugize}}">#{{tag | downcase}}</a> {%- endfor -%}
     {% endif %}
       <a class="smallcaps" href="{{feature_post_ai.url}}">full>></a>
     </div>
