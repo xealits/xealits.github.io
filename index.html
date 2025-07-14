@@ -19,7 +19,7 @@ title: home
 <style>
 </style>
 -->
-<link href='my.css' rel='stylesheet' type='text/css'>
+<link href='/css/all.css' rel='stylesheet' type='text/css'>
 
 <title>WebAppStudies Page</title>
 </head>
@@ -92,6 +92,26 @@ title: home
 		<div class="tag"><a class="smallcaps" href="#index">web</a>  </div>
 		<h1><a name="intro"></a><a class="internal" href="#intro">Introduction</a></h1>
 		-->
+
+    {% for post in site.posts %}
+		<article class="guttered colem-5">
+    <a name="{{post.title | slugize}}"></a>
+    {% if post.layout != "tweet" %}
+		<h1>
+      <a href="#{{post.title | slugize}}">
+        {{ post.title }}
+			</a>
+		</h1>
+    {% endif %}
+    <summary class="{{ post.layout }}">
+    {{ post.excerpt }}
+    </summary>
+    <a class="smallcaps" href="{{post.url}}">rest>></a>
+    {% if post.tags %}
+    {%- for tag in post.tags -%} <a class="smallcaps tag" href="{{site.baseurl}}/tags.html#{{tag | slugize}}">#{{tag}}</a> {%- endfor -%}
+    {% endif %}
+    </article>
+    {% endfor %}
 
 		<article class="guttered tweet colem-5">
 		<p>

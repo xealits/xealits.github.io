@@ -497,11 +497,24 @@ article ol p {
 	z-index: 1;
 }
 
+.tweet img { width: 100%; }
+
 img.Figure { width: 100%; }
+
 
 /* hierarchy and fonts */
 .tweet {
 	font-family:  Oswald;
+}
+
+.tweet p {
+	margin-top:    0.2em;
+	margin-bottom: 0.2em;
+}
+
+article summary p {
+	margin-top:    0.2em;
+	margin-bottom: 0.2em;
 }
 
 h1 {

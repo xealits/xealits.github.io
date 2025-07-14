@@ -1,11 +1,15 @@
 ---
 layout: post
 title: Random tests
+highlighter: rouge
 ---
+
+Just testing markdown features in Jekyll.
+<!--more-->
 
 {% include mathjax.html %}
 
-# Just testing markdown features in Jekyll
+# Basic features
 
 Some text, and code:
 ```Cpp
@@ -13,6 +17,16 @@ int main() {
   return 0;
 }
 ```
+
+Better like this:
+{% highlight cpp %}
+#include <iostream>
+
+int main() {
+  std::cout << "hello world!\n";
+  return 0;
+}
+{% endhighlight %}
 
 Some math from [the nice post](https://jojozhuang.github.io/tutorial/jekyll-math-symbols-with-mathjax/):
 
