@@ -11,7 +11,7 @@
   <body class="colem-10">
     <nav class="guttered">
       <a href="/">Home</a>
-      <a href="/blog/">Blog</a>
+      <a href="/blog">Blog</a>
     </nav>
     <article class="post guttered">
       <h1>{{page.title}}</h1>
@@ -20,7 +20,9 @@
           {{page.date | date: "%b %d, %Y"}}
         </time>
       </p>
+
       {{ page.content }}
+
     </article>
     <footer>
       &copy; to me
