@@ -88,6 +88,17 @@ body {
 section>h1 {font-size: 24pt }
 article>h1 {font-size: 16pt }
 
+h1 {
+	font-family: Helvetica, sans-serif; /* and inferited */
+	font-weight: bold;
+	/*font-variant: small-caps;*/
+}
+
+nav {
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+}
+
 
 code {
     text-align: left;
