@@ -56,7 +56,6 @@ html {
 }
 */
 
-
 html {
 	margin-top: 0;
 	margin-bottom: 0;
@@ -68,6 +67,7 @@ html {
 	right: 0;
 	left: 0;
 	height: 100%;
+	font-size: 12pt;
 }
 
 body {
@@ -81,10 +81,13 @@ body {
 	padding: 0;
 	/*font-size: 10pt;
 	font-size: 0.8rem;*/
-	font-size: 10pt;
 	font-family: Merriweather, Times, serif;
   text-align: justify;
 }
+
+section>h1 {font-size: 24pt }
+article>h1 {font-size: 16pt }
+
 
 code {
     text-align: left;
@@ -92,7 +95,7 @@ code {
 }
 
 .font-small {
-	font-size: 0.5rem;
+	font-size: 6pt;
 }
 
 /*
@@ -109,14 +112,11 @@ section {
 	/*
 	padding-left: 3rem;
 	*/
-	padding-bottom: 2rem;
+	padding-bottom: 24pt;
 }
 
-section>h1 {font-size: 2.4rem }
-article>h1 {font-size: 1.2rem }
-
 body button {
-	font-size: 1.0rem;
+	font-size: 12pt;
 }
 
 a {
@@ -618,7 +618,7 @@ button {
 	cursor: pointer;
 
 	font-family: Helvetica, sans-serif; /* and inferited */
-	font-size: 0.8rem;
+	font-size: 12pt;
 	font-weight: bold;
 	font-variant: small-caps;
 
