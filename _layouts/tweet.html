@@ -2,18 +2,26 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ page.title }}</title>
     <link rel="stylesheet" href="/css/all.css">
     <link rel="stylesheet" href="/css/syntax_highlighting.css">
     <link href='https://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
   </head>
   <body class="colem-10">
-    <nav>
+    <nav class="guttered">
       <a href="/">Home</a>
-      <a href="/blog/">Blog</a>
+      <a class="guttered" href="/blog">Blog</a>
     </nav>
-    <article class="tweet">
-      {{ content }}
+    <article class="post guttered">
+      <time class="post-meta" datetime="{{page.date}}">
+        {{page.date | date: "%b %d, %Y"}}
+      </time>
+
+      <div class="tweet">
+        {{ page.content }}
+      <div>
+
     </article>
     <footer>
       &copy; to me
