@@ -22,6 +22,11 @@ Better like this:
 {% highlight cpp %}
 #include <iostream>
 
+// really long line
+template<typename T, unsigned n> unsigned foo(T inp) {
+  return inp[n].size();
+}
+
 int main() {
   std::cout << "hello world!\n";
   return 0;

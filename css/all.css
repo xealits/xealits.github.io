@@ -436,6 +436,12 @@ article {
 	overflow: auto;
 }
 
+.post {
+	overflow: visible;
+}
+
+
+
 /*
 article:hover {
 	background: yellow;
@@ -526,7 +532,6 @@ article ol p {
 .tweet img { width: 100%; }
 
 img.Figure { width: 100%; }
-
 
 /* hierarchy and fonts */
 .tweet {
