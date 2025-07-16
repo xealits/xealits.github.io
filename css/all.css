@@ -533,7 +533,14 @@ article ol p {
 
 img.Figure { width: 100%; }
 
-.post .tweet img { width: auto; }
+.post .tweet img {
+  width: auto;
+  /* calculate current margin on the page
+  margin-right: calc((100vw - 25rem) / 2); */
+  --margin-width: calc((100vw - 25rem) / 2);
+  position: relative;
+  left: calc(0px - var(--margin-width));
+}
 
 /* hierarchy and fonts */
 .tweet {
