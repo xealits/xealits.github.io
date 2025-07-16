@@ -8,24 +8,29 @@
     <link rel="stylesheet" href="/css/syntax_highlighting.css">
     <link href='https://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
   </head>
+
   <body class="colem-10">
-    <nav class="guttered">
+    <nav class="flow-right">
       <a href="/">Home</a>
-      <a class="guttered" href="/blog">Blog</a>
+      <span class="quartergutter"> </span>
+      <a href="/blog">Blog</a>
     </nav>
-    <article class="post guttered">
+
+    <section class="post">
+      <div class="tweet">
+        {{ page.content }}
+      </div>
+
       <time class="post-meta" datetime="{{page.date}}">
         {{page.date | date: "%b %d, %Y"}}
       </time>
+    </section>
 
-      <div class="tweet">
-        {{ page.content }}
-      <div>
-
-    </article>
-    <footer>
-      &copy; to me
-    </footer>
+    <section>
+      <footer>
+        &copy; to me
+      </footer>
+    </section>
   </body>
 </html>
 

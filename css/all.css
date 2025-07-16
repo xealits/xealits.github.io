@@ -416,6 +416,16 @@ body {
   padding-right: 2.0rem;
 }
 
+.halfgutter {
+  padding-left: 1.0rem;
+  padding-right: 1.0rem;
+}
+
+.quartergutter {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
 .tag {
   padding-left:  0.5rem;
   display: inline-block;

@@ -8,24 +8,31 @@
     <link rel="stylesheet" href="/css/all.css">
     <link rel="stylesheet" href="/css/syntax_highlighting.css">
   </head>
+
   <body class="colem-5">
-    <nav class="guttered">
+    <nav class="flow-right">
       <a href="/">Home</a>
-      <a class="guttered" href="/blog">Blog</a>
+      <span class="quartergutter"> </span>
+      <a href="/blog">Blog</a>
     </nav>
-    <article class="post guttered">
-      <h1>{{page.title}}</h1>
-      <p class="post-meta">
-        <time datetime="{{page.date}}">
-          {{page.date | date: "%b %d, %Y"}}
-        </time>
-      </p>
 
-      {{ page.content }}
+    <section>
+      <article class="post">
+        <h1>{{page.title}}</h1>
+        <p class="post-meta">
+          <time datetime="{{page.date}}">
+            {{page.date | date: "%b %d, %Y"}}
+          </time>
+        </p>
 
-    </article>
-    <footer>
-      &copy; to me
-    </footer>
+        {{ page.content }}
+      </article>
+    </section>
+
+    <section>
+      <footer>
+        &copy; to me
+      </footer>
+    </section>
   </body>
 </html>

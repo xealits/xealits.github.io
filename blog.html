@@ -11,28 +11,32 @@
     <link rel="stylesheet" href="/css/all.css">
     <link rel="stylesheet" href="/css/syntax_highlighting.css">
   </head>
-  <body class="colem-10">
-    <nav class="guttered">
+
+  <body class="colem-5">
+    <nav class="flow-right">
       <a href="/">Home</a>
-      <a class="guttered" href="/blog">Blog</a>
+      <span class="quartergutter"> </span>
+      <a href="/blog">Blog</a>
     </nav>
-    <article class="post guttered">
 
-    <ul>
-      {% for post in site.posts %}
-        <p class="post-meta">
-          <a href="{{ post.url }}">{{ post.title }}</a>
-          <br>
-          <time datetime="{{post.date}}">
-            {{post.date | date: "%b %d, %Y"}}
-          </time>
-        </p>
-      {% endfor %}
-    </ul>
+    <section class="colem-5">
+      <ul>
+        {% for post in site.posts %}
+          <p class="post-meta">
+            <a href="{{ post.url }}">{{ post.title }}</a>
+            <br>
+            <time datetime="{{post.date}}">
+              {{post.date | date: "%b %d, %Y"}}
+            </time>
+          </p>
+        {% endfor %}
+      </ul>
+    </section>
 
-    </article>
-    <footer>
-      &copy; to me
-    </footer>
+    <section>
+      <footer>
+        &copy; to me
+      </footer>
+    </section>
   </body>
 </html>
