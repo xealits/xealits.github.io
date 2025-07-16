@@ -533,6 +533,8 @@ article ol p {
 
 img.Figure { width: 100%; }
 
+.post .tweet img { width: auto; }
+
 /* hierarchy and fonts */
 .tweet {
 	font-family:  Oswald;
