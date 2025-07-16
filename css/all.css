@@ -1,5 +1,9 @@
 html { color-scheme: dark light; }
 
+:root {
+  --gutter-width: 2.0rem;
+}
+
 :root.light {
   --text-color: black;
   --text-bkg-color: white;
@@ -388,7 +392,7 @@ a.internal {
 
 /* percentage spacings */
 
-.width-50 {width: 50%;}
+.width-50  {width: 50%;}
 .width-100 {width: 100%;}
 
 /* And the overlapping, the z-index */
@@ -412,18 +416,18 @@ body {
 }
 
 .guttered {
-  padding-left:  2.0rem;
-  padding-right: 2.0rem;
+  padding-left:  var(--gutter-width);
+  padding-right: var(--gutter-width);
 }
 
 .halfgutter {
-  padding-left: 1.0rem;
-  padding-right: 1.0rem;
+  padding-left:  calc(var(--gutter-width)/2);
+  padding-right: calc(var(--gutter-width)/2);
 }
 
 .quartergutter {
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
+  padding-left:  calc(var(--gutter-width)/4);
+  padding-right: calc(var(--gutter-width)/4);
 }
 
 .tag {
@@ -539,7 +543,7 @@ img.Figure { width: 100%; }
   margin-right: calc((100vw - 25rem) / 2); */
   --margin-width: calc((100vw - 25rem) / 2);
   position: relative;
-  left: calc(0px - var(--margin-width));
+  left: calc(0px - var(--margin-width) - var(--gutter-width));
 }
 
 /* hierarchy and fonts */
