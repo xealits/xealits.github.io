@@ -142,16 +142,6 @@ body button {
 	font-size: 12pt;
 }
 
-a {
-	font-family: Helvetica, sans-serif; /* and inferited */
-}
-
-/*
-a.internal {
-	text-decoration: none;
-}
-*/
-
 /* This makes sure that the padding and border are included in the total width and height of the elements. */
 * {
   box-sizing: border-box;
@@ -503,6 +493,10 @@ blockquote {
 	margin-right: 0;
 }
 
+mjx-container {
+  font-size: 100% !important;
+}
+
 article .margins {
 	margin-top: 0.5rem;
 	margin-bottom: 1rem;
@@ -622,11 +616,21 @@ a.smallcaps {
    these underlines are for next gen */
 
 a {
-	font-family: Helvetica, sans-serif; /* and inferited */
+	font-family: Helvetica, sans-serif;
 	font-weight: bold;
-	/*font-variant: small-caps;*/
+/*
 	text-decoration: underline;
+  display: inline-block;
+*/
 }
+
+	/*font-variant: small-caps;*/
+
+/*
+a.internal {
+	text-decoration: none;
+}
+*/
 
 /*
 @media (prefers-color-scheme: light) {

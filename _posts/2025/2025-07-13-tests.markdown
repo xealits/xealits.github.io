@@ -53,7 +53,8 @@ int main() {
 }
 {% endhighlight %}
 
-Some math from [the nice post](https://jojozhuang.github.io/tutorial/jekyll-math-symbols-with-mathjax/):
+Some math from [a nice post](https://jojozhuang.github.io/tutorial/jekyll-math-symbols-with-mathjax/)
+and many MathJax articles on internets:
 
 \begin{equation}
 \label{eq1}
@@ -69,9 +70,8 @@ More text:
 >
 > Now, with AI boom, you hear the promise that there is finally the silver bullet that can automate and solve this concentration of complexity and know how.
 
-Reference to \ref{eq1} as [Formula 1](#mjx-eqn:eq1).
-
-Also check [Formula 2](#mjx-eqn:eq2) and [Formula 3](#mjx-eqn:eq3) (doesn't work.
+Reference to \ref{eq1} as [Formula \ref{eq1}](#mjx-eqn:eq1).
+Also check [Formula \ref{eq2}](#mjx-eqn:eq2) and [Formula \ref{eq3}](#mjx-eqn:eq3) (doesn't work).
 
 And reference: \ref{eqFoo} like this?
 
@@ -83,8 +83,9 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 
 Also, how about some inline Latex-math?
 E.g. these bits: $e = m c^2$ and $e^{i\pi} = -1$.
-They also have this weirdo: \( e=mc^2 \) - does it work?
-Do they work?
+They also have this weirdo: \\( e=mc^2 \\) - does it work?
+
+$\forall$ works now.
 
 Now some block math from [the nice post](https://jojozhuang.github.io/tutorial/jekyll-math-symbols-with-mathjax/):
 
@@ -102,11 +103,11 @@ Or:
 
 From mathjax test HTML:
 
-When \(a \ne 0\), there are two solutions to \(ax^2 + bx + c = 0\) and they are
-\[
+When \\(a \ne 0\\), there are two solutions to \\(ax^2 + bx + c = 0\\) and they are
+\\[
 \label{eq3}
 x = {-b \pm \sqrt{b^2-4ac} \over 2a}.
-\]
+\\]
 
 In this one, the label does not work.
 
