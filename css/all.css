@@ -500,13 +500,7 @@ figure {
 
 blockquote {
 	margin-left: var(--gutter-width);
-	margin-right: var(--gutter-width);
-}
-
-p .mjx-chtml {
-  width: calc(100% - var(--gutter-width));
-	padding-left: var(--gutter-width);
-	/*padding-right: var(--gutter-width);*/
+	margin-right: 0;
 }
 
 article .margins {

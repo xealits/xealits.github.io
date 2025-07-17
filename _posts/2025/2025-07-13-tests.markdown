@@ -20,6 +20,16 @@ int main() {
 
 No syntax highlighting there. Just monospace test with the code. Although, the markdown does use the code marks ````` and marks the section `Cpp`.
 
+Also, how about some inline Latex-math?
+E.g. this bit: $e = m c^2$ and $e^{i\pi} = -1$ work.
+So, Mathjax should leave the backticks `` ` `` alone.
+There is `$` for math.
+
+When configured with `jax: ["input/TeX", ...]`,
+Mathjax adds its elements only around those escaped ````` backticks.
+Not around normal inlined `$` code.
+And not around backticks with spaces: like this `` ` `` one.
+
 Better like this:
 {% highlight cpp %}
 #include <iostream>
@@ -45,7 +55,10 @@ int main() {
 
 Some math from [the nice post](https://jojozhuang.github.io/tutorial/jekyll-math-symbols-with-mathjax/):
 
-$ a^2 + b^2 = c^2 $ <a name="eq1">(1)</a>
+\begin{equation}
+\label{eq1}
+ a^2 + b^2 = c^2
+\end{equation}
 
 More text:
 > On the consumer side, you hear a clear promise to deliver a silver bullet for software development. Complexity has been one of fundamental problems of software, but now you hear something like “software is just plumbing” and that AI can automate it.
@@ -56,8 +69,45 @@ More text:
 >
 > Now, with AI boom, you hear the promise that there is finally the silver bullet that can automate and solve this concentration of complexity and know how.
 
-Reference to [Formula 1](#eq1)
+Reference to \ref{eq1} as [Formula 1](#mjx-eqn:eq1).
+
+Also check [Formula 2](#mjx-eqn:eq2) and [Formula 3](#mjx-eqn:eq3) (doesn't work.
+
+And reference: \ref{eqFoo} like this?
 
 # More normal text.
 
 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+
+# Getting Mathjax to distinguish inline and block math in HTML
+
+Also, how about some inline Latex-math?
+E.g. these bits: $e = m c^2$ and $e^{i\pi} = -1$.
+They also have this weirdo: \( e=mc^2 \) - does it work?
+Do they work?
+
+Now some block math from [the nice post](https://jojozhuang.github.io/tutorial/jekyll-math-symbols-with-mathjax/):
+
+\begin{equation}
+\label{eq2}
+ a^2 + b^2 = c^2
+\end{equation}
+
+Or:
+
+\begin{equation}
+\label{eqFoo}
+ a^2 + b^2 = c^2
+\end{equation}
+
+From mathjax test HTML:
+
+When \(a \ne 0\), there are two solutions to \(ax^2 + bx + c = 0\) and they are
+\[
+\label{eq3}
+x = {-b \pm \sqrt{b^2-4ac} \over 2a}.
+\]
+
+In this one, the label does not work.
+
+
