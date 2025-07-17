@@ -18,17 +18,27 @@ int main() {
 }
 ```
 
+No syntax highlighting there. Just monospace test with the code. Although, the markdown does use the code marks ````` and marks the section `Cpp`.
+
 Better like this:
 {% highlight cpp %}
 #include <iostream>
+#include <vector>
 
 // really long line
-template<typename T, unsigned n> unsigned foo(T inp) {
+template<unsigned n, typename T> unsigned foo(T inp) {
   return inp[n].size();
+}
+
+struct MyStruct {
+  std::vector<int> vec;
 }
 
 int main() {
   std::cout << "hello world!\n";
+  std::vector<int> vecs[5];
+  std::cout << sizeof(vecs) << '\n';
+  std::cout << foo<3>(vecs) << '\n';
   return 0;
 }
 {% endhighlight %}
@@ -47,3 +57,7 @@ More text:
 > Now, with AI boom, you hear the promise that there is finally the silver bullet that can automate and solve this concentration of complexity and know how.
 
 Reference to [Formula 1](#eq1)
+
+# More normal text.
+
+Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.

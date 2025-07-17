@@ -2,6 +2,7 @@ html { color-scheme: dark light; }
 
 :root {
   --gutter-width: 2.0rem;
+  --p-margin: 1rem;
 }
 
 :root.light {
@@ -484,8 +485,28 @@ article {
 }
 
 article  p {
-	margin-top: 1rem;
-	margin-bottom: 1rem;
+	margin-top: var(--p-margin);
+	margin-bottom: var(--p-margin);
+}
+
+article h1 {
+	margin-top:    calc(2*var(--p-margin));
+}
+
+figure {
+	margin-left: var(--gutter-width);
+	margin-right: var(--gutter-width);
+}
+
+blockquote {
+	margin-left: var(--gutter-width);
+	margin-right: var(--gutter-width);
+}
+
+p .mjx-chtml {
+  width: calc(100% - var(--gutter-width));
+	padding-left: var(--gutter-width);
+	/*padding-right: var(--gutter-width);*/
 }
 
 article .margins {
