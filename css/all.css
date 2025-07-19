@@ -585,8 +585,9 @@ img.Figure { width: 100%; }
 }
 
 h1 {
-	margin-top:    0.2em;
-	margin-bottom: 0.2em;
+	/*margin-top:    0.2em;*/
+	margin-top:    calc(var(--p-margin));
+	margin-bottom: 0em;
 }
 
 ol, ul {

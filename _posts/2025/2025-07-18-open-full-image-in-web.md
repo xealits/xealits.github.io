@@ -9,8 +9,10 @@ highlighter: rouge
 ```html
 <img src="/img/thumb"
   onclick='this.src="/img/full"'>
+
 <img src="/img/thumb"
   ondblclick='window.open("/img/full", ...)'>
+
 <a href="image2.gif">
   <img src="image1.gif">
 </a>
@@ -39,7 +41,8 @@ Three nice ways from Stackoverflow.
 2. [Use JS & ondblclick to change `this.src`](https://stackoverflow.com/questions/467927/how-can-i-make-a-thumbnail-img-show-a-full-size-image-when-clicked/467946#467946):
 
    ```html
-   <img src="/img/thumb" onclick='this.src="/img/full"'>
+   <img src="/img/thumb"
+        onclick='this.src="/img/full"'>
    ```
    
    Good JS, but it works in-place. I need to open it in a new window.
@@ -47,7 +50,8 @@ Three nice ways from Stackoverflow.
 3. [Open a window](https://stackoverflow.com/questions/32954980/html-js-how-to-open-an-image-in-an-image-popup-by-clicking-on-it/63511881#63511881) instead of `<a>` to use the `<ondblclick>` event:
 
    ```html
-   <img src="/img/thumb" ondblclick='window.open("/img/full", ...)'>
+   <img src="/img/thumb"
+        ondblclick='window.open("/img/full", ...)'>
    ```
 
    Let's stick with this one.
