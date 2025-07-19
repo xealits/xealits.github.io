@@ -20,6 +20,7 @@ title: home
 </style>
 -->
 <link href='/css/all.css' rel='stylesheet' type='text/css'>
+<link href='/css/syntax_highlighting.css' rel='stylesheet' type='text/css'>
 <link href='/css/index.css' rel='stylesheet' type='text/css'>
 
 <title>WebAppStudies Page</title>
@@ -35,6 +36,12 @@ title: home
 	Hello, world!
 	It is a personal web-dev site. Here be experiments.
 	</p>
+
+  <nav class="guttered">
+    <a href="/">Home</a>
+    <span class="quartergutter"> </span>
+    <a href="/blog">Blog</a>
+  </nav>
 </section>
 
 <!--
@@ -44,55 +51,6 @@ title: home
 
 	<section class="clear-left colem-5" id="log">
 		<h1><a name="news"></a><a class="internal" href="#news">News</a></h1>
-
-		<!--
-		<h2>Log2</h2>
-		<h3>Log</h3>
-		<h4>Log</h4>
-		<h5>Log</h5>
-		<h6>Log</h6>
-		Log
-
-		<article class="guttered colem-5">
-		<ol>
-			<li>GAE SDK update and new front page layout</li>
-			<li>something second</li>
-		</ol>
-		<button type="button"><span class="short">un</span>fold>></button>
-		<p class="fulart" style="clear:right">
-		some description in the full article
-		</p>
-		</article>
-		-->
-
-		<!--
-		<article class="guttered colem-5">
-		<h1>Some particular blog topic
-		</h1>
-		<p>
-			Short description/abstract.
-		</p>
-		</article>
-
-
-		<article class="guttered colem-5">
-		<h1>A "solution" article
-		</h1>
-		<p>
-			Ponderings on a particular problem, which did converge to something concrete.
-		</p>
-		<button type="button"><span class="short">un</span>fold>></button>
-		<img src="pics/PopSci-journal-history-diagram.png" class="fulart Figure" alt="Visualisation of Sci-Fi journal history" style="clear:right">
-		</article>
-
-		<ul>
-		<li class="article">
-		</li>
-		<ul>
-
-		<div class="tag"><a class="smallcaps" href="#index">web</a>  </div>
-		<h1><a name="intro"></a><a class="internal" href="#intro">Introduction</a></h1>
-		-->
 
     {% for post in site.posts %}
 		<article class="guttered colem-5">
@@ -115,68 +73,6 @@ title: home
     {% endfor %}
 
 		<article class="guttered tweet colem-5">
-		<p>
-			Vimeo <a href="https://vimeo.com/75404940">embed</a>
-		</p>
-		<div style="padding:75% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/75404940?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Foursquare check-ins show the pulse of Tokyo"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>
-		</article>
-
-		<article class="guttered tweet colem-5">
-		<p>
-			Youtube shorts embed
-		</p>
-		<iframe frameborder="0"
-			src="https://youtube.com/embed/qCXKffYzKfo?si=osCK-dD1MUUiafKW">
-		</iframe>
-		<!-- width="420" height="315"
-		src="https://youtube.com/shorts/qCXKffYzKfo?si=osCK-dD1MUUiafKW">
-		<iframe width="315" height="560"
-src="https://www.youtube.com/embed/<Shorts_video_code>"
-title="YouTube video player"
-frameborder="0"
-allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-allowfullscreen></iframe>
-		-->
-		</article>
-
-		<article class="guttered tweet colem-5">
-		<p>
-			Twitter/X embed example overflows
-		</p>
-		<!-- 
-
-		<div class="colem-2" style="float:right">
-		<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Help support The NetBSD Foundation, Inc. by donating or retweeting. <a href="https://t.co/STUtmLMkLt">https://t.co/STUtmLMkLt</a> <a href="https://twitter.com/hashtag/netbsd?src=hash&amp;ref_src=twsrc%5Etfw">#netbsd</a> <a href="https://twitter.com/hashtag/donation?src=hash&amp;ref_src=twsrc%5Etfw">#donation</a><a href="https://t.co/dfA8D97oSg">https://t.co/dfA8D97oSg</a></p>&mdash; alex (@alex_toldaiev) <a href="https://twitter.com/alex_toldaiev/status/1837593683073388547?ref_src=twsrc%5Etfw">September 21, 2024</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-		</div> -->
-		</article>
-
-		<article class="guttered tweet colem-5">
-			<p>
-			Reddit embed example
-			</p>
-		<!--
-		<p class="colem-2" style="float:left">
-		-->
-
-		<div class="colem-2" style="float:left">
-			<blockquote class="reddit-embed-bq" style="height:500px" data-embed-height="740"><a href="https://www.reddit.com/r/fujifilm/comments/1fnpiu8/xt5_and_tamron_18300_in_osaka_february_2024/">X-T5 and Tamron 18-300 in Osaka, February 2024</a><br> by<a href="https://www.reddit.com/user/Difficult_Rutabaga87/">u/Difficult_Rutabaga87</a> in<a href="https://www.reddit.com/r/fujifilm/">fujifilm</a></blockquote><script async="" src="https://embed.reddit.com/widgets.js" charset="UTF-8"></script>
-		</div>
-
-		<div class="colem-2" style="float:right">
-		<blockquote class="reddit-embed-bq" style="height:500px" data-embed-height="740">
-			<a href="https://www.reddit.com/r/oddlysatisfying/comments/1fmi585/how_the_syrup_flows_down_the_flan/">
-				How the syrup flows down the flan</a>
-			<br>
-			by
-			<a href="https://www.reddit.com/user/eIizabethdewitt/">u/eIizabethdewitt</a>
-			in
-			<a href="https://www.reddit.com/r/oddlysatisfying/">oddlysatisfying</a>
-		</blockquote>
-		<script async="" src="https://embed.reddit.com/widgets.js" charset="UTF-8"></script>
-		</div>
-		</article>
-
-		<article class="guttered tweet colem-5">
 		<p class="colem-2" style="float:left">
 			Liverpool walks on with hope in its heart
 		</p>
@@ -187,105 +83,6 @@ allowfullscreen></iframe>
 		</div>
 		-->
 		</article>
-
-
-		<article class="guttered colem-5">
-		<a name="pop-up-full-image-in-html"></a>
-		<h1>
-			<a href="#pop-up-full-image-in-html">
-			Pop up a full image in HTML & JS
-			</a>
-		</h1>
-		<summary>
-			3 ways to open a full image: <br>
-			<code class="font-small">
-				&lt;img src="/img/thumb" onclick='this.src="/img/full"'&gt; <br>
-				&lt;img src="/img/thumb" ondblclick='window.open("/img/full", ...)'&gt; <br>
-				&lt;a href="image2.gif"&gt;&lt;img src="image1.gif"&gt;&lt;a&gt;
-			</code>
-		</summary>
-		<button type="button"><span class="short">un</span>fold>></button>
-		<div class="tag"><a class="smallcaps" href="#index">web</a>  </div>
-		<div class="tag"><a class="smallcaps" href="#index">web-frontends</a> </div>
-		<br><!-- the break is needed to clear off the tag blocks -->
-
-		<div class="clear-a-line fulart">
-		<p>
-			This page uses a fixed-width grid, and images fit into it.
-			When you have a situation like that, with thumbnails of images,
-			how to open them into full size images?
-		</p>
-
-		<ol>
-			<p>
-				Three nice ways from Stackoverflow. 
-			</p>
-
-			<li>
-				<p>Make the in-grid image <a href="https://stackoverflow.com/questions/467927/how-can-i-make-a-thumbnail-img-show-a-full-size-image-when-clicked/468088#468088">link to the full picture</a>: <br>
-				</p>
-				<p>
-					<code>
-						&lt;a href="image_full.gif"&gt; <br>
-						&lt;img src="image_thumb.gif"&gt; <br>
-						&lt;\a&gt;
-					</code>
-				</p>
-				<p>
-					It is nice, but it looks like the link &lt;a&gt; does not support double-clicking.
-					I don't want to spread single-click events all over the web page.
-					It would be like traps for the user everywhere.
-				</p>
-			</li>
-
-			<li>
-				<p> <a href="https://stackoverflow.com/questions/467927/how-can-i-make-a-thumbnail-img-show-a-full-size-image-when-clicked/467946#467946">Use JS & ondblclick to change <code>this.src</code></a>: <br>
-				</p>
-				<p>
-					<code>
-						&lt;img src="/img/thumb" onclick='this.src="/img/full"'&gt;
-					</code>
-				</p>
-				<p>
-					Good JS, but it works in-place. I need to open it in a new window.
-				</p>
-			</li>
-
-			<li>
-				<p> <a href="https://stackoverflow.com/questions/32954980/html-js-how-to-open-an-image-in-an-image-popup-by-clicking-on-it/63511881#63511881">Open a window</a> instead of &lt;a&gt; to use the &lt;ondblclick&gt; event: <br>
-				</p>
-				<p>
-					<code>
-						&lt;img src="/img/thumb" ondblclick='window.open("/img/full", ...)'&gt;
-					</code>
-				</p>
-				<p>
-					Let's stick with this one.
-				</p>
-			</li>
-		</ol>
-
-		</div>
-		</article>
-
-		<article class="guttered tweet colem-5">
-		<div>
-			Switzerland is a land of clouds.
-		</div>
-
-		<!--<img src="/dir/files/photo_2024-09-05_switzerland-land-of-clouds.jpeg" class="Figure" alt="Switzerland in clouds" style="clear:right">-->
-			<!--<a href="" onclick="window.open('/dir/files/photo_2024-09-05_switzerland-land-of-clouds.jpeg','targetWindow', 'toolbar=no, location=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=1090px, height=550px, top=25px left=120px'); return false;">
-		    	<img src="/dir/files/photo_2024-09-05_switzerland-land-of-clouds.jpeg" class="Figure" alt="Switzerland in clouds" style="clear:right">
-			</a>-->
-		   	<img ondblclick="window.open('/dir/files/photo_2024-09-05_switzerland-land-of-clouds.jpeg','targetWindow', 'toolbar=no, location=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=1090px, height=550px, top=25px left=120px'); return false;" src="/dir/files/photo_2024-09-05_switzerland-land-of-clouds.jpeg" class="Figure" alt="Switzerland in clouds" style="clear:right">
-			<!--<a href="/dir/files/photo_2024-09-05_switzerland-land-of-clouds.jpeg" >
-				<img class="Figure" src="/dir/files/photo_2024-09-05_switzerland-land-of-clouds.jpeg" alt="Switzerland in clouds" style="clear:right"/>
-			</a>-->
-		</article>
-
-		<p class="guttered tweet">
-			human is a terminal interface
-		</p>
 
 	</section>
 

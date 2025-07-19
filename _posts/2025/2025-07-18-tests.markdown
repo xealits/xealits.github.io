@@ -87,7 +87,7 @@ They also have this weirdo: \\( e=mc^2 \\) - does it work?
 
 $\forall$ works now.
 
-Now some block math from [the nice post](https://jojozhuang.github.io/tutorial/jekyll-math-symbols-with-mathjax/):
+Now some block math from [the post](https://jojozhuang.github.io/tutorial/jekyll-math-symbols-with-mathjax/):
 
 \begin{equation}
 \label{eq2}
