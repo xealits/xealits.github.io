@@ -251,7 +251,54 @@ body button {
 -- it goes earlier, because now there are margins on 3rem
    84 rem
  */
-@media only screen and (max-width: 75rem) {
+@media only screen and (max-width: 76rem) {
+
+	.colem-1  {width:  5rem;}
+	.colem-2  {width: 10rem;}
+	.colem-3  {width: 15rem;}
+	.colem-4  {width: 20rem;}
+	.colem-5  {width: 25rem;}
+	.colem-6  {width: 30rem;}
+	.colem-7  {width: 35rem;}
+	.colem-8  {width: 40rem;}
+	.colem-9  {width: 45rem;}
+	.colem-10 {width: 50rem;}
+	.colem-11 {width: 50rem;}
+	.colem-12 {width: 50rem;}
+	.colem-13 {width: 50rem;}
+	.colem-14 {width: 50rem;}
+	.colem-15 {width: 50rem;}
+
+	[class*="right-flow-box-"] {
+		width: 100%;
+	}
+}
+
+/* I use colem-5 = 25rem for sections and article width
+   so I tune how that gets adjusted
+
+   Screen width 50rem is tricky because we go to less than 2 standard column widths
+
+ */
+@media only screen and (max-width: 51rem) {
+
+  /*
+	.colem-1  {width:  5rem;}
+	.colem-2  {width: 10rem;}
+	.colem-3  {width: 15rem;}
+	.colem-4  {width: 20rem;}
+	.colem-5  {width: 25rem;}
+	.colem-6  {width: 30rem;}
+	.colem-7  {width: 35rem;}
+	.colem-8  {width: 40rem;}
+	.colem-9  {width: 40rem;}
+	.colem-10 {width: 40rem;}
+	.colem-11 {width: 40rem;}
+	.colem-12 {width: 40rem;}
+	.colem-13 {width: 40rem;}
+	.colem-14 {width: 40rem;}
+	.colem-15 {width: 40rem;}
+  */
 
 	.colem-1  {width:  5rem;}
 	.colem-2  {width: 10rem;}
@@ -272,41 +319,12 @@ body button {
 	[class*="right-flow-box-"] {
 		width: 100%; /* or maybe something else? */
 	}
-}
-
-/* I use colem-5 = 25rem for sections and article width
-   so I tune how that gets adjusted
-
-   Screen width 50rem is tricky because we go to less than 2 standard column widths
-
- */
-@media only screen and (max-width: 50rem) {
-
-	.colem-1  {width:  5rem;}
-	.colem-2  {width: 10rem;}
-	.colem-3  {width: 15rem;}
-	.colem-4  {width: 20rem;}
-	.colem-5  {width: 25rem;} /* no adjustments */
-	.colem-6  {width: 30rem;}
-	.colem-7  {width: 35rem;}
-	.colem-8  {width: 40rem;}
-	.colem-9  {width: 40rem;}
-	.colem-10 {width: 40rem;}
-	.colem-11 {width: 40rem;}
-	.colem-12 {width: 40rem;}
-	.colem-13 {width: 40rem;}
-	.colem-14 {width: 40rem;}
-	.colem-15 {width: 40rem;}
-
-	[class*="right-flow-box-"] {
-		width: 100%; /* or maybe something else? */
-	}
 	/*#articles { width: 300px; }
 	#description { width: 300px; }*/
 }
 
 /* second adjustment, tricky case when it gets to full width*/
-@media only screen and (max-width: 40rem) {
+@media only screen and (max-width: 50rem) {
 	/* 3 coloumn screen -- max 2 coloumns
 	 */
 
@@ -315,16 +333,16 @@ body button {
 	.colem-3  {width: 15rem;}
 	.colem-4  {width: 20rem;}
 	.colem-5  {width: 25rem;}
-	.colem-6  {width: 30rem;}
-	.colem-7  {width: 30rem;}
-	.colem-8  {width: 30rem;}
-	.colem-9  {width: 30rem;}
-	.colem-10 {width: 30rem;}
-	.colem-11 {width: 30rem;}
-	.colem-12 {width: 30rem;}
-	.colem-13 {width: 30rem;}
-	.colem-14 {width: 30rem;}
-	.colem-15 {width: 30rem;}
+	.colem-6  {width: 25rem;}
+	.colem-7  {width: 25rem;}
+	.colem-8  {width: 25rem;}
+	.colem-9  {width: 25rem;}
+	.colem-10 {width: 25rem;}
+	.colem-11 {width: 25rem;}
+	.colem-12 {width: 25rem;}
+	.colem-13 {width: 25rem;}
+	.colem-14 {width: 25rem;}
+	.colem-15 {width: 25rem;}
 
 	[class*="right-flow-box-"] {
 		width: 100%; /* or maybe something else? */
@@ -333,7 +351,7 @@ body button {
 	#description { width: 300px; }*/
 }
 
-@media only screen and (max-width: 30rem) {
+@media only screen and (max-width: 25rem) {
 	/* 2 coloumn screen -- max 2 coloumns
 	   width adjusted coloumn width
 	 */
@@ -561,11 +579,6 @@ img.Figure { width: 100%; }
 }
 
 .tweet p {
-	margin-top:    0.2em;
-	margin-bottom: 0.2em;
-}
-
-article summary p {
 	margin-top:    0.2em;
 	margin-bottom: 0.2em;
 }
