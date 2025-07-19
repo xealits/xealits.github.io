@@ -435,9 +435,11 @@ body {
 }
 
 .tag {
-  padding-left:  0.5rem;
   display: inline-block;
+  padding-right:  0.5rem;
+  /*
   float:   right;
+  padding-left:  0.5rem;*/
 }
 
 article {
@@ -536,7 +538,7 @@ article ol p {
 	display: none;
 }
 
-.flow-right {
+.float-right {
 	float: right;
 }
 
