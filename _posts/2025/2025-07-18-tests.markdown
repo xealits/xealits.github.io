@@ -21,14 +21,20 @@ Unordered list:
 * another one
 
   with a paragraph
-
 * *one more*
-
 * one with code:
-
   ```bash
   echo foo | grep bar
   ```
+
+* A larger item, with more text. Plural sentences.
+Additional text.
+And, also, a sub-list:
+  + A point.
+    - One more nesting.
+  + One more point.
+
+* And a wrapper.
 
 And a test with an itemized list:
 1. item 1

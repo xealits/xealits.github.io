@@ -493,7 +493,12 @@ article {
 	margin-bottom: 2rem;
 }
 
-article  p {
+article p {
+	margin-top: var(--p-margin);
+	margin-bottom: var(--p-margin);
+}
+
+article li {
 	margin-top: var(--p-margin);
 	margin-bottom: var(--p-margin);
 }
@@ -594,11 +599,14 @@ ol, ul {
 	padding-left: 0;
 }
 
+/*
 p, ol, ul {
-	/*list-style-position: inside;*/
 	margin-top:    0.2em;
 	margin-bottom: 0.2em;
 }
+*/
+
+	/*list-style-position: inside;*/
 
 /*
 ul > li.article::marker {
