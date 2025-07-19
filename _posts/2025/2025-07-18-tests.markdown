@@ -30,6 +30,13 @@ Unordered list:
   echo foo | grep bar
   ```
 
+And a test with an itemized list:
+1. item 1
+2. item 2
+3. third item
+
+The spacing is a bit different between the items in the lists.
+Ok, that's it.
 
 {% include mathjax.html %}
 
