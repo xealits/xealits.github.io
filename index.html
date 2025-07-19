@@ -57,17 +57,17 @@ title: home
     <a name="{{post.title | slugize}}"></a>
     {% if post.layout != "tweet" %}
 		<h1>
-      <a href="#{{post.title | slugize}}">
-        {{ post.title }}
-			</a>
+      {{ post.title }}
 		</h1>
     {% endif %}
     <summary class="{{ post.layout }}">
     {{ post.excerpt }}
     </summary>
-    <a class="smallcaps" href="{{post.url}}">rest>></a>
+
+    <a class="smallcaps nav" href="{{post.url}}">rest>></a>
+
     {% if post.tags %}
-    {%- for tag in post.tags -%} <a class="smallcaps tag" href="{{site.baseurl}}/tags.html#{{tag | slugize}}">#{{tag}}</a> {%- endfor -%}
+    {%- for tag in post.tags -%} <a class="smallcaps nav tag" href="{{site.baseurl}}/tags.html#{{tag | slugize}}">#{{tag}}</a> {%- endfor -%}
     {% endif %}
     </article>
     {% endfor %}
@@ -92,9 +92,7 @@ title: home
 		<article class="colem-5 guttered">
 		<a name="blog"></a>
 		<h1>
-			<a href="/blog.html">
 			Blog
-			</a>
 		</h1>
 
 		<p>
@@ -111,35 +109,17 @@ title: home
 		<p>
 		</article>
 
-		<!-- review blogs
-		</p>
-			The most actual action happens in some vlogs from Casey Neistat
-			where he shows his gear to make vlogs in which he comments
-			on some random stuff in New York.
-		<p>
-
-		</p>
-			Many of actually competent tech blogs effectively make passive reviews.
-			Level1Techs talks mostly about GPU pass-through in a virtual environment of an enterprise setting.
-			EEVLog mostly talks about things interesting only for EE folks,
-			not about something interesting that can be done with electronics.
-			Andreas Spiess and Great Scott are awesome. 
-		<p>
-		-->
-
 		<article class="guttered colem-5">
 		<a name="ai-silver-bullet"></a>
 		<h1>
-			<a href="#ai-silver-bullet">
-        {% assign feature_post_ai = site.posts | where: "slug", "ai_silver_bullet" | first %}
-        {{ feature_post_ai.title }}
-			</a>
+      {% assign feature_post_ai = site.posts | where: "slug", "ai_silver_bullet" | first %}
+      {{ feature_post_ai.title }}
 		</h1>
       {{ feature_post_ai.excerpt }}
 
-    <a class="smallcaps" href="{{feature_post_ai.url}}">rest>></a>
+    <a class="smallcaps nav" href="{{feature_post_ai.url}}">rest>></a>
     {% if feature_post_ai.tags %}
-    {%- for tag in feature_post_ai.tags -%} <a class="smallcaps tag" href="{{site.baseurl}}/tags.html#{{tag | slugize}}">#{{tag}}</a> {%- endfor -%}
+    {%- for tag in feature_post_ai.tags -%} <a class="smallcaps tag nav" href="{{site.baseurl}}/tags.html#{{tag | slugize}}">#{{tag}}</a> {%- endfor -%}
     {% endif %}
     </article>
     <!--
@@ -202,10 +182,6 @@ title: home
 
 	<section class="colem-5 clear-left" id="ending">
 	</section>
-
-
-<div id="activity-surface" class="X">
-</div>
 
 <script>
 

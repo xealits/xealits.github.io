@@ -7,18 +7,44 @@ highlighter: rouge
 Just testing markdown features in Jekyll.
 <!--more-->
 
+Let's try text bits.
+Like **bold** text, for quesitons for example.
+Then, *italic* for emphasis.
+A link would look [like this](google.com).
+And inline code is this: `import code` for example.
+
+Small caps need a `<span>` and it looks like this:
+<span style="font-variant:small-caps;">Small Caps</span>.
+
+Unordered list:
+* item
+* another one
+
+  with a paragraph
+
+* *one more*
+
+* one with code:
+
+  ```bash
+  echo foo | grep bar
+  ```
+
+
 {% include mathjax.html %}
 
 # Basic features
 
 Some text, and code:
-```Cpp
+```cpp
 int main() {
   return 0;
 }
 ```
 
-No syntax highlighting there. Just monospace test with the code. Although, the markdown does use the code marks ````` and marks the section `Cpp`.
+Syntax highlighting works with `cpp` tag.
+The markdown is written with triple `` ` `` code marks and marks the section `cpp`.
+It can also be just monospace.
 
 Also, how about some inline Latex-math?
 E.g. this bit: $e = m c^2$ and $e^{i\pi} = -1$ work.
@@ -26,11 +52,12 @@ So, Mathjax should leave the backticks `` ` `` alone.
 There is `$` for math.
 
 When configured with `jax: ["input/TeX", ...]`,
-Mathjax adds its elements only around those escaped ````` backticks.
+Mathjax2 adds its elements only around those escaped ````` backticks.
 Not around normal inlined `$` code.
 And not around backticks with spaces: like this `` ` `` one.
+(It all works smoothly in Mathjax3.)
 
-Better like this:
+Or like this:
 {% highlight cpp %}
 #include <iostream>
 #include <vector>

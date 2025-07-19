@@ -6,7 +6,7 @@ highlighter: rouge
 
 3 ways to open a full image:
 
-{% highlight html %}
+```html
 <img src="/img/thumb"
   onclick='this.src="/img/full"'>
 <img src="/img/thumb"
@@ -14,7 +14,7 @@ highlighter: rouge
 <a href="image2.gif">
   <img src="image1.gif">
 </a>
-{% endhighlight %}
+```
 
 
 <!--more-->
@@ -26,7 +26,7 @@ how to open them into full size images?
 Three nice ways from Stackoverflow.
 1. Make the in-grid image [link to the full picture](https://stackoverflow.com/questions/467927/how-can-i-make-a-thumbnail-img-show-a-full-size-image-when-clicked/468088#468088):
 
-   ```
+   ```html
    <a href="image_full.gif">
      <img src="image_thumb.gif">
    </a>
@@ -38,7 +38,7 @@ Three nice ways from Stackoverflow.
   
 2. [Use JS & ondblclick to change `this.src`](https://stackoverflow.com/questions/467927/how-can-i-make-a-thumbnail-img-show-a-full-size-image-when-clicked/467946#467946):
 
-   ```
+   ```html
    <img src="/img/thumb" onclick='this.src="/img/full"'>
    ```
    
@@ -46,7 +46,7 @@ Three nice ways from Stackoverflow.
 
 3. [Open a window](https://stackoverflow.com/questions/32954980/html-js-how-to-open-an-image-in-an-image-popup-by-clicking-on-it/63511881#63511881) instead of `<a>` to use the `<ondblclick>` event:
 
-   ```
+   ```html
    <img src="/img/thumb" ondblclick='window.open("/img/full", ...)'>
    ```
 

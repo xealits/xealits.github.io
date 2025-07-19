@@ -102,7 +102,7 @@ article>h1 {font-size: 16pt }
 
 h1 {
 	font-family: Helvetica, sans-serif; /* and inferited */
-	font-weight: bold;
+	/*font-weight: bold;*/
 	/*font-variant: small-caps;*/
 }
 
@@ -627,14 +627,32 @@ a.smallcaps {
    which among other stuff creates a bit of volume, the text is clickable,
    these underlines are for next gen */
 
+article p a {
+	/*font-variant: small-caps;*/
+	text-decoration: underline;
+}
+
+nav a {
+	font-family: Helvetica, sans-serif;
+	font-weight: bold;
+}
+
+a.nav {
+	font-family: Helvetica, sans-serif;
+	font-weight: bold;
+}
+
+/*
 a {
 	font-family: Helvetica, sans-serif;
 	font-weight: bold;
+}
+*/
+
 /*
 	text-decoration: underline;
   display: inline-block;
 */
-}
 
 	/*font-variant: small-caps;*/
 
