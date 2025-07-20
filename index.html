@@ -70,7 +70,12 @@ title: home
 
     {% if post.tags %}
     {%- for tag in post.tags -%} <a class="smallcaps nav tag" href="{{site.baseurl}}/tags.html#{{tag | slugize}}">#{{tag}}</a> {%- endfor -%}
-    {%- for cat in post.categories -%} <a class="smallcaps nav tag" href="{{site.baseurl}}/tags.html#{{tag | slugize}}">{{cat}}</a> {%- endfor -%}
+    {%- if post.categories.first == "projects" -%}
+      {%- assign proj_name = post.categories.last -%}
+      <a class="smallcaps nav tag" href="{{site.baseurl}}/tags.html#{{tag | slugize}}">{{proj_name}}</a>
+    {%- else -%}
+      {%- for cat in post.categories -%} <a class="smallcaps nav tag" href="{{site.baseurl}}/tags.html#{{tag | slugize}}">{{cat}}</a> {%- endfor -%}
+    {%- endif -%}
     {% endif %}
     </article>
     {% endfor %}
