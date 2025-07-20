@@ -4,22 +4,15 @@ title:  CMake codemodel graphs
 description: Use CMake text-api for useful C++ projects graphs.
 ---
 
-Use `CMake` text-api for useful graphs of the C++ projects.
-
-More text.
+Use [CMake file-api](https://cmake.org/cmake/help/latest/manual/cmake-file-api.7.html)
+for useful graphs of build targets in C++ projects.
 
 <!--more-->
 
-<object type="image/svg+xml" data="./targetgraph-_cmake.svg">Browser doesn't support object tag for SVG</object>
+# Examples
 
-This makes `<img/>` with the SVG, which strips the SVG UI:
-```
-![cmake](./targetgraph-_cmake.svg)
-```
+Structure of the [CMake project](https://gitlab.kitware.com/cmake/cmake/) (zoom in for tooltips):
+<object class="colem-5" type="image/svg+xml" data="./targetgraph-_cmake.svg">Browser doesn't support object tag for SVG</object>
 
-
-this does not work:
-```
-{\% svg "./targetgraph-_cmake.svg" \%}
-```
-
+The large circle represents the cluster of dependencies,
+where 16 targets are used by 17 other targets in the project.
