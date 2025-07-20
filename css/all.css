@@ -522,13 +522,13 @@ mjx-container {
 }
 
 article .margins {
-	margin-top: 0.5rem;
-	margin-bottom: 1rem;
+	margin-top:    calc(0.5*var(--p-margin));
+	margin-bottom: var(--p-margin);
 }
 
-article ol p {
-	margin-top: 0.5rem;
-	margin-bottom: 0.5rem;
+article :is(ol, ul) :is(li, p) {
+	margin-top:    calc(0.5*var(--p-margin));
+	margin-bottom: calc(0.5*var(--p-margin));
 }
 
 .fulart {
@@ -595,9 +595,12 @@ h1 {
 	margin-bottom: 0em;
 }
 
-ol, ul {
+article > :is(ol, ul) {
 	padding-left: 0;
 }
+
+	/*list-style-position: outside;*/
+	/*list-style-position: inside;*/
 
 /*
 p, ol, ul {
@@ -605,8 +608,6 @@ p, ol, ul {
 	margin-bottom: 0.2em;
 }
 */
-
-	/*list-style-position: inside;*/
 
 /*
 ul > li.article::marker {

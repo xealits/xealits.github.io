@@ -20,17 +20,15 @@
     </nav>
 
     <section class="colem-5">
-      <ul>
-        {% for post in site.posts %}
-          <p class="post-meta">
-            <a class="nav" href="{{ post.url }}">{{ post.title }}</a>
-            <br>
-            <time datetime="{{post.date}}">
-              {{post.date | date: "%b %d, %Y"}}
-            </time>
-          </p>
-        {% endfor %}
-      </ul>
+      {% for post in site.posts %}
+        <p class="post-meta">
+          <a class="nav" href="{{ post.url }}">{{ post.title }}</a>
+          <br>
+          <time datetime="{{post.date}}">
+            {{post.date | date: "%b %d, %Y"}}
+          </time>
+        </p>
+      {% endfor %}
     </section>
 
     <section>

@@ -39,6 +39,10 @@ And, also, a sub-list:
 And a test with an itemized list:
 1. item 1
 2. item 2
+
+   With some more text. And a sub-list:
+   1. This one.
+   2. Another point.
 3. third item
 
 The spacing is a bit different between the items in the lists.
