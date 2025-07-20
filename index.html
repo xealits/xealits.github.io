@@ -70,6 +70,7 @@ title: home
 
     {% if post.tags %}
     {%- for tag in post.tags -%} <a class="smallcaps nav tag" href="{{site.baseurl}}/tags.html#{{tag | slugize}}">#{{tag}}</a> {%- endfor -%}
+    {%- for cat in post.categories -%} <a class="smallcaps nav tag" href="{{site.baseurl}}/tags.html#{{tag | slugize}}">{{cat}}</a> {%- endfor -%}
     {% endif %}
     </article>
     {% endfor %}
@@ -94,22 +95,38 @@ title: home
 		<article class="colem-5 guttered">
 		<a name="blog"></a>
 		<h1>
-			Blog
+			Website
 		</h1>
 
 		<p>
-			The goal of the blog is just to practice writing
-      and wrap up whatever snipets/gists of know-how that pop up in daily work.
-      Plus, various commentary goes into the blog too.
+			Setting up a static HTML+CSS grid-layout web site,
+      with a blog of daily gists and casual articles.
 		</p>
 
 		<p>
-			The intention is to avoid passive general commentary,
-      like unpacking something, or just building a PC,
-      or installing a Linux distro.
-			The idea is to present a view into real applications.
+			It should include a useful index of the web site.
 		<p>
 		</article>
+
+    {% for page in site.pages %}
+    {% if page.path contains 'active_projects/' %}
+    {% assign project = page %}
+		<article class="guttered colem-5">
+		<h1>
+      {{ project.title }}
+		</h1>
+    <summary>
+      {{ project.description }}
+    </summary>
+
+    <a class="float-right smallcaps nav" href="{{project.url}}">rest>></a>
+    {% if project.tags %}
+    {%- for tag in project.tags -%} <a class="smallcaps tag nav" href="{{site.baseurl}}/tags.html#{{tag | slugize}}">#{{tag}}</a> {%- endfor -%}
+    {% endif %}
+
+    </article>
+    {% endif %}
+    {% endfor %}
 
 		<article class="guttered colem-5">
 		<a name="ai-silver-bullet"></a>
@@ -164,6 +181,7 @@ title: home
 		Some more lines.
 		</p>
 		</article>
+
 	</section>
 
 	<section class="colem-5" id="index">

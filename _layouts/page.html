@@ -16,7 +16,7 @@
       <a href="/blog">Blog</a>
     </nav>
 
-    <section class="colem-5" id="content">
+    <section class="colem-5">
       <article class="post">
         <h1>{{page.title}}</h1>
         <p class="post-meta">
@@ -25,24 +25,27 @@
           </time>
         </p>
 
-        {{ page.content }}
+        {{ content }}
       </article>
     </section>
 
-    {% if page.categories.first == "projects" %}
-    {% assign project_name = page.categories.last %}
-    <section class="colem-5" id="related-projects">
-      Related project:
+    <section class="colem-5">
+      Related posts:
+      {% for post in site.posts %}
+      {%- assign post_cat = post.categories | join: "/" -%}
+      {%- assign post_dir = "/" | append: post_cat | append: "/" -%}
+        {% if post_dir == page.dir %}
 
-      {% for page in site.pages %}
-      {% if page.path contains project_name %}
-      {% assign project = page %}
-      {% endif %}
+        <p>
+        <a class="nav" href="{{post.url}}">{{ post.title }}</a>
+          <br>
+          <time datetime="{{post.date}}">
+            {{post.date | date: "%b %d, %Y"}}
+          </time>
+        </p>
+        {% endif %}
       {% endfor %}
-
-      <a class="nav" href="{{project.url}}">{{ project.title }}</a>
     </section>
-    {% endif %}
 
     <section>
       <footer>
@@ -51,3 +54,4 @@
     </section>
   </body>
 </html>
+

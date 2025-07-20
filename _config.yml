@@ -38,6 +38,9 @@ defaults:
     values:
       author: Alex Toldaiev
 
+#include:
+#  - 'active_projects'
+
 # Build settings
 theme: minima
 plugins:
