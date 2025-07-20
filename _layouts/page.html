@@ -29,6 +29,7 @@
       </article>
     </section>
 
+    {% if page.path contains "projects" %}
     <section class="colem-5">
       Related posts:
       {% for post in site.posts %}
@@ -46,6 +47,7 @@
         {% endif %}
       {% endfor %}
     </section>
+    {% endif %}
 
     <section>
       <footer>
