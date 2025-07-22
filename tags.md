@@ -19,7 +19,7 @@ permalink: /tags
   {%- for post in site.posts -%}
     {% assign post_proj_name = post.categories.last | slugify %}
     {%- if post_proj_name == project_slug -%}
-[{{ post.title }}]({{ post.url }})
+[{{ post.title }}]({{ post.url }}) <span class="eighthgutter"> </span>
     {%- endif -%}
   {%- endfor -%}
 
@@ -37,10 +37,10 @@ permalink: /tags
   {%- elsif project_slugs contains cat_slug -%}
   {%- else -%}
   <a name="{{cat_slug}}"></a>
-  <a class="smallcaps tag nav" href="{{site.baseurl}}/tags.html#{{ cat_slug }}">#{{cat_name}}:</a>
+  <a class="smallcaps tag nav" href="{{site.baseurl}}/tags.html#{{ cat_slug }}">{{cat_name}}:</a>
   {%- for post in site.posts -%}
     {%- if post.categories contains cat_name -%}
-  [{{ post.title }}]({{post.url}})
+<span class="eighthgutter"> </span> [{{ post.title }}]({{post.url}})
     {%- endif -%}
   {%- endfor -%}
   {%- endif -%}
@@ -55,9 +55,9 @@ permalink: /tags
   <a name="{{tag_slug}}"></a>
   <a class="smallcaps tag nav" href="{{site.baseurl}}/tags.html#{{tag_slug}}">#{{tag_name}}:</a>
   {%- for post in site.posts -%}
-    {% if post.tags contains tag_name %}
-  [{{ post.title }}]({{post.url}})
-    {% endif %}
+    {%- if post.tags contains tag_name -%}
+<span class="eighthgutter"> </span> [{{ post.title }}]({{post.url}})
+    {%- endif -%}
   {%- endfor -%}
 {% endfor %}
 

@@ -2,6 +2,7 @@
 layout: post
 title: Random tests
 highlighter: rouge
+tags: tests
 ---
 
 Just testing markdown features in Jekyll.

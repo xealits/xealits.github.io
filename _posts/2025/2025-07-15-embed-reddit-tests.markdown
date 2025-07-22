@@ -2,6 +2,7 @@
 layout: tweet
 title: Reddit embed test
 highlighter: rouge
+tags: tests
 ---
 
 Reddit embed example

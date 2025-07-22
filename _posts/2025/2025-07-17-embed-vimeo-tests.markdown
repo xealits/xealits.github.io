@@ -2,6 +2,7 @@
 layout: tweet
 title: Vimeo embed test
 highlighter: rouge
+tags: tests
 ---
 
 Vimeo [embed](https://vimeo.com/75404940)
