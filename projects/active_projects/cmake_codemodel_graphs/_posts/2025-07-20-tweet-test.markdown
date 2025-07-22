@@ -1,6 +1,7 @@
 ---
 layout: tweet
 title: Test post under project
+tags: software
 ---
 
 Switzerland is a land of clouds.
