@@ -104,12 +104,12 @@ title: home
 		</h1>
 
 		<p>
-			Setting up a static HTML+CSS grid-layout web site,
-      with a blog of daily gists and casual articles.
+			Setting up a static HTML+CSS web site with adjustable grid-based layout,
+      and with a blog of daily gists and casual articles.
 		</p>
 
 		<p>
-			It should include a useful index of the web site.
+			It includes an index of the web site pages.
 		<p>
 		</article>
 
@@ -213,7 +213,7 @@ title: home
       {%- if cat_slug contains "projects" -%}
       {%- elsif project_slugs contains cat_slug -%}
       {%- else -%}
-      <a class="smallcaps tag nav" href="{{site.baseurl}}/tags.html#{{cat_slug | slugify}}">#{{cat.first}}</a>
+      <a class="smallcaps tag nav" href="{{site.baseurl}}/tags.html#{{ cat_slug }}">{{cat.first}}</a>
       {%- endif -%}
     {% endfor %}
       </p>
