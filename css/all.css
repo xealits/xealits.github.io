@@ -493,11 +493,6 @@ article.full {
 	margin-bottom: 1rem;
 }
 
-article {
-	margin-top: 1rem;
-	margin-bottom: 2rem;
-}
-
 article p {
 	margin-top: var(--p-margin);
 	margin-bottom: var(--p-margin);

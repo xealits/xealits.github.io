@@ -50,10 +50,6 @@ By this I don’t mean to discard the merits of AI, and the boom across the chip
 <p>[2] <a name="steve-jobs-technology-in-search-of-customer"></a><a href="https://www.youtube.com/watch?v=rMYSpTFJYKE">Steve Jobs: technology in search of a customer 2006</a></p>
 <p>[3] <a name="fred-brooks-no-silver-bullet"></a><a href="https://worrydream.com/refs/Brooks_1986_-_No_Silver_Bullet.pdf">Fred Brooks: No Silver Bullet — Essence and Accident in Software Engineering</a></p>-->
 
-{% if page.tags %}
-    {%- for tag in page.tags -%} <a href="{{site.baseurl}}/tags.html#{{tag | slugize}}"> #{{tag}}</a> {%- endfor -%}
-{% endif %}
-
 Links:
 1. [Steve Jobs: Technology Will Not Solve The World's Problems][steve-jobs-technology-not-enough]
 2. [Steve Jobs: technology in search of a customer 2006][steve-jobs-technology-in-search-of-customer]

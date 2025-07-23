@@ -43,6 +43,15 @@
     </section>
     {% endif %}
 
+    {% if page.tags %}
+    <section class="colem-5" id="tags">
+      Tags:
+      {% for tag in page.tags %}
+        <a class="nav" href="{{site.baseurl}}/tags.html#{{tag | slugify}}"> #{{tag}}</a>
+      {% endfor %}
+    </section>
+    {% endif %}
+
     <section>
       <footer>
         &copy; {{ page.author }}

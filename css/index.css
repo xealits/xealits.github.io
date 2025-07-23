@@ -1,4 +1,9 @@
 
+article {
+	margin-top: 1rem;
+	margin-bottom: 2rem;
+}
+
 article summary p {
 	margin-top:    0.2em;
 	margin-bottom: 0.2em;
