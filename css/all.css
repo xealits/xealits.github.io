@@ -97,8 +97,8 @@ body {
   /*text-align: justify;*/
 }
 
-section>h1 {font-size: 24pt }
-article>h1 {font-size: 16pt }
+section>h1 {font-size: 2rem }
+article h1 {font-size: 1.5rem }
 
 h1 {
 	font-family: Helvetica, sans-serif; /* and inferited */
@@ -531,6 +531,10 @@ article :is(ol, ul) :is(li, p) {
 	margin-bottom: calc(0.5*var(--p-margin));
 }
 
+.post-content > :is(ol, ul) {
+	padding-left: 0;
+}
+
 .fulart {
 	display: none;
 }
@@ -593,10 +597,6 @@ h1 {
 	/*margin-top:    0.2em;*/
 	margin-top:    calc(var(--p-margin));
 	margin-bottom: 0em;
-}
-
-article > :is(ol, ul) {
-	padding-left: 0;
 }
 
 	/*list-style-position: outside;*/

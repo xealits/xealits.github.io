@@ -9,8 +9,10 @@ article summary p {
 	margin-bottom: 0.2em;
 }
 
+
 article h1 {
 	margin-top:    0;
+  font-size: 1.5rem;
 }
 
 article .highlight {
