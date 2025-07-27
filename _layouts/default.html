@@ -9,6 +9,19 @@
     <link rel="stylesheet" href="/css/syntax_highlighting.css">
   </head>
 
+  <script src="/js/anchor.min.js"></script>
+  <script src="/js/jquery-3.7.1.min.js"></script>
+  <script>
+    $(function() {
+      anchors.options.visible = 'always'; 
+      anchors.add('.post-content > h1, h2, h3, h4, h5, h6');
+      anchors.options.icon = '❡';
+      anchors.options.placement = 'left';
+      anchors.options.visible = 'hover';
+      anchors.add('.post-content :is(p, li, figure, div)');
+    });
+  </script>
+
   <body class="colem-5">
     <nav class="float-right clear-a-line leave-a-line">
       <a href="/">Home</a>
