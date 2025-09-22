@@ -116,31 +116,6 @@ title: home
     {% endif %}
   {% endfor %}
 
-  <article class="guttered colem-5">
-  <a name="ai-silver-bullet"></a>
-  <h1>
-    {% assign feature_post_ai = site.posts | where: "slug", "ai_silver_bullet" | first %}
-    {{ feature_post_ai.title }}
-  </h1>
-    {{ feature_post_ai.excerpt }}
-
-  <a class="float-right smallcaps nav" href="{{feature_post_ai.url}}">rest>></a>
-  {% if feature_post_ai.tags %}
-  {%- for tag in feature_post_ai.tags -%} <a class="smallcaps tag nav" href="{{site.baseurl}}/tags.html#{{tag | slugify}}">#{{tag}}</a> {%- endfor -%}
-  {% endif %}
-  </article>
-  <!--
-  <div class="tag">
-  </div>
-  <div class="tag"><a class="smallcaps" href="#index">software</a> </div>
-  <br>
-  <div class="fulart">
-  </div>
-  <button class="fulart" type="button"><span class="short">un</span>fold>></button>
-  -->
-  <!-- the break is needed to clear off the tag blocks -->
-  <!--style="clear:right">-->
-
 </section>
 
 <section class="colem-5" id="index">
