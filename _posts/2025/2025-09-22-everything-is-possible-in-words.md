@@ -14,7 +14,7 @@ Words can contain any logic.
 
 
 There was some self-contradictory statement
-on some [ITk](https://cerncourier.com/a/a-new-atlas-for-the-high-luminosity-era/) meeting recently
+on an [ITk](https://cerncourier.com/a/a-new-atlas-for-the-high-luminosity-era/) meeting recently
 which made me think that really any logic is possible in words.
 It was probably something about project timeline.
 Like, "let's work on A" and a couple sentences later "we should also start B",
