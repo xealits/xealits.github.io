@@ -17,4 +17,6 @@ And sometimes about things that inspire me, like painting or photography.
 Links:
 * [LinkedIn](https://www.linkedin.com/in/atoldaiev)
 * [GitHub](https://github.com/xealits)
+* [Stackoverflow](https://stackoverflow.com/users/1420489/xealits)
+* [RSS](https://xealits.github.io/feed.xml)
 
