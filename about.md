@@ -4,8 +4,6 @@ title: About
 permalink: /about/
 ---
 
-{{ page.title }}
-
 Hello! My name is Alex Toldaiev. This is my personal website.
 I am a researcher in high energy particle physics, currently based at CERN.
 
@@ -19,5 +17,6 @@ Links:
 * [LinkedIn](https://www.linkedin.com/in/atoldaiev)
 * [GitHub](https://github.com/xealits)
 * [Stackoverflow](https://stackoverflow.com/users/1420489/xealits)
+* [Substack](https://substack.com/@alextoldaiev)
 * [RSS](https://xealits.github.io/feed.xml)
 
