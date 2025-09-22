@@ -8,6 +8,7 @@ permalink: /about/
 
 Hello! My name is Alex Toldaiev. This is my personal website.
 I am a researcher in high energy particle physics, currently based at CERN.
+
 My work is mostly about data analysis, testing future detector systems,
 software performance on x86 CPUs and GPUs, Linux features,
 and certain aspects of embedded software and instrumentation hardware.
