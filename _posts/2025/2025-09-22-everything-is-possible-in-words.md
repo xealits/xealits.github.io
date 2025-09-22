@@ -36,7 +36,8 @@ My impression was that I should not need a real book on CPU architecture for thi
 The idea is simple. So, a clear explanation should be somewhere on internet.
 But the blogs, Stackoverflow, Electronics Stackexchange, Wiki, etc made no sense.
 
-Some explanations would begin with a pattern like: "the CPU does _whatever is needed for translation_".
+Some explanations would begin with a pattern like:
+"the CPU does _whatever is needed for translation_".
 But, if you read about "what CPU can do?"
 You will get "the only thing a CPU does is just execution of instrucitons one by one..."
 So, does it mean there are some instructions that perform the virtual-to-physical address translation?
@@ -45,8 +46,8 @@ How come? At what moment do these instructions show up in the program then?
 There were other confusing points.
 It is clear that such statements miss some point that just adds a dimension to the system behavior.
 
-The problem with those explanations was that they did not talk about the Memory Management Unit.
-Which is the thing that delivers the Virtual Memory capability.
+The missing point in those explanations was the Memory Management Unit.
+Coincidentally, it is the thing that delivers the Virtual Memory capability.
 
 Smaller processors (micro-controllers) don't have MMUs.
 And they don't have Virtual Memory.
@@ -57,9 +58,9 @@ you have to take care that they don't step onto each other's memory.
 MMU is the thing that makes Virtual Memory possible.
 Just like wheels enable cars to smoothly ride down a road.
 
-If it is possible to "explain" Virtual Memory
+If one can "explain" Virtual Memory
 without mentioning or focusing on Memory Management Unit,
-it is really possible to do anything in words.
+one can really do anything in words.
 
 
 # PS: Some more examples
