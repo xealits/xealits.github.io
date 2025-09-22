@@ -4,18 +4,17 @@ title: About
 permalink: /about/
 ---
 
-This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](https://jekyllrb.com/)
-
-You can find the source code for Minima at GitHub:
-[jekyll][jekyll-organization] /
-[minima](https://github.com/jekyll/minima)
-
-You can find the source code for Jekyll at GitHub:
-[jekyll][jekyll-organization] /
-[jekyll](https://github.com/jekyll/jekyll)
-
-
-[jekyll-organization]: https://github.com/jekyll
-
 {{ page.title }}
+
+Hello! My name is Alex Toldaiev. This is my personal website.
+I am a researcher in high energy particle physics, currently based at CERN.
+My work is mostly about data analysis, testing future detector systems,
+software performance on x86 CPUs and GPUs, Linux features,
+and certain aspects of embedded software and instrumentation hardware.
+I occasionally write posts on these topics or general reflections on physics.
+And sometimes about things that inspire me, like painting or photography.
+
+Links:
+* [LinkedIn](https://www.linkedin.com/in/atoldaiev)
+* [GitHub](https://github.com/xealits)
 
