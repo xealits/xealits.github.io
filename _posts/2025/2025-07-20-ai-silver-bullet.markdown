@@ -15,7 +15,7 @@ which is one of its fundamental problems.
 </summary>
 
 <!--more-->
-<p></p>
+<br>
 
 It’s curious how the popular promise of AI suggests to deliver a silver bullet for everyone.
 
