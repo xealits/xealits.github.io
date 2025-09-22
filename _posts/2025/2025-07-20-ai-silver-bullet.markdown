@@ -10,11 +10,12 @@ The popular promise of AI is to give everyone a silver bullet for
 exactly the problem they don't want to deal with. Tech companies
 can do tech and forget about "starting with the customer" and culture things.
 The AI customers can forget about dealing with the complexity of their software,
-one of its fundamental problems.
+which is one of its fundamental problems.
 "A silver bullet for everyone" must be a common promise in hypes.
 </summary>
 
 <!--more-->
+<p></p>
 
 It’s curious how the popular promise of AI suggests to deliver a silver bullet for everyone.
 
