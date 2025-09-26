@@ -1,7 +1,7 @@
 ---
 layout: post
-slug: everything_is_possible_in_words
-title: Everything is possible in words
+slug: possible_in_words
+title: Possible in words
 tags: comments logic
 ---
 
@@ -63,7 +63,9 @@ without mentioning or focusing on Memory Management Unit,
 one can really do anything in words.
 
 
-# PS: Some more examples
+# PS
+
+## Some more examples
 
 Notice how the [Virtual Memory Wiki](https://en.wikipedia.org/wiki/Virtual_memory) mentions MMU only in two places:
 > The operating system manages virtual address spaces and the assignment of real memory to virtual memory.[5]
@@ -81,7 +83,7 @@ I think it is crucial to say that the point is to manage the MMU, a concrete har
 It is better than to say "the OS manages virtual addresses and assignments" in the abstract.
 * The extension capabilities are good, but they are not really essential.
 
-Then another mention in "Paging supervisor":
+Then another mention is in "Paging supervisor":
 > This part of the operating system creates and manages page tables and lists of free page frames.
 > ...
 > The paging supervisor may handle a page fault exception in several different ways, depending on the details:
@@ -90,23 +92,27 @@ Then another mention in "Paging supervisor":
 > the page information will be stored into one of the page registers.
 
 Most of texts on MMU and Virtual Memory are just mushy and abstract like that.
-These two thing don't really go together: mushiness and abstraction.
+These two things don't really go together, mushiness and abstraction.
+
+
+## Device drivers
 
 A similar confusion can happen when talking about a device driver and a corresponding device.
 The driver manages the device.
-So, of course, it represents a lot of device's structures,
+Of course, it represents a lot of device's structures,
 register contents, pointers into DMA buffers, etc.
-It shows up in hish speed networking, when some text calls something a "hardware buffer".
+It shows up in high speed networking, when some text calls something a "hardware buffer".
 It could mean a buffer in the smart network card itself.
-But it actually may mean the DMA buffer on the CPU side, in the driver.
+But it actually may mean the DMA buffer on the CPU memory side, in the driver.
 The hardware (the network card) dumps its data via DMA into that buffer.
 So, it makes sense to call it the "hardware buffer",
-as opposed to other queues and buffers that the software system (like DPDK) manages to deliver all its features.
+as opposed to other queues and buffers that the software system manages
+to provide all its features.
 
 The software works like a remote representation of the hardware device.
 So it is natural to confuse the two.
 
-It is a typical pattern in particle physics Data Acquisition systems,
+This case is typical in particle physics Data Acquisition systems,
 where devices sit in hard radiation environments, really remote from the DAQ software.
 However, that brings up a caveat:
 a large distance between the software and the devices under control
