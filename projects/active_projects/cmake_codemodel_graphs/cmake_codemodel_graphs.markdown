@@ -6,13 +6,14 @@ page_excerpts: true
 minima:
   page_excerpts: true
 ---
+excerpt
+<!--more-->
+<br>
+
 [A prototype Python project](https://github.com/xealits/cmake_graph_tests)
 that makes useful graphs of C++ CMake projects from the codemodel info
 provided by the [CMake file API](https://cmake.org/cmake/help/latest/manual/cmake-file-api.7.html#object-kind-codemodel).
 It handles clusters of dense dependencies among CMake targets.
-
-<!--more-->
-<br>
 
 
 When getting up to speed with ongoing CMake projects,
