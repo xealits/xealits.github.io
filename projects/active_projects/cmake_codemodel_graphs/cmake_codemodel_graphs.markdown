@@ -2,7 +2,6 @@
 layout: page
 title:  CMake codemodel graphs
 description: Use CMake text-api for useful C++ projects graphs.
-excerpt_separator: <!--more-->
 ---
 
 [A prototype Python project](https://github.com/xealits/cmake_graph_tests)
@@ -33,8 +32,8 @@ To get more info, CMake team advises to [use their file API](https://discourse.c
 My original goal was to add [Graphviz tooltips](https://graphviz.org/docs/attrs/tooltip/)
 with the info on the source files that go into the target,
 where the target is defined in `CMakeLists.txt`, etc.
-Now the tool does that, can output `.dot` and `.svg` files,
-and it also handles clusters of dense dependensies in the project.
+The `cmake_graph` tool makes `.dot` and `.svg` files with that information.
+And it also handles clusters of dense dependensies in the project.
 
 For example, the structure of the [CMake project](https://gitlab.kitware.com/cmake/cmake/) (zoom in for tooltips):
 <object class="colem-5" type="image/svg+xml" data="./targetgraph-_cmake.svg">Browser doesn't support object tag for SVG</object>
