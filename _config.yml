@@ -44,8 +44,6 @@ defaults:
 
 # Build settings
 theme: minima
-minima:
-  page_excerpts: true
 plugins:
   - jekyll-feed
 
