@@ -7,8 +7,8 @@ excerpt_separator: <!--more-->
 that makes useful graphs of C++ CMake projects from the codemodel info
 provided by the [CMake file API](https://cmake.org/cmake/help/latest/manual/cmake-file-api.7.html#object-kind-codemodel).
 It handles clusters of dense dependencies among CMake targets.
-<!--more-->
 
+<!--more-->
 <br>
 
 
