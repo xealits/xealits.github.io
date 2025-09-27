@@ -30,7 +30,6 @@ twitter_username: jekyllrb
 github_username:  xealits
 
 excerpt_separator: <!--more-->
-page_excerpts: true
 
 defaults:
   -
