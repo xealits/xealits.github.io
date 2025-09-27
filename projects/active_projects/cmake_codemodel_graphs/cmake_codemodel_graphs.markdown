@@ -2,6 +2,7 @@
 layout: page
 title:  CMake codemodel graphs
 excerpt_separator: <!--more-->
+excerpt: also excerpt
 page_excerpts: true
 minima:
   page_excerpts: true
