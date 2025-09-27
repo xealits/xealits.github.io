@@ -2,6 +2,9 @@
 layout: page
 title:  CMake codemodel graphs
 excerpt_separator: <!--more-->
+page_excerpts: true
+minima:
+  page_excerpts: true
 ---
 [A prototype Python project](https://github.com/xealits/cmake_graph_tests)
 that makes useful graphs of C++ CMake projects from the codemodel info

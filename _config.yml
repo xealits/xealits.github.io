@@ -31,7 +31,6 @@ github_username:  xealits
 
 excerpt_separator: "<!--more-->"
 page_excerpts: true
-show_excerpts: true
 
 defaults:
   -
@@ -45,6 +44,8 @@ defaults:
 
 # Build settings
 theme: minima
+minima:
+  page_excerpts: true
 plugins:
   - jekyll-feed
 
