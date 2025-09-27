@@ -30,7 +30,7 @@ twitter_username:
 github_username:  xealits
 
 excerpt_separator: "<!--more-->"
-page_excerpts: true
+page_excerpts: true # this thing does not work in Jekyll 4.3.2
 
 defaults:
   -
