@@ -29,7 +29,8 @@ url: "" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: jekyllrb
 github_username:  xealits
 
-excerpt_separator: <!--more-->
+excerpt_separator: "<!--more-->"
+page_excerpts: true
 
 defaults:
   -
