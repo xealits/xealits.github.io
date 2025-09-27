@@ -4,13 +4,11 @@ title:  CMake codemodel graphs
 description: Use CMake text-api for useful C++ projects graphs.
 ---
 
-<summary>
 [A prototype Python project](https://github.com/xealits/cmake_graph_tests)
 that makes useful graphs of C++ CMake projects
 from the codemodel info provided by
 the [CMake file API](https://cmake.org/cmake/help/latest/manual/cmake-file-api.7.html#object-kind-codemodel).
 It handles clusters of dense dependencies among CMake targets.
-</summary>
 
 <!--more-->
 <br>
