@@ -9,7 +9,7 @@
     <link href='https://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
   </head>
 
-  <body class="colem-5">
+  <body class="colem-8">
     <nav class="float-right clear-a-line leave-a-line">
       <a href="/">Home</a>
       <span class="quartergutter"> </span>
@@ -18,7 +18,7 @@
       <a href="/about">About</a>
     </nav>
 
-    <section class="post colem-5" id="content">
+    <section class="post colem-8" id="content">
       <div class="tweet">
         {{ page.content }}
       </div>
@@ -30,7 +30,7 @@
 
     {% if page.categories.first == "projects" %}
     {% assign project_name = page.categories.last %}
-    <section class="colem-5" id="related-projects">
+    <section class="colem-8" id="related-projects">
       Related project:
 
       {% for page in site.pages %}
@@ -44,7 +44,7 @@
     {% endif %}
 
     {% if page.tags %}
-    <section class="colem-5" id="tags">
+    <section class="colem-8" id="tags">
       Tags:
       {% for tag in page.tags %}
         <a class="nav" href="{{site.baseurl}}/tags.html#{{tag | slugify}}"> #{{tag}}</a>
