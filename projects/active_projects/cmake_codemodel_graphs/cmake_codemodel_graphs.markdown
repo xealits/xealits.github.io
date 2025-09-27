@@ -1,6 +1,7 @@
 ---
 layout: page
 title:  CMake codemodel graphs
+excerpt_separator: <!--more-->
 ---
 
 [A prototype Python project](https://github.com/xealits/cmake_graph_tests)
