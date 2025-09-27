@@ -31,7 +31,7 @@ The `cmake_graph` tool makes `.dot` and `.svg` files with that information.
 And it also handles clusters of dense dependensies in the project.
 
 For example, the structure of the [CMake project](https://gitlab.kitware.com/cmake/cmake/) (zoom in for tooltips):
-<object class="colem-5" type="image/svg+xml" data="./targetgraph-_cmake.svg">Browser doesn't support object tag for SVG</object>
+<object class="colem-8" type="image/svg+xml" data="./targetgraph-_cmake.svg">Browser doesn't support object tag for SVG</object>
 
 The large circle represents a cluster of dense dependencies,
 where 16 targets are used by 17 other targets in the project.
