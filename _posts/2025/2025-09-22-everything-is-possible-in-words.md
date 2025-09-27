@@ -6,7 +6,6 @@ tags: comments logic
 ---
 
 <summary>
-Any logic can be put into words.
 Words can contain any logic.
 </summary>
 
@@ -21,15 +20,16 @@ It was probably something about the project timeline.
 Like, "let's work on A" and a couple sentences later "we are also starting B",
 but everybody will be busy with A and B actually depends on A to be able to start.
 
-It reminded a situation when this sort of "words can contain anything"
+It reminded of a situation when this sort of "words can contain anything"
 caused a bunch of confusion for me back in early university years,
 when I was trying to figure out how the [Virtual Memory](https://en.wikipedia.org/wiki/Virtual_memory) works in computers.
 
-The idea itself is simple. The goal, the math of it, is quite apparent:
+The idea of Virtual Memory itself is simple.
+The goal, the math of it, is quite apparent:
 you want to run multiple software processes on one computer,
 of course they should not see each other's memory,
 they should see some "virtual memory" addresses
-which are somehow translated into different addresses in real physical memory.
+which are somehow translated into different addresses in the real physical memory.
 But how?
 
 So, I spent a couple evenings googling and trying to figure out how the CPU does it.
