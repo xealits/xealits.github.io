@@ -20,7 +20,8 @@ It was probably something about the project timeline.
 Like, "let's work on A" and a couple sentences later "we are also starting B",
 but everybody will be busy with A and B actually depends on A to be able to start.
 
-It reminded of a situation when this sort of "words can contain anything" thing
+It reminded a similar "words can contain anything" situation
+that
 caused a bunch of confusion for me back in early university years,
 when I was trying to figure out how the [Virtual Memory](https://en.wikipedia.org/wiki/Virtual_memory) works in computers.
 
