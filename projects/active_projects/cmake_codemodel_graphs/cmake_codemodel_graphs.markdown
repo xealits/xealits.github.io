@@ -5,9 +5,13 @@ excerpt_separator: <!--more-->
 description: <a href="https://github.com/xealits/cmake_graph_tests">A prototype Python project</a> that makes useful graphs of C++ CMake projects from the codemodel info provided by the <a href="https://cmake.org/cmake/help/latest/manual/cmake-file-api.7.html#object-kind-codemodel">CMake file API</a>.  It handles clusters of dense dependencies among CMake targets.
 ---
 
-When getting up to speed with ongoing CMake projects,
-you want to get some overview of the build targets
+When getting up to speed with a CMake project,
+you want to get some decent overview of the build targets
 without perusing the source code.
+It should show
+which source files are built into the targets,
+the compilation definitions,
+how the targets depend on each other, etc.
 This project is a prototype of such a tool.
 It is a Python project with a couple modules and `cmake_graph` CLI.
 [The source code on github.](https://github.com/xealits/cmake_graph_tests)
