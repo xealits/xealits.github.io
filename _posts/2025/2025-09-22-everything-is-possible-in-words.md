@@ -60,16 +60,17 @@ the software itself has to take care that they don't step onto each other's memo
 
 MMU is the thing inside CPU that makes Virtual Memory possible.
 CPU instructions access memory via MMU.
-MMU contains a cache with the current translation table for the virtual-physical addresses,
+MMU contains a cache with the current translation table
+of the virtual-to-physical addresses,
 the Translation Lookaside Buffer (TLB).
 When the current translation info has to be updated,
-e.g. because the OS invalidated the TLB entries with the `INVLPG` instruction,
+e.g. because the Operating System invalidated the TLB entries with the `INVLPG` instruction,
 MMU reads the up-to-date info in the system memory
 at the address that is given in the `CR3` register.
 (These are x86 instruction and register. ARM has similar ones.)
-The Operating System sets up the tables in the memory for the MMU to read,
-and writes the address of the current table to the `CR3` register.
-The tables contain the mapping of each process' virtual addresses to the physical system memory.
+The Operating System sets up and manages the tables in the memory for the MMU to read,
+and it writes the address of the current table to the `CR3` register.
+The tables contain the mappings of each process' virtual addresses to the physical system memory.
 
 If it is possible to "explain" Virtual Memory
 without mentioning or focusing on Memory Management Unit,
