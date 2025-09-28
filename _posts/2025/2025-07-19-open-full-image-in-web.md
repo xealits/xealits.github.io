@@ -18,7 +18,6 @@ highlighter: rouge
 </a>
 ```
 
-
 <!--more-->
 
 This page uses a fixed-width grid, and images fit into it.

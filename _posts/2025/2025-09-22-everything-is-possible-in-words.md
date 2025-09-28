@@ -10,8 +10,6 @@ Words can contain any logic.
 </summary>
 
 <!--more-->
-<br>
-
 
 There was some self-contradictory statement
 on an [ITk](https://cerncourier.com/a/a-new-atlas-for-the-high-luminosity-era/) meeting recently
