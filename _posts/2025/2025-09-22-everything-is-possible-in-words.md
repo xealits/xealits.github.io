@@ -67,10 +67,11 @@ e.g. because the OS invalidated the TLB entries with the `INVLPG` instruction,
 MMU reads the up-to-date info in the system memory
 at the address that is given in the `CR3` register.
 (These are x86 instruction and register. ARM has similar ones.)
-The Operating System sets up the tables in the memory for the MMU to read.
-The tables describe how each process' virtual memory is mapped to the physical system memory.
+The Operating System sets up the tables in the memory for the MMU to read,
+and writes the address of the current table to the `CR3` register.
+The tables contain the mapping of each process' virtual addresses to the physical system memory.
 
-If one can "explain" Virtual Memory
+If it is possible to "explain" Virtual Memory
 without mentioning or focusing on Memory Management Unit,
-one can really do anything in words.
+then anything is possible in words.
 
