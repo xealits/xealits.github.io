@@ -1,6 +1,6 @@
 summary.post-meta {
-	margin-top:    calc(0.5*var(--p-margin));
-	margin-bottom: calc(0.5*var(--p-margin));
+	margin-top:    calc(var(--p-margin));
+	margin-bottom: calc(var(--p-margin));
 }
 
 summary.post-meta h1 {
