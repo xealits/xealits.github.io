@@ -23,7 +23,7 @@
 
     <section class="colem-5">
       {% for post in site.posts %}
-        <p class="post-meta">
+        <div class="post-meta">
           <a class="nav" href="{{ post.url }}">{{ post.title }}</a>
           <br>
           <summary class="{{ post.layout }}">
@@ -32,7 +32,7 @@
           <time datetime="{{post.date}}">
             {{post.date | date: "%b %d, %Y"}}
           </time>
-        </p>
+        </div>
       {% endfor %}
     </section>
 
