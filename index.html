@@ -61,17 +61,19 @@ title: home
   {{ post.excerpt }}
   </summary>
 
-  <a class="smallcaps nav float-right" href="{{post.url}}">rest>></a>
+  <div class="nav smallcaps">
+  <a class="float-right" href="{{post.url}}">rest>></a>
 
   {%- if post.categories.first == "projects" -%}
     {%- assign proj_name = post.categories.last -%}
-    <a class="smallcaps nav tag" href="{{site.baseurl}}/tags.html#{{proj_name | slugify}}">{{proj_name}}</a>
+    <a class="tag" href="{{site.baseurl}}/tags.html#{{proj_name | slugify}}">{{proj_name}}</a>
   {%- else -%}
     {%- for cat in post.categories -%} <a class="smallcaps nav tag" href="{{site.baseurl}}/tags.html#{{cat | slugify}}">{{cat}}</a> {%- endfor -%}
   {%- endif -%}
   {% if post.tags %}
     {%- for tag in post.tags -%} <a class="smallcaps nav tag" href="{{site.baseurl}}/tags.html#{{tag | slugify}}">#{{tag}}</a> {%- endfor -%}
   {% endif %}
+  <div>
   </article>
   {% endfor %}
 
@@ -126,7 +128,7 @@ title: home
   {% for page in site.pages %}
     {% if page.path contains "projects" %}
     {% assign project_title = page.title %}
-    <a class="smallcaps tag nav" href="{{site.baseurl}}/tags.html#{{project_title | slugify}}">{{project_title}}</a>
+    <a class="smallcaps nav" href="{{site.baseurl}}/tags.html#{{project_title | slugify}}">{{project_title}}</a>
     {% assign project_slugs = project_slugs | append: project_title | slugify %}
     {% endif %}
   {% endfor %}
@@ -140,7 +142,7 @@ title: home
     {%- if cat_slug contains "projects" -%}
     {%- elsif project_slugs contains cat_slug -%}
     {%- else -%}
-    <a class="smallcaps tag nav" href="{{site.baseurl}}/tags.html#{{ cat_slug }}">{{cat.first}}</a>
+    <a class="smallcaps nav" href="{{site.baseurl}}/tags.html#{{ cat_slug }}">{{cat.first}}</a>
     {%- endif -%}
   {% endfor %}
     </p>
