@@ -17,9 +17,7 @@ For example, a graph of targets in CMake itself looks like this:
 git clone --recursive https://gitlab.kitware.com/cmake/cmake.git
 cmake -S . --graphviz=cmake_targets.dot
 ```
-<div style="width: 100%;">
-![Example output picture (cropped) from the CMake builtin graphviz tool](/dir/files/cmake_graph/cmake_graphviz_targetgraph-_crop.png)
-<div>
+<img style="width: 100%;" src="/dir/files/cmake_graph/cmake_graphviz_targetgraph-_crop.png" alt="Example output picture (cropped) from the CMake builtin graphviz tool">
 
 In this case, the graph is complex because
 there is a cluster of 16 targets that are used by 17 others.
