@@ -26,6 +26,9 @@
         <p class="post-meta">
           <a class="nav" href="{{ post.url }}">{{ post.title }}</a>
           <br>
+          <summary class="{{ post.layout }}">
+          {{ post.excerpt }}
+          </summary>
           <time datetime="{{post.date}}">
             {{post.date | date: "%b %d, %Y"}}
           </time>
