@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog</title>
     <link rel="stylesheet" href="/css/all.css">
+    <link rel="stylesheet" href="/css/blog.css">
     <link rel="stylesheet" href="/css/syntax_highlighting.css">
   </head>
 
@@ -23,16 +24,18 @@
 
     <section class="colem-5">
       {% for post in site.posts %}
-        <p class="post-meta">
-          <a class="nav" href="{{ post.url }}">{{ post.title }}</a>
+        <summary class="post-meta">
+          <h1>
+            <a class="nav" href="{{ post.url }}">{{ post.title }}</a>
+          </h1>
           <br>
           <time datetime="{{post.date}}">
             {{post.date | date: "%b %d, %Y"}}
           </time>
-          <summary class="{{ post.layout }}">
-          {{ post.excerpt }}
-          </summary>
-        </p>
+          <p>
+            {{ post.excerpt }}
+          </p>
+        </summary>
 
       {% endfor %}
     </section>

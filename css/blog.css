@@ -1,0 +1,13 @@
+summary.post-meta {
+	margin-top:    calc(0.5*var(--p-margin));
+	margin-bottom: calc(0.5*var(--p-margin));
+}
+
+summary.post-meta h1 {
+	font-size: 1.5rem;
+}
+
+summary.post-meta p {
+	margin-top:    0;
+	margin-bottom: 0;
+}
