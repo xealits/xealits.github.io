@@ -5,7 +5,9 @@ title: Clustering CMake graphs
 tags: cmake software tools
 ---
 
+<summary>
 Making CMake codemodel graphs more readable by clustering dependency edges.
+</summary>
 
 <!--more-->
 
