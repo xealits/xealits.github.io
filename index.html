@@ -61,12 +61,12 @@ title: home
   {{ post.excerpt }}
   </summary>
 
-  <div class="nav smallcaps">
-  <a class="float-right" href="{{post.url}}">rest>></a>
+  <div>
+  <a class="nav smallcaps float-right" href="{{post.url}}">rest>></a>
 
   {%- if post.categories.first == "projects" -%}
     {%- assign proj_name = post.categories.last -%}
-    <a class="tag" href="{{site.baseurl}}/tags.html#{{proj_name | slugify}}">{{proj_name}}</a>
+    <a class="nav smallcaps tag" href="{{site.baseurl}}/tags.html#{{proj_name | slugify}}">{{proj_name}}</a>
   {%- else -%}
     {%- for cat in post.categories -%} <a class="smallcaps nav tag" href="{{site.baseurl}}/tags.html#{{cat | slugify}}">{{cat}}</a> {%- endfor -%}
   {%- endif -%}
