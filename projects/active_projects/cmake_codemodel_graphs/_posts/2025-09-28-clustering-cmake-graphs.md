@@ -25,7 +25,7 @@ in this group of targets.
 Now the [`cmake_graph_tests`](https://github.com/xealits/cmake_graph_tests)
 project includes a simple clustering algorithm,
 implemented in `DepCluster` class,
-`find_cluster` and `find_all_cluster` functions.
+`find_cluster` and `find_all_clusters` functions.
 
 The clusters look like the following in CMake:
 ```
@@ -39,10 +39,19 @@ cmake_graph graph -B rocksdb/build --skip-types UTILITY --skip-names "rocksdb_ch
 ```
 <object class="colem-8" type="image/svg+xml" data="/dir/files/cmake_graph/targetgraph-Debug_rocksdb_notests.svg">Browser doesn't support object tag for SVG</object>
 
-I also tried to make a graph of [Abseil](https://github.com/abseil/abseil-cpp).
+I also tried to make a graph of [Abseil](https://github.com/abseil/abseil-cpp) targets.
 It still looks too busy to be useful.
-Of course, using `--skip-names` filters it would turn out a bit more manageable.
-But I want to look at it a bit more,
-to try to figure out whether something can make the graph more readable,
-yet retaining all the precise info about the software.
+Of course, a bunch of `--skip-names` filters
+could carve out a manageable sub-graph.
+But I want to look at the full project a bit more,
+to try to figure out whether something could make the graph more readable,
+while retaining all the information.
+It would be a good milestone, to graph Abseil.
+
+Aside of that, the current plan is to make more of these graphs on practice,
+in order to understand what this tool should do.
+
+Then it's probably worth to rewrite it, and aim at making a VS Code extension.
+It may be worth to rewrite the tool as a library in Dart,
+to easily deploy it as CLI, GUI and Javascript.
 
