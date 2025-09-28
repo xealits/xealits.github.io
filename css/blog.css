@@ -11,3 +11,7 @@ summary.post-meta p {
 	margin-top:    0;
 	margin-bottom: 0;
 }
+
+summary.post-meta img {
+	width: 100%;
+}
