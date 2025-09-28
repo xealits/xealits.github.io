@@ -23,16 +23,17 @@
 
     <section class="colem-5">
       {% for post in site.posts %}
-        <div class="post-meta">
+        <p class="post-meta">
           <a class="nav" href="{{ post.url }}">{{ post.title }}</a>
           <br>
-          <summary class="{{ post.layout }}">
-          {{ post.excerpt }}
-          </summary>
           <time datetime="{{post.date}}">
             {{post.date | date: "%b %d, %Y"}}
           </time>
-        </div>
+          <summary class="{{ post.layout }}">
+          {{ post.excerpt }}
+          </summary>
+        </p>
+
       {% endfor %}
     </section>
 
