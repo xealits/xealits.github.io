@@ -8,7 +8,6 @@ tags: cmake software tools
 Making CMake codemodel graphs more readable by clustering dependency edges.
 
 <!--more-->
-<br>
 
 A graph of dependencies among targets in a CMake project
 can be quite complex.
