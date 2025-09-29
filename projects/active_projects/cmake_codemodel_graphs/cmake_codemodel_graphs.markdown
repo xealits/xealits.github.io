@@ -38,7 +38,9 @@ where 16 targets are used by 17 other targets in the project.
 
 The SVG was made like this:
 ```
-git clone --recursive git@gitlab.kitware.com:cmake/cmake.git cmake_src
+git clone \
+  git@gitlab.kitware.com:cmake/cmake.git \
+  cmake_src
 cd cmake_src
 cmake_graph setup -B build/
 cmake -S . -B build/

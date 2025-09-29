@@ -15,7 +15,7 @@ A graph of dependencies among targets in a CMake project
 can be quite complex.
 For example, a graph of targets in CMake itself looks like this:
 ```
-git clone --recursive https://gitlab.kitware.com/cmake/cmake.git
+git clone https://gitlab.kitware.com/cmake/cmake.git
 cmake -S . --graphviz=cmake_targets.dot
 ```
 <img style="width: 100%;" src="/dir/files/cmake_graph/cmake_graphviz_targetgraph-_crop.png" alt="Example output picture (cropped) from the CMake builtin graphviz tool">
@@ -31,13 +31,18 @@ implemented in `DepCluster` class,
 
 The clusters look like the following in CMake:
 ```
-cmake_graph graph -B cmake/build --skip-types UTILITY --frequent-deps-threshold 3
+cmake_graph graph -B cmake/build \
+  --skip-types UTILITY \
+  --frequent-deps-threshold 3
 ```
 <object class="colem-8" type="image/svg+xml" data="/dir/files/cmake_graph/targetgraph-_cmake.svg">Browser doesn't support object tag for SVG</object>
 
 A graph of [`rocksdb`](https://github.com/facebook/rocksdb) without test targets turns out manageable too:
 ```
-cmake_graph graph -B rocksdb/build --skip-types UTILITY --skip-names "rocksdb_check|.*test.*" --frequent-deps-threshold 3
+cmake_graph graph -B rocksdb/build \
+  --skip-types UTILITY \
+  --skip-names "rocksdb_check|.*test.*" \
+  --frequent-deps-threshold 3
 ```
 <object class="colem-8" type="image/svg+xml" data="/dir/files/cmake_graph/targetgraph-Debug_rocksdb_notests.svg">Browser doesn't support object tag for SVG</object>
 
@@ -53,7 +58,7 @@ It would be a good milestone, to graph Abseil.
 Aside of that, the current plan is to make more of these graphs on practice,
 in order to understand what this tool should do.
 
-Then it's probably worth to rewrite it, and aim at making a VS Code extension.
+Then, it's probably worth to rewrite it later, and aim at making a VS Code extension.
 It may be worth to rewrite the tool as a library in Dart,
-to easily deploy it as CLI, GUI and Javascript.
+to easily deploy in CLI, GUI and Javascript.
 
