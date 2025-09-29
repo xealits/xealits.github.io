@@ -31,21 +31,19 @@ they should see some "virtual memory" addresses
 which are somehow translated into different addresses in the real physical memory.
 But how?
 
-So, I spent a couple evenings googling and trying to figure out how the CPU does it.
-My impression was that it should not need a real book on CPU architecture.
-The idea is simple. So, a clear explanation should be somewhere on internet.
-However, the blogs, Stackoverflow, Electronics Stackexchange, Wiki, etc made no sense.
-
-Some explanations would just converge to saying
-"the CPU does the translation".
-But, if you look for "how CPU works", what it can do,
-you will get "the only thing a CPU does is just execution of instrucitons one by one..."
-So, does it mean there are some instructions that perform the virtual-to-physical address translation?
-How come? At what moment do these instructions show up in the program then?
+It seemed like a simple question that would not require a real book on CPU architecture to figure out.
+But when I checked blogs, Stackoverflow, Electronics Stackexchange, Wiki, etc,
+a typical explaination would just say “the CPU does the translation”.
+And if you look up how CPU works, what it can do,
+you get something like “the only thing a CPU does is just execution of instrucitons one by one…”
+So, does it mean that there are some instructions to perform
+the virtual-to-physical address translation? How come?
+At what moment do these instructions show up in the program then?
 If you compile a program and look at assembly, there are no extra instructions.
+It makes no sense.
 
 In such situations, it is clear that some point is missing,
-which just adds a degree of freedom to the system behavior.
+and that point adds a degree of freedom to the system behavior.
 
 The point was that those explanations did not mention the Memory Management Unit (MMU).
 Coincidentally, MMU is the thing that delivers the Virtual Memory capability.
