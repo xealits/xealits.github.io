@@ -33,9 +33,9 @@ But how?
 
 It seemed like a simple question that would not require a real book on CPU architecture to figure out.
 But when I checked blogs, Stackoverflow, Electronics Stackexchange, Wiki, etc,
-a typical explaination would just say “the CPU does the translation”.
+a typical explanation would just say “the CPU does the translation”.
 And if you look up how CPU works, what it can do,
-you get something like “the only thing a CPU does is just execution of instrucitons one by one…”
+you get something like “the only thing a CPU does is just execution of instructions one by one…”
 So, does it mean that there are some instructions to perform
 the virtual-to-physical address translation? How come?
 At what moment do these instructions show up in the program then?
