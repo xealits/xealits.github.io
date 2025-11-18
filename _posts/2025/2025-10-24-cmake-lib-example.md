@@ -23,7 +23,7 @@ CTest-CDash pipeline setup, CMake introspection bits, etc.
 This example builds a CMake project with an application executable `app`
 that uses a custom `lib` library.
 
-The intention is that their sources live in the same version control repository.
+Their sources live in the same version control repository.
 But the library package should be a separate CMake project, buildable on its own,
 in case you may want to move it to a separate repository in future.
 However, both the app and the library use some common infrastructure targets,
@@ -33,11 +33,11 @@ like Catch2 for testing.
 Which makes it usable with `add_subdirectory` in the source tree, like a Git submodule.
 And it could also be downloaded with `FetchContent` at build time.
 * A later post should cover a configuration of the installation,
-which would make the library binary and headers available for `find_package`.
+which would make the library binary and its headers available for `find_package`.
 * The library sub-project
 uses some common utility targets, like Catch2 or `spdlog`.
 It should be able to grab them from the parent project.
-But if the library is built on its own, it finds `spdlog` on the system
+But if the library is built on its own, it finds Catch2 on the system
 or downloads it with `FetchContent`.
 
 Let's start with the minimum.
@@ -101,7 +101,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # Actual project:
 add_executable(app main.cpp)
 
-# use a library
+# use the library
 add_subdirectory(alib)
 target_link_libraries(app PRIVATE alib)
 
@@ -331,29 +331,31 @@ In general, it is worth to add the testing execitables to the CTest framework.
 It would mean to add `include(CTest)` in `CMakeLists.txt` config,
 which sets `BUILD_TESTING=ON` by default.
 
-So, I will follow up with a post on a basic CTest-CDash setup.
+I will follow up with a post on a basic CTest-CDash setup.
 I will also try to put together something on logging,
 how to make it really optional, with `spdlog` or just `iostream` printouts.
 You may want to have an option to go back to `iostream`
 in restricted environments, like re-building something on Zynq systems
 that have only serial connection, etc.
-There should also be a post about the installation and `RPATH` with `$ORIGIN` parameter.
+There should also be a post about the installation in CMake,
+including `RPATH` with `$ORIGIN` parameter.
 And there are more interesting topics:
 CMake presets & VSCode setup with a dev container,
 compilation on Windows, and cross-compilation to ARM.
 
 For now this example demonstrates a basic project:
 * It is a CMake project with an executable application and a library sub-project.
-The library can be a sub-directory in the source tree, like a git submodule,
-or it could be downloaded at build time, according to the build configuration.
-* It links the library as `PRIVATE`.
+The library is a sub-directory in the source tree, like a git submodule.
+But it could also be downloaded at build time, according to the build configuration.
+* The app links the library as `PRIVATE`.
 * The library exposes its headers as `INTERFACE` with the `target_include_directories()` command.
 * It also uses Catch2 for tests.
-Unless Catch2 is already available in the project,
-the library gets it with FetchContent and optional `FIND_PACKAGE_ARGS`,
-* The CMake configs include the common good practice for setting
+The library either grabs Catch2 from the parent project
+or
+gets it with FetchContent and optional `FIND_PACKAGE_ARGS`.
+* The CMake configs include a couple of common good practice for setting
 `CMAKE_CXX_STANDARD` and `CMAKE_EXPORT_COMPILE_COMMANDS` etc.
 
-Also, for a bunch of good practical tips on daily CMake, check out:
+For a bunch of more good practical tips on daily CMake, check out:
 [Harald Achitz: Some tips for the everyday CMake user, SwedenCpp](https://www.youtube.com/watch?v=3VJPfwn1f2o)
 
