@@ -327,7 +327,7 @@ and you can list them and run individually.
 Less targets to compile and link etc.
 In more complex cases, it may be necessary to build the test code in separate executables.
 
-In general, it is worth to add the testing execitables to the CTest framework.
+In general, it is worth to add the testing executables to the CTest framework.
 It would mean to add `include(CTest)` in `CMakeLists.txt` config,
 which sets `BUILD_TESTING=ON` by default.
 
