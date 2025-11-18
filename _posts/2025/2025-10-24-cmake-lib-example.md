@@ -337,7 +337,7 @@ how to make it really optional, with `spdlog` or just `iostream` printouts.
 You may want to have an option to go back to `iostream`
 in restricted environments, like re-building something on Zynq systems
 that have only serial connection, etc.
-There should also be a post about the installation in CMake,
+There should also be a post about the installation config in CMake,
 including `RPATH` with `$ORIGIN` parameter.
 And there are more interesting topics:
 CMake presets & VSCode setup with a dev container,
