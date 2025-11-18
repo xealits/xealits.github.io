@@ -6,19 +6,43 @@ tags: cmake
 ---
 
 <summary>
-A gist-like example of a library package in CMake.
+A gist-like example of a CMake project with an app and a library sub-project.
+(Updated on 2025-11-18.)
 </summary>
 
 <!--more-->
 
 I couldn't quickly find a simple and somewhat full example of
-a library package in CMake, and decided to write one myself.
-The library package should be a separate CMake project, buildable on its own.
-And it should be usable as an `add_subdirectory`, like a Git submodule.
-It may grab some common utility target, like `spdlog`, from the parent project.
+a basic library package in CMake, and decided to post one myself.
+There is a lot of information on CMake. But it is a bit dispersed.
+This example combines a couple handy features in one place.
+I plan to follow it up with more posts,
+on the installation and `RPATH:$ORIGIN` for flexible relative dependencies,
+CTest-CDash pipeline setup, CMake introspection bits, etc.
 
-So, the top project looks like this:
-```
+This example builds a CMake project with an application executable `app`
+that uses a custom `lib` library.
+
+The intention is that their sources live in the same version control repository.
+But the library package should be a separate CMake project, buildable on its own,
+in case you may want to move it to a separate repository in future.
+However, both the app and the library use some common infrastructure targets,
+like Catch2 for testing.
+
+* So, the library source defines its own `CMakeLists.txt`.
+Which makes it usable with `add_subdirectory` in the source tree, like a Git submodule.
+And it could also be downloaded with `FetchContent` at build time.
+* A later post should cover a configuration of the installation,
+which would make the library binary and headers available for `find_package`.
+* The library sub-project
+uses some common utility targets, like Catch2 or `spdlog`.
+It should be able to grab them from the parent project.
+But if the library is built on its own, it finds `spdlog` on the system
+or downloads it with `FetchContent`.
+
+Let's start with the minimum.
+The top project looks like this:
+```sh
 $ tree --gitignore
 .
 ├── CMakeLists.txt
@@ -58,15 +82,21 @@ The top project `CMakeLists.txt`:
 ```cmake
 cmake_minimum_required(VERSION 3.28)
 
-project(an_app LANGUAGES CXX)
+project(an_app
+  VERSION 0.0.1
+  LANGUAGES CXX
+)
 
-# Generally useful settings:
 # this is the top-level app project, so the standard is known:
 set(CMAKE_CXX_STANDARD 23)
+
+# Generally useful settings:
 # ignore everything in the configured build directory
 file(WRITE ${CMAKE_BINARY_DIR}/.gitignore "*")
 # run cmake --compile-no-warning-as-error to avoid this
 set(CMAKE_COMPILE_WARNING_AS_ERROR ON)
+# export compile_commands.json for users & IDEs
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Actual project:
 add_executable(app main.cpp)
@@ -75,10 +105,7 @@ add_executable(app main.cpp)
 add_subdirectory(alib)
 target_link_libraries(app PRIVATE alib)
 
-get_target_property(AVAR app INTERFACE_INCLUDE_DIRECTORIES)
-message(STATUS "INTERFACE_INCLUDE_DIRECTORIES = ${AVAR}")
-get_target_property(AVAR app INCLUDE_DIRECTORIES)
-message(STATUS "INCLUDE_DIRECTORIES = ${AVAR}")
+message(STATUS "${PROJECT_NAME} ${PROJECT_VERSION} > configured")
 ```
 
 The project links `app` to the library target `alib`.
@@ -93,12 +120,23 @@ The library include directory is added to the target interface with [`target_inc
 ```cmake
 cmake_minimum_required(VERSION 3.28)
 
-project(alib LANGUAGES CXX)
+project(alib
+  VERSION 0.0.2
+  LANGUAGES CXX
+)
 
+# Generally useful settings:
 # only set the cxx_standard if it is not set by someone else
 if (NOT DEFINED CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD 23)
 endif()
+
+# ignore everything in the configured build directory
+file(WRITE ${CMAKE_BINARY_DIR}/.gitignore "*")
+# run cmake --compile-no-warning-as-error to avoid this
+set(CMAKE_COMPILE_WARNING_AS_ERROR ON)
+# export compile_commands.json for users & IDEs
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # the sources of the lib:
 # the source code and the interface header
@@ -107,13 +145,10 @@ target_include_directories(alib INTERFACE ${PROJECT_SOURCE_DIR}/include)
 # for IDEs:
 target_sources(alib INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/include/lib.hpp)
 
-get_target_property(AVAR alib INTERFACE_INCLUDE_DIRECTORIES)
-message(STATUS "${PROJECT_NAME} > INTERFACE_INCLUDE_DIRECTORIES = ${AVAR}")
-get_target_property(AVAR alib INCLUDE_DIRECTORIES)
-message(STATUS "${PROJECT_NAME} > INCLUDE_DIRECTORIES = ${AVAR}")
+message(STATUS "${PROJECT_NAME} ${PROJECT_VERSION} > configured")
 ```
 
-CMake configuration:
+And you can build either the top or the library:
 ```
 $ cmake -B build
 -- The CXX compiler identification is GNU 13.3.0
@@ -122,47 +157,203 @@ $ cmake -B build
 -- Check for working CXX compiler: /usr/bin/c++ - skipped
 -- Detecting CXX compile features
 -- Detecting CXX compile features - done
--- alib > INTERFACE_INCLUDE_DIRECTORIES = /home/ubuntu/tests/cmake/app-n-lib-clean/alib/include
--- alib > INCLUDE_DIRECTORIES = AVAR-NOTFOUND
--- INTERFACE_INCLUDE_DIRECTORIES = AVAR-NOTFOUND
--- INCLUDE_DIRECTORIES = AVAR-NOTFOUND
--- Configuring done (0.8s)
+-- alib 0.0.2 > configured
+-- an_app 0.0.1 > configured
+-- Configuring done (0.2s)
 -- Generating done (0.0s)
--- Build files have been written to: /home/ubuntu/tests/cmake/app-n-lib-clean/build
+-- Build files have been written to: /home/ubuntu/tests/cmake/blog-cmake-2025-10/build
+
+$ cmake --build build
+...
 ```
 
-The library can grab an existing `spdlog` target
-or [`FetchContent`](https://cmake.org/cmake/help/latest/module/FetchContent.html)
-on its own when it the package is [`PROJECT_IS_TOP_LEVEL`](https://cmake.org/cmake/help/latest/variable/PROJECT_IS_TOP_LEVEL.html):
+Let's add Catch2 tests to the `alib` code.
+```sh
+$ cd alib/
+$ tree
+.
+├── CMakeLists.txt
+├── include
+│   └── lib.hpp
+├── lib.cpp
+└── tests
+    ├── CMakeLists.txt
+    └── test.cpp
+```
+
+The `tests/` subdirectory declares an executable target that runs Catch2 tests.
+Catch2 [exports two targets](https://github.com/catchorg/Catch2/blob/devel/docs/cmake-integration.md):
+`Catch2::Catch2` and `Catch2::Catch2WithMain`.
+The `alib` project checks whether `Catch2::Catch2WithMain` already exists,
+or it runs FetchContent to either find an installed Catch2 on the system
+or download it from GitHub.
 ```cmake
-# alib/CMakeLists.txt
-# let's check whether spdlog is defined or fetch it
-if (TARGET spdlog)
-  message(STATUS "${PROJECT_NAME} > GOT spdlog from parent project")
+# tests/CMakeLists.txt
+cmake_minimum_required(VERSION 3.28)
 
-elseif (PROJECT_IS_TOP_LEVEL)
-  message(STATUS "${PROJECT_NAME} > Top level - Fetching spdlog from github")
-  # this logic should configure the logging submodule of this project
-  include(FetchContent)
-  FetchContent_Declare(
-          spdlog
-          GIT_REPOSITORY https://github.com/gabime/spdlog.git
-          GIT_TAG        v1.16.0
-  )
-  FetchContent_MakeAvailable(spdlog)
-
-else()
-  message(STATUS "${PROJECT_NAME} > No spdlog")
-  add_compile_definitions(NO_SPDLOG)
+# only set the cxx_standard if it is not set by someone else
+if(NOT DEFINED CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 23)
 endif()
 
-target_link_libraries(alib PRIVATE spdlog)
+# get Catch2
+if(TARGET Catch2::Catch2WithMain)
+  message(STATUS "${PROJECT_NAME} > GOT Catch2 from parent project")
+
+else()
+  message(STATUS "${PROJECT_NAME} > Top level - FetchContent Catch2 w FIND_PACKAGE_ARGS 3")
+
+  include(FetchContent)
+  FetchContent_Declare(
+    Catch2
+    GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+    GIT_TAG        v3.8.1 # or a later release
+    FIND_PACKAGE_ARGS 3
+  )
+  FetchContent_MakeAvailable(Catch2)
+endif()
+
+# check that Catch2 target exists
+if(TARGET Catch2::Catch2WithMain)
+  message(STATUS "${PROJECT_NAME} > GOT Catch2")
+endif()
+
+add_executable(${PROJECT_NAME}_tests test.cpp)
+target_link_libraries(${PROJECT_NAME}_tests PRIVATE Catch2::Catch2WithMain)
+target_link_libraries(${PROJECT_NAME}_tests PRIVATE alib)
+message(STATUS "${PROJECT_NAME} > tests in ${PROJECT_NAME}_tests")
 ```
 
-Although, that may not be the best solution.
-(There used to be [a flag soup](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2023/p2800r0.html) in the compilation,
-and this looks like a target soup for a library.)
+The target is named `${PROJECT_NAME}_tests`, to avoid name collisions
+with the users of the `alib` project.
 
-Nice practical tips for daily CMake:
-* [Harald Achitz: Some tips for the everyday CMake user, SwedenCpp](https://www.youtube.com/watch?v=3VJPfwn1f2o)
+Also, `FetchContent_Declare` uses the feature `FIND_PACKAGE_ARGS 3`
+to try to `find_package()` an installed Catch2 on the system
+before downloading from GitHub.
+It is available in FetchContent
+[since CMake 3.24](https://discourse.cmake.org/t/how-to-find-package-optional-in-cmake-3/15309).
+In earlier versions, you would need to call `find_package(Catch2 3 QUIET)` yourself.
+
+The tests code:
+```cpp
+// tests/test.cpp
+#include <catch2/catch_test_macros.hpp>
+
+#include "lib.hpp"
+
+unsigned int Factorial(unsigned int number) {
+  return number <= 1 ? number : Factorial(number - 1) * number;
+}
+
+TEST_CASE("Factorials are computed", "[factorial]") {
+  REQUIRE(Factorial(1) == 1);
+  REQUIRE(Factorial(2) == 2);
+  REQUIRE(Factorial(3) == 6);
+}
+
+TEST_CASE("Big factorial is computed", "[factorial]") {
+  REQUIRE(Factorial(10) == 3628800);
+  REQUIRE(Factorial(11) == 39916800);
+}
+
+TEST_CASE("My lib foo()", "[lib]") { REQUIRE(foo() == 5); }
+```
+
+And let's add the tests under `BUILD_TESTING` condition:
+```cmake
+# alib/CMakeLists.txt
+cmake_minimum_required(VERSION 3.28)
+
+project(alib
+  VERSION 0.0.2
+  LANGUAGES CXX
+)
+...
+
+if(BUILD_TESTING)
+  add_subdirectory(tests)
+endif()
+
+message(STATUS "${PROJECT_NAME} ${PROJECT_VERSION} > configured")
+```
+
+Now when building the library with tests:
+```sh
+$ cd alib/
+$ cmake -B build -DBUILD_TESTING=ON
+-- The CXX compiler identification is GNU 13.3.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- alib > Top level - FetchContent Catch2 w FIND_PACKAGE_ARGS 3
+-- alib > GOT Catch2
+-- alib > tests in alib_tests
+-- alib 0.0.2 > configured
+-- Configuring done (0.2s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/ubuntu/tests/cmake/blog-cmake-2025-10/alib/build
+```
+
+You get an executable that wraps all the test cases:
+```
+$ build/tests/alib_tests --list-tests
+All available test cases:
+  Factorials are computed
+      [factorial]
+  Big factorial is computed
+      [factorial]
+  My lib foo()
+      [lib]
+3 test cases
+
+$ build/tests/alib_tests
+Randomness seeded to: 3679069128
+running alib foo() at: int foo()
+===============================================================================
+All tests passed (6 assertions in 3 test cases)
+
+$ build/tests/alib_tests "My lib foo()"
+Filters: "My lib foo()"
+Randomness seeded to: 3878183522
+running alib foo() at: int foo()
+===============================================================================
+All tests passed (1 assertion in 1 test case)
+```
+
+It is handy when all tests are packed into a single executable
+and you can list them and run individually.
+Less targets to compile and link etc.
+In more complex cases, it may be necessary to build the test code in separate executables.
+
+In general, it is worth to add the testing execitables to the CTest framework.
+It would mean to add `include(CTest)` in `CMakeLists.txt` config,
+which sets `BUILD_TESTING=ON` by default.
+
+So, I will follow up with a post on a basic CTest-CDash setup.
+I will also try to put together something on logging,
+how to make it really optional, with `spdlog` or just `iostream` printouts.
+You may want to have an option to go back to `iostream`
+in restricted environments, like re-building something on Zynq systems
+that have only serial connection, etc.
+There should also be a post about the installation and `RPATH` with `$ORIGIN` parameter.
+And there are more interesting topics:
+CMake presets & VSCode setup with a dev container,
+compilation on Windows, and cross-compilation to ARM.
+
+For now this example demonstrates a basic project:
+* It is a CMake project with an executable application and a library sub-project.
+The library can be a sub-directory in the source tree, like a git submodule,
+or it could be downloaded at build time, according to the build configuration.
+* It links the library as `PRIVATE`.
+* The library exposes its headers as `INTERFACE` with the `target_include_directories()` command.
+* It also uses Catch2 for tests.
+Unless Catch2 is already available in the project,
+the library gets it with FetchContent and optional `FIND_PACKAGE_ARGS`,
+* The CMake configs include the common good practice for setting
+`CMAKE_CXX_STANDARD` and `CMAKE_EXPORT_COMPILE_COMMANDS` etc.
+
+Also, for a bunch of good practical tips on daily CMake, check out:
+[Harald Achitz: Some tips for the everyday CMake user, SwedenCpp](https://www.youtube.com/watch?v=3VJPfwn1f2o)
 
