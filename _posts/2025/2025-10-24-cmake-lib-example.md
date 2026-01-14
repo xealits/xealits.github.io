@@ -6,8 +6,8 @@ tags: cmake
 ---
 
 <summary>
-A gist-like example of a CMake project with an app and a library sub-project.
-(Updated on 2025-11-18.)
+A quick example of a minimal CMake project with an app and a library sub-project.
+Part 1 in a series of basic CMake templates.
 </summary>
 
 <!--more-->
@@ -16,9 +16,11 @@ I couldn't quickly find a simple and somewhat full example of
 a basic library package in CMake, and decided to post one myself.
 There is a lot of information on CMake. But it is a bit dispersed.
 This example combines a couple handy features in one place.
-I plan to follow it up with more posts,
+I plan to follow it up with more posts:
 on the installation and `RPATH:$ORIGIN` for flexible relative dependencies,
 CTest-CDash pipeline setup, CMake introspection bits, etc.
+The goal is to collect basic practical setups of CMake projects in concise and minimal posts,
+and refer to this series whenever such need pops up in the future.
 
 This example builds a CMake project with an application executable `app`
 that uses a custom `lib` library.
