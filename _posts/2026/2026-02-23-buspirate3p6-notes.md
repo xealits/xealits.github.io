@@ -316,7 +316,9 @@ That is followed by a control byte. `0xD0` is the BMP280 ID register address.
 And it is followed by a Start Condition. Which tells BMP280 that it is a read from the register.
 Then Bus Pirate reads from the device.
 
-I2C devices acknowledge the reception of frames by pulling down SDA at the last bit of a frame.
+I2C devices acknowledge the reception of a frame by pulling down SDA
+after the payload byte
+at the last (9th) bit of the frame.
 A scope capture of such an ACK from BMP280 to the `0xEC` address frame:
 
 <img class="Figure"
