@@ -8,7 +8,7 @@ tags: electronics gadgets
 <summary>
 "The Bus Pirate is an open source hacker multi-tool that talks to electronic stuff."
 An excellent tool. The post writes up some basics on how Bus Pirate 3.6 works,
-and how to send I2C commands with it.
+and how to talk on an I2C bus with it.
 For example,
 how to read the ID register 0xD0 of the barometric sensor BMP280 from Bosch.
 </summary>
@@ -19,11 +19,11 @@ I have [the 3.6 version][seeed_3p6] of the device. There are also newer versions
 
 There are plenty of resources and tutorials about Bus Pirate:
 from [Sparkfun][sparkfun_tutorial], on [Dangerous Prototypes](http://dangerousprototypes.com/docs/Bus_Pirate#Tutorials) site, etc.
-I just want to write up a typical sequence of actions for
-when you hook it up and send a couple I2C commands with it:
+In this post, I just want to write up a typical sequence of actions for
+when you hook it up and use it to send a couple I2C commands:
 
 * Just connect Bus Pirate v3.6 to USB and talk with it using `screen` on Linux.
-* Send some I2C commands with 3.3V power level and without any I2C device connected,
+* Send some I2C commands at 3.3V level, and without any I2C device connected,
 i.e. when a scan of the bus addresses finds no devices.
 * Connect a board with the BMP280 sensor chip and read its ID register.
 
@@ -38,20 +38,20 @@ Here is a photo of it:
 When you plug a USB cable:
 * The red PWR LED on the BusPirate goes on and stays on.
 * Other (green) LEDs quickly blink and go off. The "USB" LED also blinks, goes off and stays off.
-That shows that it just talked with Linux.
+The blinikng shows the activity on the serial connection to Linux.
 * Linux also prints to `dmesg` that it found a new USB device, FTDI FT232R USB UART,
 and says "[the device] is now attached on ttyUSB0".
 Indeed, the `/dev/ttyUSB0` is there.
 
-At this point, Bus Pirate should be ready to talk on the serial console.
+At this point, Bus Pirate should be available to talk on the serial console.
 Let's use `screen` for the serial connection.
-Launch it with root permissions, to get the access:
+Launch it with root permissions:
 
 ```
 $ sudo screen /dev/ttyUSB0 115200
 ```
 
-Then screen shows just blank screen, no prompt.
+It shows a blank screen, no prompt.
 If there was a prompt line from the device, it was pushed to the serial port
 before the `screen` launched, so there is nothing logged.
 But the commands work. The `?` help command shows everything:
@@ -84,7 +84,7 @@ w/W     PSU (off/ON)            <x>/<x= >/<0>   Usermacro x/assign x/list all
 HiZ>    
 ```
 
-And the i command shows the board information:
+And the `i` command shows the board information:
 ``` 
 HiZ>i
 Bus Pirate v3b
@@ -103,6 +103,12 @@ $ screen /dev/ttyUSB0 115200
 [screen is terminating]
 ```
 
+If you see the `?` and `i` commands work, the firmware should be OK for action.
+However, it may be needed to flash a newer firmware:
+[the community fork for the Bus Pirate versions 3 and 4](https://github.com/ElderlyPirate/Bus_Pirate),
+or [the firmware of the new versions 5 and 6](https://docs.buspirate.com/docs/tutorial-basics/firmware-update/).
+I did not try to flash it on Linux yet, because my firmware (v5.10 (r559)) seems to work fine.
+
 
 # Power up and select the 3.3V for the I2C device
 
@@ -114,7 +120,7 @@ Command not used in this mode
 HiZ>
 ```
 
-Let's select I2C, as in [Sparkfun tutorial][sparkfun_tutorial]:
+Let's select I2C, as in the [Sparkfun tutorial][sparkfun_tutorial]:
 ```
 HiZ>m
 1. HiZ
@@ -266,7 +272,12 @@ I have
 and [an Az-Delivery](https://www.az-delivery.de/fr/products/azdelivery-bmp280-barometrischer-sensor-luftdruck-modul-fur-arduino-und-raspberry-pi)
 (3.3V only, 5V fries it)
 boards with this sensor.
-They show up in the Bus Pirate I2C address scan like this:
+
+It is straightforward how to connect Bus Pirate to these boards for I2C communication:
+the power pins are GND and 3.3V, the data bus pins are CLK clock and MOSI as the SDA (Serial Data) of the bus.
+That is a nice feature of I2C. The bus is just 4 wires with straightforward roles.
+
+After connecting a board, the BMP280 chip shows up in the Bus Pirate I2C address scan like this:
 
 ```
 I2C>(0)
@@ -281,7 +292,7 @@ Searching I2C address space. Found devices at:
 I2C>
 ```
 
-The command to read the 0xD0 ID register from BMP280 (probably the seconds `r` is redundant):
+The command to read the 0xD0 ID register from BMP280 (probably the seconds `r` was redundant):
 ```
 I2C>[ 0xec 0xd0 [  0xed r r ]
 I2C START BIT
@@ -296,7 +307,7 @@ I2C STOP BIT
 I2C>
 ```
 
-The command just follows the [datasheet][bmp280_datasheet] "5.2.2 I²C read":
+The command structure just follows the [datasheet][bmp280_datasheet] "5.2.2 I²C read":
 
 > To be able to read registers,
 > first the register address must be sent in write mode (slave address
@@ -308,14 +319,17 @@ Figure 8 , where two bytes are read from register 0xF6 and 0xF7.
 
 So, the transaction starts with the Start Condition (CLK is pulled down to the ground),
 then Bus Pirate
-sends a byte with the 7-bit slave address (`0x76` or `0b1110110`) and RW bit set to the write mode
-i.e. `= 0`: `0b11101100` or `0xEC`.
+sends a byte with the 7-bit slave address (`0x76` or `0b1110110`)
+and the RW bit is set to the write mode i.e. `= 0`: `0b11101100` or `0xEC`.
 Which is exactly what the Bus Pirate prints in the `(1)` address scan macro.
 
-That is followed by a control byte. `0xD0` is the BMP280 ID register address.
+The address byte is followed by a control byte.
+`0xD0` is the BMP280 ID register address.
 And it is followed by a Start Condition.
-Which tells the BMP280 that it is a read from the register.
-Then the Bus Pirate reads from the device.
+Which tells the BMP280 that it is a read from the register,
+so the chip has to prepare to read out the values of registers to the bus.
+Then the Bus Pirate sends the address byte with the read mode `0xED`,
+and receives the reads from the device.
 
 I2C devices acknowledge the reception of a frame by pulling down SDA
 after the payload byte
