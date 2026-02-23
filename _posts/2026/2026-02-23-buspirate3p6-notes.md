@@ -15,21 +15,22 @@ how to read the ID register 0xD0 of the barometric sensor BMP280 from Bosch.
 
 [Bus Pirate][ian_site] is a gadget that talks serial protocols, such as I2C, SPI, etc.
 You can execute arbitrary transactions or sniff the traffic on the bus.
-There are legacy versions [like 3][seeed_3p6] and 4,
-which firmware is supported by [the community][community_legacy_buspirate].
-The newer versions 5 and 6 have [a wider support][new_buspirate].
+There are legacy versions of the device, [like 3][seeed_3p6] and 4.
+Their firmware is supported by [the community][community_legacy_buspirate].
+The newer versions 5 and 6 have [a wide support][new_buspirate].
 
 Plenty of resources and tutorials about Bus Pirate are available on the web:
 from [Sparkfun][sparkfun_tutorial],
-on [Dangerous Prototypes](http://dangerousprototypes.com/docs/Bus_Pirate#Tutorials) site,
-one [the website for the new versions](https://docs.buspirate.com/docs/tutorial-basics/quick-setup/), etc.
+the original pages on the [Dangerous Prototypes](http://dangerousprototypes.com/docs/Bus_Pirate#Tutorials) site,
+on the website of [the newer versions 5 and 6](https://docs.buspirate.com/docs/tutorial-basics/quick-setup/),
+etc.
 In this post, I just want to write up a typical sequence of actions for
 when you hook it up and use it to send a couple I2C commands:
 
 * Just connect the Bus Pirate v3.6 to USB and talk with it using `screen` on Linux.
-* Send some I2C commands at 3.3V level, and without any I2C device connected,
+* Send some I2C commands at 3.3V level, and without anything connected on the I2C bus,
 i.e. when a scan of the bus addresses finds no devices.
-* Connect a board with the BMP280 sensor chip and read its ID register.
+* Connect a board with the [BMP280 sensor][bmp280_datasheet] chip and read its ID register.
 
 My BusPirate is version v3.6 (the firmware is v5.10 (r559)).
 Here is its photo:
@@ -58,7 +59,9 @@ $ sudo screen /dev/ttyUSB0 115200
 It shows a blank screen, no prompt.
 If there was a prompt line from the device, it was pushed to the serial port
 before the `screen` launched, so there is nothing logged.
-But the commands work. The `?` help command shows everything:
+
+But the commands work. Type `?` and press <kbd>Enter</kbd> to send the command line to the Bus Pirate.
+It will reply with a help message that describes available commands:
 
 ```
 ?
@@ -88,7 +91,7 @@ w/W     PSU (off/ON)            <x>/<x= >/<0>   Usermacro x/assign x/list all
 HiZ>    
 ```
 
-And the `i` command shows the board information:
+The `i` command shows the board information:
 ``` 
 HiZ>i
 Bus Pirate v3b
@@ -99,19 +102,19 @@ HiZ>
 ```
 
 Here, `HiZ>` is the current "high impedance" mode with no bus communication,
-which is default on startup.
+which is default on powerup in this firmware.
 
-Notice, if you forget `sudo`, screen will abort like this:
+Notice, if you forget `sudo`, `screen` will abort like this:
 ```
 $ screen /dev/ttyUSB0 115200
 [screen is terminating]
 ```
 
 If you see the `?` and `i` commands work, the firmware should be OK for action.
-However, it may be needed to flash a newer firmware:
-[the community fork for the Bus Pirate versions 3 and 4][community_legacy_buspirate],
-or [the firmware of the new versions 5 and 6](https://docs.buspirate.com/docs/tutorial-basics/firmware-update/).
-I did not try to flash a newer firmware on Linux yet,
+However, it may be needed to flash a newer version:
+from the community fork for the [Bus Pirate versions 3 and 4][community_legacy_buspirate],
+or the firmware of the [new versions 5 and 6](https://docs.buspirate.com/docs/tutorial-basics/firmware-update/).
+I did not try to flash anything on Linux yet,
 because my current firmware v5.10 (r559) seems to work fine.
 
 
