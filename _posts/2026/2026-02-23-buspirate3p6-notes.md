@@ -111,10 +111,11 @@ If you see the `?` and `i` commands work, the firmware should be OK for action.
 However, it may be needed to flash a newer firmware:
 [the community fork for the Bus Pirate versions 3 and 4][community_legacy_buspirate],
 or [the firmware of the new versions 5 and 6](https://docs.buspirate.com/docs/tutorial-basics/firmware-update/).
-I did not try to flash it on Linux yet, because my firmware (v5.10 (r559)) seems to work fine.
+I did not try to flash a newer firmware on Linux yet,
+because my current firmware v5.10 (r559) seems to work fine.
 
 
-# Power up IO and select 3.3V for the I2C communication
+# Power up the Bus Pirate IO and select 3.3V for the I2C communication
 
 Just to note, to start operating the bus interface, you need to select a bus mode.
 The power supply command is `W`. But:
