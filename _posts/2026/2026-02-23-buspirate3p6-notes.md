@@ -190,7 +190,9 @@ I2C>
 ```
 
 * Now `P` does not complain.
-* The CLK and SDA lines jump to 3.3V. It is ready for I2C communication.
+* The CLK and SDA lines jump to 3.3V.
+
+The Bus Pirate is ready for I2C communication at the 3.3V voltage level.
 
 The wiring gets a bit cumbersome:
 you have to use a breadboard to connect
@@ -207,9 +209,10 @@ do not have the pull-up resistors.
 So, I have to keep the VPU connected to the 3.3 volts.
 
 
-# I2C signals on a scope without any connected device
+# I2C signals on a scope
 
 Let's just output some I2C frames and look at the signals on the CLK and SDA lines with a scope.
+No device is connected to the bus yet.
 
 Bus Pirate provides "macro" i.e. sequences of transactions.
 The firmware already comes with a couple of them.
@@ -251,7 +254,7 @@ That is the main reason [why SPI bus is faster than I2C](https://forum.microchip
 
 ## Send a single full I2C transaction
 
-Bus Pirate firmare has this scripting [language of the bus commands](https://docs.buspirate.com/docs/command-reference/#bus-commands),
+Bus Pirate firmare has this scripting [language for the bus commands](https://docs.buspirate.com/docs/command-reference/#bus-commands),
 where the bus start condition is `[`, the end condition is `]`,
 and you can send any bytes in the middle.
 A single transaction `[ 12 ]` looks like this on the scope:
@@ -281,7 +284,10 @@ boards with this sensor.
 
 It is straightforward how to connect Bus Pirate to these boards for I2C communication:
 the power pins are GND and 3.3V, the data bus pins are CLK clock and MOSI as the SDA (Serial Data) of the bus.
-That is a nice feature of I2C. The bus is just 4 wires with straightforward roles.
+It is a nice feature about I2C: only 4 wires make up the bus, and they have quite straightforward roles.
+
+Of course, the Bus Pirate VPU pin has to be connected to the 3.3V pin as well,
+to pull up the data pins, as was mentioned above.
 
 After connecting a board, the BMP280 chip shows up in the Bus Pirate I2C address scan like this:
 
@@ -298,7 +304,7 @@ Searching I2C address space. Found devices at:
 I2C>
 ```
 
-The command to read the 0xD0 ID register from BMP280 (probably the seconds `r` was redundant):
+The command to read the 0xD0 ID register from BMP280 (probably the second `r` was redundant):
 ```
 I2C>[ 0xec 0xd0 [  0xed r r ]
 I2C START BIT
@@ -313,7 +319,7 @@ I2C STOP BIT
 I2C>
 ```
 
-The command structure just follows the [datasheet][bmp280_datasheet] "5.2.2 I²C read":
+The command structure follows the [datasheet][bmp280_datasheet] "5.2.2 I²C read":
 
 > To be able to read registers,
 > first the register address must be sent in write mode (slave address
@@ -323,23 +329,27 @@ addressed in read mode (RW = ‘1’) at address 111011X1, after which the slave
 auto-incremented register addresses until a NOACKM and stop condition occurs. This is depicted in
 Figure 8 , where two bytes are read from register 0xF6 and 0xF7.
 
-So, the transaction starts with the Start Condition (CLK is pulled down to the ground),
-then Bus Pirate
-sends a byte with the 7-bit slave address (`0x76` or `0b1110110`)
+So, the transaction starts with a Start Condition (CLK is pulled down to the ground).
+Then the Bus Pirate sends an address byte:
+a byte with the 7-bit slave address (`0x76` or `0b1110110`)
 and the RW bit is set to the write mode i.e. `= 0`: `0b11101100` or `0xEC`.
 Which is exactly what the Bus Pirate prints in the `(1)` address scan macro.
 
 The address byte is followed by a control byte.
 `0xD0` is the BMP280 ID register address.
 And it is followed by a Start Condition.
-Which tells the BMP280 that it is a read from the register,
-so the chip has to prepare to read out the values of registers to the bus.
-Then the Bus Pirate sends the address byte with the read mode `0xED`,
-and receives the reads from the device.
+The BMP280 interprets it as a command to read from the registers,
+starting with the register address that is given in the control byte.
+So the BMP280 chip prepares to read out the values of registers to the bus.
+Then the Bus Pirate sends the address byte again,
+but now with the mode bit set to read `0xED`,
+and receives the frames from the device,
+until a stop condition.
 
-I2C devices acknowledge the reception of a frame by pulling down SDA
-after the payload byte
-at the last (9th) bit of the frame.
+I2C devices signal the reception of a frame by an acknoledgement bit
+at the end of the transaction frame, i.e. the 9th bit after the payload byte.
+An I2C device pulls SDA down during the acknowledgement bit,
+which indicates that the frame has been received. 
 A scope capture of such an ACK from the BMP280 to the `0xEC` address frame:
 
 <img class="Figure"
@@ -357,11 +367,12 @@ src="/dir/2026-02-buspirate/i2c-frame-nack-image.jpeg"
 
 # Conclusion
 
-Bus Pirate is a very handy tool.
-I might come back to it more in future.
-This post presents a couple quick startup checks and takes a look at some basics of I2C bus.
+Bus Pirate is a useful tool. I might come back to it more in future.
+This post presents a couple quick startup checks
+and takes a look at some basics of I2C bus.
 
-The Sparkfun [tutorial][sparkfun_tutorial] and other resources walk through more features of the Bus Pirate.
+The Sparkfun [tutorial][sparkfun_tutorial] and other resources
+cover more features of Bus Pirate.
 And the BMP280 sensor has an excellent [datasheet][bmp280_datasheet].
 
 
