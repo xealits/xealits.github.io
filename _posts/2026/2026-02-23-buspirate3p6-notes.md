@@ -177,14 +177,14 @@ Pull-up resistors ON
 I2C>
 ```
 
-* Now, `P` does not complain.
+* Now `P` does not complain.
 * The CLK and SDA lines jump to 3.3V. It is ready for I2C communication.
 
-The wiring is a bit cumbersome:
+The wiring gets a bit cumbersome:
 you have to use a breadboard to connect
 the 3.3V power for the target I2C device
 and also the VPU pin.
-But it seems like my BMP280 boards
+And it seems like my BMP280 boards
 [from Pimoroni](https://shop.pimoroni.com/products/bme280-breakout?variant=29420960677971)
 (very nice 2-6V input)
 and [Az-Delivery](https://www.az-delivery.de/fr/products/azdelivery-bmp280-barometrischer-sensor-luftdruck-modul-fur-arduino-und-raspberry-pi)
@@ -227,8 +227,8 @@ A scope capture looks like this, with purple CLK and yellow SDA:
 alt="Scope capture of I2C frames in an address scan"
 src="/dir/2026-02-buspirate/i2c-frames-image.jpeg"/>
 
-You can see how the clock signal rises up slowly.
-The line is pulled down by the device, but pulled up by just a resistor.
+You can see that the clock signal rises up so slowly that the signal does not look square.
+An I2C device pulls down the line, but the pull up is done by just a resistor.
 It makes the bus simpler in hardware, but limits its speed.
 That is the main reason [why SPI bus is faster than I2C](https://forum.microchip.com/s/topic/a5C3l000000MfHLEA0/t388038):
 
@@ -239,9 +239,9 @@ That is the main reason [why SPI bus is faster than I2C](https://forum.microchip
 
 ## Send a single full I2C transaction
 
-Bus Pirate firmare has this scripting [language for the bus commands](https://docs.buspirate.com/docs/command-reference/#bus-commands),
+Bus Pirate firmare has this scripting [language of the bus commands](https://docs.buspirate.com/docs/command-reference/#bus-commands),
 where the bus start condition is `[`, the end condition is `]`,
-and you can send just any byte in the middle.
+and you can send any bytes in the middle.
 A single transaction `[ 12 ]` looks like this on the scope:
 
 <img class="Figure"
@@ -257,8 +257,8 @@ clocks in the data bits on SDA, and releases the bus as the Stop Condition (P).
 # Talk to a BMP280 barometric sensor
 
 [BMP280][bmp280_datasheet] is a barometric pressure sensor from Bosch.
-It can talk SPI or I2C, with an address 0x76 or 0x77,
-which are selected by pulling its pins.
+It can talk SPI or I2C, with an address 0x76 or 0x77.
+These options are selected by pulling its pins.
 
 I have
 [a Pimoroni](https://shop.pimoroni.com/products/bme280-breakout?variant=29420960677971)
@@ -307,19 +307,20 @@ auto-incremented register addresses until a NOACKM and stop condition occurs. Th
 Figure 8 , where two bytes are read from register 0xF6 and 0xF7.
 
 So, the transaction starts with the Start Condition (CLK is pulled down to the ground),
-and then Bus Pirate
+then Bus Pirate
 sends a byte with the 7-bit slave address (`0x76` or `0b1110110`) and RW bit set to the write mode
-(i.e. `= 0` and the SDA data line is pulled down): `0b11101100` or `0xEC`.
-Which is exactly what Bus Pirate prints in the `(1)` address scan macro.
+i.e. `= 0`: `0b11101100` or `0xEC`.
+Which is exactly what the Bus Pirate prints in the `(1)` address scan macro.
 
 That is followed by a control byte. `0xD0` is the BMP280 ID register address.
-And it is followed by a Start Condition. Which tells BMP280 that it is a read from the register.
-Then Bus Pirate reads from the device.
+And it is followed by a Start Condition.
+Which tells the BMP280 that it is a read from the register.
+Then the Bus Pirate reads from the device.
 
 I2C devices acknowledge the reception of a frame by pulling down SDA
 after the payload byte
 at the last (9th) bit of the frame.
-A scope capture of such an ACK from BMP280 to the `0xEC` address frame:
+A scope capture of such an ACK from the BMP280 to the `0xEC` address frame:
 
 <img class="Figure"
 alt="I2C frame with an ACK bit at the end"
