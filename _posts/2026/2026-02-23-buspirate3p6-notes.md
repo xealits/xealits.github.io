@@ -15,20 +15,24 @@ how to read the ID register 0xD0 of the barometric sensor BMP280 from Bosch.
 
 [Bus Pirate][ian_site] is a gadget that talks serial protocols, such as I2C, SPI, etc.
 You can execute arbitrary transactions or sniff the traffic on the bus.
-I have [the 3.6 version][seeed_3p6] of the device. There are also newer versions [5 and 6][new_buspirate].
+There are legacy versions [like 3][seeed_3p6] and 4,
+which firmware is supported by [the community][community_legacy_buspirate].
+The newer versions 5 and 6 have [a wider support][new_buspirate].
 
-There are plenty of resources and tutorials about Bus Pirate:
-from [Sparkfun][sparkfun_tutorial], on [Dangerous Prototypes](http://dangerousprototypes.com/docs/Bus_Pirate#Tutorials) site, etc.
+Plenty of resources and tutorials about Bus Pirate are available on the web:
+from [Sparkfun][sparkfun_tutorial],
+on [Dangerous Prototypes](http://dangerousprototypes.com/docs/Bus_Pirate#Tutorials) site,
+one [the website for the new versions](https://docs.buspirate.com/docs/tutorial-basics/quick-setup/), etc.
 In this post, I just want to write up a typical sequence of actions for
 when you hook it up and use it to send a couple I2C commands:
 
-* Just connect Bus Pirate v3.6 to USB and talk with it using `screen` on Linux.
+* Just connect the Bus Pirate v3.6 to USB and talk with it using `screen` on Linux.
 * Send some I2C commands at 3.3V level, and without any I2C device connected,
 i.e. when a scan of the bus addresses finds no devices.
 * Connect a board with the BMP280 sensor chip and read its ID register.
 
 My BusPirate is version v3.6 (the firmware is v5.10 (r559)).
-Here is a photo of it:
+Here is its photo:
 
 <img class="Figure" alt="Bus Pirate v3.6" src="/dir/2026-02-buspirate/buspirate-3p6-image.jpeg"/>
 
@@ -105,12 +109,12 @@ $ screen /dev/ttyUSB0 115200
 
 If you see the `?` and `i` commands work, the firmware should be OK for action.
 However, it may be needed to flash a newer firmware:
-[the community fork for the Bus Pirate versions 3 and 4](https://github.com/ElderlyPirate/Bus_Pirate),
+[the community fork for the Bus Pirate versions 3 and 4][community_legacy_buspirate],
 or [the firmware of the new versions 5 and 6](https://docs.buspirate.com/docs/tutorial-basics/firmware-update/).
 I did not try to flash it on Linux yet, because my firmware (v5.10 (r559)) seems to work fine.
 
 
-# Power up and select the 3.3V for the I2C device
+# Power up IO and select 3.3V for the I2C communication
 
 Just to note, to start operating the bus interface, you need to select a bus mode.
 The power supply command is `W`. But:
@@ -159,9 +163,9 @@ Now the red VREG LED is ON.
 And indeed, a multimeter shows that 5V and 3.3V pins are on.
 All good.
 
-The tutorial also says:
+The tutorial goes on to the pull-up resistors:
 > At this point you might also want to enable pull-up resistors.
-> To do so you need to connect the VPU pin to the correct voltage supply.
+> **To do so you need to connect the VPU pin to the correct voltage supply.**
 > Then 'P' will connect the resistors.
 > The LSM303C Breakout already has pull-up resistors, so we can skip this step.
 > We are ready to start communicating with the IC.
@@ -176,7 +180,8 @@ Warning: no voltage on Vpullup pin
 I2C>
 ```
 
-Let's connect the VPU and the 3.3V pins of the Bus Pirate IO.
+Let's connect the VPU and the 3.3V pins of the Bus Pirate IO,
+which will set the 3.3V level for the communication, i.e. CLK and SDA lines.
 ```
 I2C>P
 Pull-up resistors ON
@@ -349,9 +354,14 @@ src="/dir/2026-02-buspirate/i2c-frame-nack-image.jpeg"
 />
 
 
-More details are in the [datasheet][bmp280_datasheet],
-sections "5.2 I²C Interface" and "4.3 Register description".
-And in the Sparkfun [tutorial][sparkfun_tutorial] on the Bus Pirate.
+# Conclusion
+
+Bus Pirate is a very handy tool.
+I might come back to it more in future.
+This post presents a couple quick startup checks and takes a look at some basics of I2C bus.
+
+The Sparkfun [tutorial][sparkfun_tutorial] and other resources walk through more features of the Bus Pirate.
+And the BMP280 sensor has an excellent [datasheet][bmp280_datasheet].
 
 
 [ian_site]: http://dangerousprototypes.com/docs/Bus_Pirate "Bus Pirate - DP"
@@ -359,4 +369,5 @@ And in the Sparkfun [tutorial][sparkfun_tutorial] on the Bus Pirate.
 [new_buspirate]: https://docs.buspirate.com/docs/overview/hardware/ "buspirate dot com"
 [sparkfun_tutorial]: https://learn.sparkfun.com/tutorials/bus-pirate-v36a-hookup-guide/all "BusPirate 3.6a Hookup Guide - Sparkfun Learn"
 [bmp280_datasheet]: https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmp280-ds001.pdf "Bosch BMP280 datasheet"
+[community_legacy_buspirate]: https://github.com/ElderlyPirate/Bus_Pirate "Community developed firmware for Bus Pirate version 3 and 4"
 
