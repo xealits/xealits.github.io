@@ -8,7 +8,8 @@ tags: electronics gadgets
 <summary>
 "The Bus Pirate is an open source hacker multi-tool that talks to electronic stuff."
 An excellent tool. The post writes up some basics on how Bus Pirate 3.6 works,
-and how to send I2C commands with it. As an example,
+and how to send I2C commands with it.
+For example,
 how to read the ID register 0xD0 of the barometric sensor BMP280 from Bosch.
 </summary>
 
@@ -183,7 +184,7 @@ The wiring is a bit cumbersome:
 you have to use a breadboard to connect
 the 3.3V power for the target I2C device
 and also the VPU pin.
-But it looks like my BMP280 boards
+But it seems like my BMP280 boards
 [from Pimoroni](https://shop.pimoroni.com/products/bme280-breakout?variant=29420960677971)
 (very nice 2-6V input)
 and [Az-Delivery](https://www.az-delivery.de/fr/products/azdelivery-bmp280-barometrischer-sensor-luftdruck-modul-fur-arduino-und-raspberry-pi)
@@ -198,8 +199,8 @@ So, I have to keep the VPU connected to the 3.3 volts.
 
 Let's just output some I2C frames and look at the signals on the CLK and SDA lines with a scope.
 
-Bus Pirate has some "macro" i.e. sequences of transactions.
-The firmware already comes with some of them.
+Bus Pirate provides "macro" i.e. sequences of transactions.
+The firmware already comes with a couple of them.
 List available macro:
 ```
 I2C>(0)
@@ -211,7 +212,7 @@ I2C>
 
 Excellent macros.
 
-Nothing is connected yet, so a scan looks like this:
+The address scan finds nothing, because nothing is connected yet:
 ```
 I2C>(1)
 Searching I2C address space. Found devices at:
@@ -295,8 +296,44 @@ I2C STOP BIT
 I2C>
 ```
 
+The command just follows the [datasheet][bmp280_datasheet] "5.2.2 I²C read":
+
+> To be able to read registers,
+> first the register address must be sent in write mode (slave address
+111011X0).
+Then either a stop or a repeated start condition must be generated. After this the slave is
+addressed in read mode (RW = ‘1’) at address 111011X1, after which the slave sends out data from
+auto-incremented register addresses until a NOACKM and stop condition occurs. This is depicted in
+Figure 8 , where two bytes are read from register 0xF6 and 0xF7.
+
+So, the transaction starts with the Start Condition (CLK is pulled down to the ground),
+and then Bus Pirate
+sends a byte with the 7-bit slave address (`0x76` or `0b1110110`) and RW bit set to the write mode
+i.e. `= 0` and the SDA data line is pulled to down: `0xEC` or `0b11101100`.
+Which is exactly what Bus Pirate prints in the `(1)` address scan macro.
+
+That is followed by a control byte. `0xD0` is the BMP280 ID register address.
+And it is followed by a Start Condition. Which tells BMP280 that it is a read from the register.
+Then Bus Pirate reads from the device.
+
+I2C devices acknowledge the reception of frames by pulling down SDA at the last bit of a frame.
+A scope capture of such an ACK from BMP280 to the `0xEC` address frame:
+
+<img class="Figure"
+alt="I2C frame with an ACK bit at the end"
+src="/dir/2026-02-buspirate/i2c-frame-ack-image.jpeg"
+/>
+
+When there is nothing on the bus, the bit is not pulled, and you get a NACK bit:
+
+<img class="Figure"
+alt="I2C frame with a NACK bit at the end"
+src="/dir/2026-02-buspirate/i2c-frame-nack-image.jpeg"
+/>
+
+
 More details are in the [datasheet][bmp280_datasheet],
-sections "5.2 I²C Interface", "5.2.2 I²C read", and "4.3 Register description".
+sections "5.2 I²C Interface" and "4.3 Register description".
 And in the Sparkfun [tutorial][sparkfun_tutorial] on the Bus Pirate.
 
 
