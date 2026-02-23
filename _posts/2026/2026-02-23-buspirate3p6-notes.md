@@ -309,7 +309,7 @@ Figure 8 , where two bytes are read from register 0xF6 and 0xF7.
 So, the transaction starts with the Start Condition (CLK is pulled down to the ground),
 and then Bus Pirate
 sends a byte with the 7-bit slave address (`0x76` or `0b1110110`) and RW bit set to the write mode
-i.e. `= 0` and the SDA data line is pulled to down: `0xEC` or `0b11101100`.
+(i.e. `= 0` and the SDA data line is pulled down): `0b11101100` or `0xEC`.
 Which is exactly what Bus Pirate prints in the `(1)` address scan macro.
 
 That is followed by a control byte. `0xD0` is the BMP280 ID register address.
