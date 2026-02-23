@@ -29,7 +29,7 @@ i.e. when a scan of the bus addresses finds no devices.
 My BusPirate is version v3.6 and firmware is v5.10 (r559).
 Here is a photo of it:
 
-![Bus Pirate v3.6](/dir/2026-02-buspirate/buspirate-3p6-image.jpeg)
+<img class="Figure" alt="Bus Pirate v3.6" src="/dir/2026-02-buspirate/buspirate-3p6-image.jpeg"/>
 
 
 # Talking with Bus Pirate over `screen`
@@ -222,7 +222,9 @@ I2C>
 
 A scope capture looks like this, with purple CLK and yellow SDA:
 
-![Scope capture of I2C frames in an address scan](/dir/2026-02-buspirate/i2c-frames-image.jpeg)
+<img class="Figure"
+alt="Scope capture of I2C frames in an address scan"
+src="/dir/2026-02-buspirate/i2c-frames-image.jpeg"/>
 
 You can see how the clock signal rises up slowly.
 The line is pulled down by the device, but pulled up by just a resistor.
@@ -241,7 +243,10 @@ where the bus start condition is `[`, the end condition is `]`,
 and you can send just any byte in the middle.
 A single transaction `[ 12 ]` looks like this on the scope:
 
-![A single I2C bus transaction](/dir/2026-02-buspirate/i2c-transaction-image.jpeg)
+<img class="Figure"
+alt="A single I2C bus transaction"
+src="/dir/2026-02-buspirate/i2c-transaction-image.jpeg"
+/>
 
 In I2C, when a device controls the bus to send the transaction,
 it pulls the CLK line down as the bus Start Condition (S),
