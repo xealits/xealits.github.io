@@ -12,16 +12,17 @@ and complex structures of buffers and attributes in OpenGL,
 and to use these capabilities in for data visualisation
 in a [Grammar of Graphics](https://en.wikipedia.org/wiki/Wilkinson%27s_Grammar_of_Graphics) style.
 
-OpenGL is a very-C library, where things happen implicitly,
-as a reaction to the sequence of your commands.
-Like, when you have to bind buffers by their IDs, in the right order etc.
-All of that is error-prone and hard to keep in mind.
+OpenGL has a very-C interface, where things happen implicitly,
+as a reaction to a sequence of your commands.
+Like, when you have to bind buffers by their IDs in the right order etc.
+All of that is error-prone. And there is no point to keep it in mind.
 Also, all of that is just the setup of the graphics pipeline.
 It does not require any particularly high performance.
-So, it should be done in a normal object-oriented way,
-where everything is explicit, flexible, exposes all features of OpenGL,
-easy to understand for the programer,
-and all the OpenGL details are automatically accounted for in by the library.
+
+What is really needed is a normal object-oriented interface to OpenGL,
+where everything is explicit and flexible.
+It must expose all features of OpenGL and be easy to use correctly.
+All the OpenGL details must be handled by the library itself.
 
 I am testing a prototype of this library,
 and will publish it on Github, when the interface becomes somewhat stable.
