@@ -39,7 +39,7 @@ Here is its photo:
 <img class="Figure" alt="Bus Pirate v3.6" src="/dir/2026-02-buspirate/buspirate-3p6-image.jpeg"/>
 
 
-# Talking with Bus Pirate over `screen`
+# Talking to Bus Pirate over `screen`
 
 When you plug a USB cable:
 * The red PWR LED on the BusPirate goes on and stays on.
@@ -261,7 +261,22 @@ That is the main reason [why SPI bus is faster than I2C](https://forum.microchip
 Bus Pirate firmare has this scripting [language for the bus commands](https://docs.buspirate.com/docs/command-reference/#bus-commands),
 where the bus start condition is `[`, the end condition is `]`,
 and you can send any bytes in the middle.
-A single transaction `[ 12 ]` looks like this on the scope:
+For example, let's get the bus ready and send
+a single transaction `[ 12 ]`:
+
+```
+I2C>W
+Power supplies ON
+I2C>P
+Pull-up resistors ON
+I2C>[ 12 ]
+I2C START BIT
+WRITE: 0x0C NACK 
+I2C STOP BIT
+I2C>
+```
+
+The transaction `[ 12 ]` looks like this on the scope (CLK is purple, SDA is yellow):
 
 <img class="Figure"
 alt="A single I2C bus transaction"
@@ -341,17 +356,16 @@ Which is exactly what the Bus Pirate prints in the `(1)` address scan macro.
 
 The address byte is followed by a control byte.
 `0xD0` is the BMP280 ID register address.
-And it is followed by a Start Condition.
-The BMP280 interprets it as a command to read from the registers,
+It is followed by another Start Condition and
+the address byte again, but with the mode bit set to read `0xED`.
+The BMP280 interprets the second Start Condition plus its address byte
+as a command to read from its registers,
 starting with the register address that is given in the control byte.
-So the BMP280 chip prepares to read out the values of registers to the bus.
-Then the Bus Pirate sends the address byte again,
-but now with the mode bit set to read `0xED`,
-and receives the frames from the device,
-until a stop condition.
+The BMP280 chip reads out the values of registers to the bus until a Stop Condition is given.
+And the Bus Pirate receives the frames from the sensor chip.
 
 I2C devices signal the reception of a frame by an acknoledgement bit
-at the end of the transaction frame, i.e. the 9th bit after the payload byte.
+at the end of the transaction frame, i.e. the 9th bit after the 8 bits of the payload byte.
 An I2C device pulls SDA down during the acknowledgement bit,
 which indicates that the frame has been received. 
 A scope capture of such an ACK from the BMP280 to the `0xEC` address frame:
