@@ -12,11 +12,12 @@ Which is not fun to do as a hobby on a weekend.
 Electronics and hardware are pretty tough on their own.
 But software does not have to be like that.
 
-This project combines several tools and methods to streamline and improve
+[This project](https://github.com/xealits/msp430chip)
+combines several tools and methods to streamline and improve
 the development of embedded software for Ti MSP430.
 The goal is to make it palatable for weekend projects
-that are more than just a one-off toy.
-Other chips (like Ti C2000, ESP32, Atmel, and Nordic) can be covered in future.
+that are more complex than just a one-off toy.
+Other chips (like Ti C2000, ESP32, Atmel, and Nordic) can be included in future.
 
 The project started with a modern C++ library for MSP430,
 and now it combines several things:
