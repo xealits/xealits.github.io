@@ -1,15 +1,16 @@
 ---
 layout: post
 slug: buspirate_3.6_notes
-title: Notes on Bus Pirate 3.6 and I2C
+title: Bus Pirate 3.6 and I2C
 tags: electronics gadgets
 ---
 
 <summary>
 "The Bus Pirate is an open source hacker multi-tool that talks to electronic stuff."
-An excellent tool. The post writes up some basics on how Bus Pirate 3.6 works,
-and how to talk on an I2C bus with it.
-For example,
+An excellent tool. The post puts together a couple basics
+of how Bus Pirate 3.6 works
+and how to talk to an I2C bus with it.
+As an example,
 how to read the ID register 0xD0 of the barometric sensor BMP280 from Bosch.
 </summary>
 
