@@ -1,7 +1,7 @@
 ---
 layout: tweet
 title: Switzerland is a land of clouds.
-tags: tests
+tags: photo
 ---
 
 Switzerland is a land of clouds.
