@@ -97,10 +97,10 @@ body {
 	/*text-align: justify;*/
 }
 
-section>h1 {font-size: 2rem }
-article h1 {font-size: 1.6rem }
-article h2 {font-size: 1.4rem }
-article h3 {font-size: 1.2rem }
+section>h1 {font-size: 2.6rem }
+article h1 {font-size: 2.2rem }
+article h2 {font-size: 1.8rem }
+article h3 {font-size: 1.4rem }
 article h4 {font-size: 1.0rem }
 
 h1, h2, h3, h4 {
