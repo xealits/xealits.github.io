@@ -2,7 +2,7 @@
 layout: post
 slug: buspirate_3.6_notes
 title: Bus Pirate 3.6 and I2C
-tags: electronics gadgets
+tags: electronics tools
 ---
 
 <summary>
