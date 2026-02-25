@@ -129,6 +129,7 @@ title: home
     {% if page.path contains "projects" %}
     {% assign project_title = page.title %}
     <a class="smallcaps nav" href="{{site.baseurl}}/tags.html#{{project_title | slugify}}">{{project_title}}</a>
+    <br>
     {% assign project_slugs = project_slugs | append: project_title | slugify %}
     {% endif %}
   {% endfor %}
