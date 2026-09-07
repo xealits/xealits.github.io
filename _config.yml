@@ -39,6 +39,8 @@ defaults:
     values:
       author: Alex Toldaiev
 
+future: false # Skips posts with a future date during the build (default)
+
 #include:
 #  - 'active_projects'
 
