@@ -104,7 +104,8 @@ When a branch instruction is not taken, it does not occupy space in BTB.
 And when the branch predictor sees a branch instruction with no entry in BTB,
 it assumes that the branch is not going to be taken.
 (This no-history case is called static branch prediciton, and the rules can be more complex.
-CPU can follow the backward taken, forward not taken rule, BTFNT.)
+CPU can follow the backward taken, forward not taken rule, BTFNT.
+Which kind of fits software loops perfectly.)
 Hence, if the not-taken assumption is correct, it is the ideal case:
 the CPU executes the right code, and the branch does not occupy any space in BTB.
 The `[[likely]]` attribute guides the CPU towards this ideal case.
@@ -122,12 +123,12 @@ for example [when the execution happens in a loop at a memory alignment boundary
 # Benchmarking branch predictors
 
 [Chips and Cheese](https://chipsandcheese.com/)
-evaluate branch prediction performance in their review articles
-for different processor models,
-for example such as [this article on Intel Lunar Lake](https://chipsandcheese.com/i/149874004/frontend-branch-prediction).
+include an evaluation of branch prediction performance
+in their review articles of different processor models,
+for example such as [this article on E-cores in Intel Lunar Lake](https://chipsandcheese.com/i/149874004/frontend-branch-prediction).
 They estimate
 how many branch instructions
-and how many different branching patterns can be sustained by a branch predictor
+and how many different branching patterns can be sustained by the branch predictor
 without the program losing performance.
 
 These characteristics depend on the size of BTB,
@@ -136,7 +137,7 @@ It could be interesting to somehow factor out the effect of statically-predicted
 For example,
 rerun their benchmark for the branching patterns,
 but fix the pattern at compile time and compile with profile-guided optimization.
-It should show that statically-predicted branches cost nothing at run time.
+And it should show that statically-predicted branches cost nothing at run time.
 
 # Related topics
 
