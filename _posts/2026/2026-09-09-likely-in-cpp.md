@@ -2,7 +2,7 @@
 layout: post
 slug: likely_in_cpp
 title: Likely in C++
-tags: c++ cpu
+tags: c++ cpu performance
 ---
 
 <summary>
