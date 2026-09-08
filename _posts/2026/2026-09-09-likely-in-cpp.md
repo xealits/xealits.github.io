@@ -1,28 +1,31 @@
 ---
 layout: post
 slug: likely_in_cpp
-title: `[[likely]]` in C++
+title: Likely in C++
 tags: c++ cpu
 ---
 
 <summary>
-[Attribute `[[likely]]`][likely] is a good minimal example
+<a href="https://en.cppreference.com/cpp/language/attributes/likely">Attribute <code class="language-cpp highlighter-rouge">[[likely]]</code></a>
+is a good minimal example
 of how software can exploit processor features for maximum performance
-by providing more information to the compiler.
-This post presents an example how `[[likely]]` affects
-the compiled machine code and the execution performance.
-And it brings up some practical implications.
+by providing more information about the program to the compiler.
+This post presents an example how <code>[[likely]]</code> affects
+the compiled machine code and the execution performance,
+and brings up some practical implications.
 </summary>
 
-The `[[likely]]` or `[[unlikely]]` attribute tells the compiler
-which outcome of conditional branching is expected.
-In result, the compiler generates machine code that maximises not taken branches
-and streamlines the instruction sequences,
-according to the provided expectation.
+[The `[[likely]]` and `[[unlikely]]` attributes][likely] tell the compiler
+which outcome of a conditional branch to expect.
+Using the attribute information,
+the compiler
+arranges the conditional instructions
+in the generated machine code
+such that the expected outcome corresponds to _not taken branches_
+and the expected control flow executes an uninterrupted sequence of instructions.
+Let's see [an example on godbolt][godbolt_shortlink]:
 
-Let's see it in [Godbolt][godbolt_shortlink]:
-
-<iframe width="800px" height="200px" src="https://godbolt.org/e#g:!((g:!((g:!((h:codeEditor,i:(filename:'1',fontScale:18,fontUsePx:'0',j:1,lang:c%2B%2B,selection:(endColumn:5,endLineNumber:9,positionColumn:5,positionLineNumber:9,selectionStartColumn:5,selectionStartLineNumber:9,startColumn:5,startLineNumber:9),source:'int+big_procedure(void)+%7B%0A++++return+11%3B%0A%7D%0A%0Aint+main(int+argc,+char**+argv)+%7B%0A++++int+res+%3D+5%3B%0A%0A++++if+(argc+%3D%3D+3)%0A++++%5B%5Bunlikely%5D%5D%0A++++//%5B%5Blikely%5D%5D%0A++++%7B%0A++++++++res+%3D+big_procedure()%3B%0A++++%7D%0A%0A++++return+res%3B%0A%7D'),l:'5',n:'0',o:'C%2B%2B+source+%231',t:'0')),k:47.39123797109431,l:'4',n:'0',o:'',s:0,t:'0'),(g:!((h:compiler,i:(compiler:clang2010,filters:(b:'0',binary:'1',binaryObject:'1',commentOnly:'0',debugCalls:'1',demangle:'0',directives:'0',execute:'1',intel:'0',libraryCode:'1',trim:'0',verboseDemangling:'0'),flagsViewOpen:'1',fontScale:14,fontUsePx:'0',j:1,lang:c%2B%2B,libs:!((name:benchmark,ver:trunk)),options:'-Wall+-O3',overrides:!(),selection:(endColumn:1,endLineNumber:1,positionColumn:1,positionLineNumber:1,selectionStartColumn:1,selectionStartLineNumber:1,startColumn:1,startLineNumber:1),source:1),l:'5',n:'0',o:'+x86-64+clang+20.1.0+(Editor+%231)',t:'0')),k:52.60876202890571,l:'4',n:'0',o:'',s:0,t:'0')),l:'2',m:99.99999999999997,n:'0',o:'',t:'0')),version:4"></iframe>
+<iframe width="800px" height="200px" src="https://godbolt.org/e#g:!((g:!((g:!((h:codeEditor,i:(filename:'1',fontScale:12,fontUsePx:'0',j:1,lang:c%2B%2B,selection:(endColumn:11,endLineNumber:5,positionColumn:11,positionLineNumber:5,selectionStartColumn:11,selectionStartLineNumber:5,startColumn:11,startLineNumber:5),source:'int+big_procedure(void)+%7B%0A++++return+11%3B%0A%7D%0A%0Aint+main(int+argc,+char**+argv)+%7B%0A++++int+res+%3D+5%3B%0A%0A++++if+(argc+%3D%3D+3)%0A++++%5B%5Bunlikely%5D%5D%0A++++//%5B%5Blikely%5D%5D%0A++++%7B%0A++++++++res+%3D+big_procedure()%3B%0A++++%7D%0A%0A++++return+res%3B%0A%7D'),l:'5',n:'0',o:'C%2B%2B+source+%231',t:'0')),k:47.39123797109431,l:'4',n:'0',o:'',s:0,t:'0'),(g:!((h:compiler,i:(compiler:clang2010,filters:(b:'0',binary:'1',binaryObject:'1',commentOnly:'0',debugCalls:'1',demangle:'0',directives:'0',execute:'1',intel:'0',libraryCode:'1',trim:'0',verboseDemangling:'0'),flagsViewOpen:'1',fontScale:12,fontUsePx:'0',j:1,lang:c%2B%2B,libs:!((name:benchmark,ver:trunk)),options:'-Wall+-O3',overrides:!(),selection:(endColumn:1,endLineNumber:1,positionColumn:1,positionLineNumber:1,selectionStartColumn:1,selectionStartLineNumber:1,startColumn:1,startLineNumber:1),source:1),l:'5',n:'0',o:'+x86-64+clang+20.1.0+(Editor+%231)',t:'0')),k:52.60876202890571,l:'4',n:'0',o:'',s:0,t:'0')),l:'2',m:99.99999999999997,n:'0',o:'',t:'0')),version:4"></iframe>
 
 The C++ source:
 ```cpp
@@ -69,79 +72,64 @@ It makes the decision whether a branch outcome is expected based on the provided
 
 The point is that _not taken_ conditional branches are practically free,
 they require almost no resources from the CPU.
-So, if the `je .LBB1_1` branch is not taken,
+So, assuming the `je .LBB1_1` branch is indeed not taken,
 the code in the example runs as if there is no conditional branch instruction whatsoever.
 The compiler optimizes the code towards this ideal case.
 
-// Not sure if this is needed:
-
-Without the `-O3` optimization, the code mixes the branch body with the `main` flow.
-The control flow winds through either the branch code or the jump  etc.
-
-Without the `-O3` optimization, the code mixes the branch body with the main flow.
-There is only one `ret` from the `main` function.
-And the control flow winds through the `main` body,
-either going via the branch code or by jumping over it to the label at `ret`:
-```
-...
-  cmp dword ptr [rbp - 8], 3
-  jne .LBB1_2
-  call big_procedure()
-  mov dword ptr [rbp - 20], eax
-.LBB1_2:
-  mov eax, dword ptr [rbp - 20]
-  add rsp, 32
-  pop rbp
-  ret
-```
-
-Even in the expected case, the CPU has to maintain the knowledge
-that the path to `call big_procedure()` won't be taken,
-and it also has to perform the jump to other label.
-
 # Branch predictors and corresponding CPU resources
-
-// Get to the point on the branch predictors
-// intro what they do
-// main thing is the CPU resources involved
-//
-// Then what it means for CPU performance:
-// how branch predictor works, the branch target table, etc.
 
 Modern CPUs contain sophisticated branch predictor units.
 The branch predictors speculatively assume
 whether a given branch instruction might be taken (the control flow might jump to another address in the program)
 and
 they direct the CPU frontend to load code from the corresponding address
-without waiting for the condition to be resolve.
-A condition can take a while to be resolved,
+without waiting for the condition to be resolved.
+A condition resolution can take a while,
 because it often involves reading some variable from the memory or something even slower.
-The speculative execution of branches allows the CPU to run without interruptions.
-That is if the branches are predicted correctly.
+The speculative execution of branches allows the CPU to run without interruptions,
+if the branches are predicted correctly.
 
 There are generally two groups of CPU resources that are involved in the speculative execution of branches:
-* If the branch is mispredicted, the CPU has to roll back its execution.
-Which damages the performance as badly as it sounds.
+* If the branch is mispredicted, the CPU has to roll back its speculative execution.
+Which is as bad as it sounds for performance, and is also an issue for security.
 * If the branches are correctly predicted, but they are taken,
 then the branching instructions occupy entries in the Branch Target Buffer, BTB.
 BTB is a map from the addresses of branch instructions to the addresses
 of their expected jump targets.
 BTBs are pretty large and can track multiple patterns of branching in the control flow.
-But, of course, BTB is limited in size. It is a finite resource,
-which should not be wasted unnecessarily.
+But, of course, BTB is limited in size.
+It is a finite resource, and [if you use up all of BTB, the performance will degrade](https://stackoverflow.com/questions/38811901/slow-jmp-instruction).
 
 When a branch instruction is not taken, it does not occupy space in BTB.
 And when the branch predictor sees a branch instruction with no entry in BTB,
 it assumes that the branch is not going to be taken.
+(This no-history case is called static branch prediciton, and the rules can be more complex.
+CPU can follow the backward taken, forward not taken rule, BTFNT.)
 Hence, if the not-taken assumption is correct, it is the ideal case:
 the CPU executes the right code, and the branch does not occupy any space in BTB.
 The `[[likely]]` attribute guides the CPU towards this ideal case.
 
-# Effect on performance
+The only thing that the CPU does with a not-taken branch instruction
+is a lookup in BTB, which is basically free.
+
+A collateral nice thing about the control flow with not-taken branches
+is that the execution goes through an uninterrupted sequence of instructions.
+Which is generally good for the instruction prefetcher.
+Although,
+a noticeable impact on performance probably shows up only in rare edge cases,
+for example [when the execution happens in a loop at a memory alignment boundary](https://stackoverflow.com/a/79740110/1420489).
+
+# Toy examples of performance effect
+
+In this post, I make only artificial toy examples of the effect on performance,
+just to demonstrate that the changes in the compiled machine code make a difference.
+More realistic benchmarks can be found in Chips & Cheese articles, such as on [Intel Lunar Lake](https://chipsandcheese.com/i/149874004/frontend-branch-prediction).
+They measure the size of the branch prediction resources.
+Notice that the not-taken branches do not take up any of those resources.
 
 Keep adding not-taken jumps until there is a visible performance penalty,
-compare taken and untaken branches, show that the speed is the sasme,
-but the branch table size is limited.
+compare taken and untaken branches, show that the speed is the same,
+but mention that the branch table size is limited.
 
 And let's measure the performance to showcase the untaken branches?
 
@@ -154,7 +142,7 @@ There are more ways to inform the CPU about the expected control flow pattern:
 * [C++23 also has `std::expected`](https://en.cppreference.com/cpp/utility/expected)
 algebraic type that expresses this common semantics
 that procedures often have an expected path of behavior and a rarely taken unexpected path.
-* Of course, all the standard containers should have their [`at()` functions](https://en.cppreference.com/cpp/container/vector/at)
+* I guess, all the standard containers have their [`at()` functions](https://en.cppreference.com/cpp/container/vector/at)
 with the expectation to not miss the boundaries.
 The boundary check is practically free then.
 
@@ -163,27 +151,28 @@ There is a good talk about `std::expected` by Andrei ALexandrescu on CppCon 2018
 He meantions that it is pointless to worry about the performance impact of boundary checks,
 considering the modern processing hardware.
 
-Considering `expected`, it is clear that `[[likely]]` is not some brittle ad-hoc hack to tune the performance.
+Considering `std::expected`, it is clear that `[[likely]]` is not some brittle ad-hoc hack to tune the performance.
 It provides real information about the program to the compiler.
-That is often the way how high performance is achieved:
+And that is often the way how high performance is achieved:
 you do not add random hacky bits, you express the requirements of your program more precisely and explicitly.
 It is very much like in the ["Programming Pearls"](https://www.oreilly.com/library/view/programming-pearls-2nd/9780134498058/)
-example about that implements a sorting procedure for telephone numbers.
+example about sorting telephone numbers.
 In comparison with a library sorting algorithm,
 the custom implementation is way faster and is also simpler and clearer to maintain.
 It optimally fits the real world situation and its requirements.
 It is less generic than the library sort, sure. But that does not make it hacky.
 
-There is a nice talk on SSW conference by Richard Hipp about [testing SQLite][sqlite_reliability].
+There is a nice [talk about testing SQLite by Richard Hipp on SSW conference][sqlite_reliability].
 Richard Hipp prises built-in testing harnesses.
 He refers to the aviation guidelines [DO-178B](https://en.wikipedia.org/wiki/DO-178B)
 (or the newer [DO-178C](https://store.accuristech.com/standards/rtca-do-178c?product_id=2200105))
 for software (and everything else): test what you fly.
 So, SQLite has built-in test mode. And they test it on the fly,
-while changing the plugins that talk with the OS VFS in order to emulate a power failure, etc.
+while changing the plugins that talk with the OS VFS in order to emulate power failures
+and that kind of things.
 
 The ability to pass the `[[likely]]` info to the compiler is useful here.
-You can embed a run time test-mode with no cost in the nominal program.
+You can embed a run time test-mode with no cost for the nominal program execution.
 
 ## Exception handling
 
@@ -192,9 +181,11 @@ C++ has two mechanisms for exceptions:
 `try {} catch {}` with `throw`ing them,
 and the `std::unexpected` part of `std::expected`.
 In either case, the semantics is explicit about what to expect.
-I think, compilers can detect when an `if` branch leads to a `throw` and generate the code accordingly.
+Compilers are able to detect when an `if` branch leads to a `throw` and generate the code accordingly.
 At least, that is the case in the [following example as seen on Godbolt](https://godbolt.org/z/nvs4Wo8K9):
 ```cpp
+constexpr bool throw_in_else = false; // true
+
 int main(int argc, char** argv) {
     int res = 5;
 
@@ -202,39 +193,55 @@ int main(int argc, char** argv) {
     //[[unlikely]]
     //[[likely]]
     {
-        throw std::runtime_error("argc == 3");
+        if constexpr (throw_in_else) {
+            res = 11;
+        }
+        else throw std::runtime_error("argc == 3");
+    }
+
+    else {
+        if constexpr (throw_in_else)
+            throw std::runtime_error("argc != 3");
+        else {
+            res = 153;
+        }
     }
 
     return res;
+}
 ```
 
-I am not sure whether it is intentional,
-but when the attribute is commented out,
-the compiler generates the `[[unlikely]]` version as one would expect.
+If the `[[likely]]` attributes are commented out,
+the compiler generates code where the throw happens behind the `argc` condition jump,
+either under `if` or `else`, depending on the `constexpr bool`.
+So, the compiler assumes that the exception throw is unexpected, as it should be.
 
 In general, the `try catch` way should be optimal for the happy path.
 A `try catch` program has to take an `if` branch inside every sub-procedure
 that considers whether to throw an exception.
 An equivalent `std::expected` program will have an equivalent if branch
 in every sub-procedure that considers whether to return `std::unexpected`.
-The difference is that the `try catch` checks the exception only once, when it is thrown.
-But the `std::expected` program checks whether it got the value from every sub-procedure.
+The difference is that the `try catch` checks the exception only once:
+when it is thrown, the control flow is interrupted and the call stack is unwound at run time.
+But the `std::expected` program checks whether it got the unexpected value from every sub-procedure call.
+The `std::expected` way basically doubles the number of `if` statements in the program.
 However, since the compiler knows what to expect,
 the additional `if`s in the `std::expected`-based programs are practically free.
 And the happy path performance should be optimal with either exceptions or `std::expected`.
 
 There are more differences between exceptions and `std::expected`.
-Check out the CppCon 2025 talk ["Can std::expected with Monadic Operations REALLY Boost Your C++ Code Performance?"](https://youtu.be/cjw26MLaCCc?is=VU2trWAlNlIP9jKi)
-by Vitaly Fanaskov with a nice example and an overview.
+A nice example and an overview can be found in the CppCon 2025 talk
+["Can std::expected with Monadic Operations REALLY Boost Your C++ Code Performance?"](https://youtu.be/cjw26MLaCCc?is=VU2trWAlNlIP9jKi)
+by Vitaly Fanaskov.
 
 The largest difference is the performance in the bad path.
-When an exception is thrown, the program has to [unwind the call stack](https://learn.microsoft.com/en-us/cpp/cpp/exceptions-and-stack-unwinding-in-cpp?view=msvc-170) etc, which is a complex generic and painfully slow operation.
-On the other hand, using `std::expected` leans towards functional-style programming
-with practically o performance loss on the checks for the unexpected control flow path.
-However, functional programming tends to pass things by value or move values.
-It can introduce more constructor calls, copies and moves than absolutely necessary.
+When an exception is thrown, the program has to [unwind the call stack](https://learn.microsoft.com/en-us/cpp/cpp/exceptions-and-stack-unwinding-in-cpp?view=msvc-170) etc, which is a complex generic runtime-heavy and painfully slow operation.
+On the other hand, using `std::expected` leans towards functional style programming
+with practically no performance loss on the checks for the unexpected control flow path.
+However, functional style tends to pass things by value or move values.
+It can introduce more constructor calls, copies and moves than necessary.
 
-[likely]: https://en.cppreference.com/cpp/language/attributes/likely
+[likely]: https://en.cppreference.com/cpp/language/attributes/likely "CppReference for attribute likely"
 [weekly_cpp_220_likely]: https://www.youtube.com/watch?v=ew3wt0g99kg "C++ Weekly - Ep 220 - C++20's [[likely]] and [[unlikely]] With Practical use Case"
 [sqlite_reliability]: https://youtu.be/V_qzqY1bb7I?is=ynXMdTrVr_kRU20a "Reliability Lessons From SQLite - Richard Hipp | SSW 2026"
-[godbolt_shortlink]: https://godbolt.org/z/5bosfoj98
+[godbolt_shortlink]: https://godbolt.org/z/oW34cdnKv "example of likely on godbolt"
