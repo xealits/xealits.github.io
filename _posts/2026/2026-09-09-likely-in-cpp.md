@@ -119,21 +119,24 @@ Although,
 a noticeable impact on performance probably shows up only in rare edge cases,
 for example [when the execution happens in a loop at a memory alignment boundary](https://stackoverflow.com/a/79740110/1420489).
 
-# Toy examples of performance effect
+# Benchmarking branch predictors
 
-In this post, I make only artificial toy examples of the effect on performance,
-just to demonstrate that the changes in the compiled machine code make a difference.
-More realistic benchmarks can be found in Chips & Cheese articles, such as on [Intel Lunar Lake](https://chipsandcheese.com/i/149874004/frontend-branch-prediction).
-They measure the size of the branch prediction resources.
-Notice that the not-taken branches do not take up any of those resources.
+[Chips and Cheese](https://chipsandcheese.com/)
+evaluate branch prediction performance in their review articles
+for different processor models,
+for example such as [this article on Intel Lunar Lake](https://chipsandcheese.com/i/149874004/frontend-branch-prediction).
+They estimate
+how many branch instructions
+and how many different branching patterns can be sustained by a branch predictor
+without the program losing performance.
 
-Keep adding not-taken jumps until there is a visible performance penalty,
-compare taken and untaken branches, show that the speed is the same,
-but mention that the branch table size is limited.
-
-And let's measure the performance to showcase the untaken branches?
-
-Do not implement just just refer to a Chips & Cheese article on some CPU with testing the depth of branch predictors.
+These characteristics depend on the size of BTB,
+and not-taken branches do not take any space in BTB.
+It could be interesting to somehow factor out the effect of statically-predicted branches.
+For example,
+rerun their benchmark for the branching patterns,
+but fix the pattern at compile time and compile with profile-guided optimization.
+It should show that statically-predicted branches cost nothing at run time.
 
 # Related topics
 
