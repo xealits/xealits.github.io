@@ -121,14 +121,18 @@ That is if the branches are predicted correctly.
 
 There are generally two groups of CPU resources that are involved in the speculative execution of branches:
 * If the branch is mispredicted, the CPU has to roll back its execution.
-And it damages the performance as bad as it sounds.
+Which damages the performance as badly as it sounds.
 * If the branches are correctly predicted, but they are taken,
-they occupy entries in the Branch Target Buffer, BTB.
-BTB is a map from the address of a branch instruction to the address of the expected taken jump.
-Of course, BTB has limited size.
+then the branching instructions occupy entries in the Branch Target Buffer, BTB.
+BTB is a map from the addresses of branch instructions to the addresses
+of their expected jump targets.
+BTBs are pretty large and can track multiple patterns of branching in the control flow.
+But, of course, BTB is limited in size. It is a finite resource,
+which should not be wasted unnecessarily.
 
 When a branch instruction is not taken, it does not occupy space in BTB.
-And when the branch predictor sees a branch instruction with no entry in BTB, it assumes that the branch is not going to be taken.
+And when the branch predictor sees a branch instruction with no entry in BTB,
+it assumes that the branch is not going to be taken.
 Hence, if the not-taken assumption is correct, it is the ideal case:
 the CPU executes the right code, and the branch does not occupy any space in BTB.
 The `[[likely]]` attribute guides the CPU towards this ideal case.
@@ -145,10 +149,10 @@ Do not implement just just refer to a Chips & Cheese article on some CPU with te
 
 # Related topics
 
-There are more things that can inform the CPU about the expected control flow behavior:
+There are more ways to inform the CPU about the expected control flow pattern:
 * [Profile-guided optimisation](https://en.wikipedia.org/wiki/Profile-guided_optimization).
 * [C++23 also has `std::expected`](https://en.cppreference.com/cpp/utility/expected)
-algebraic type that embeds this common semantics
+algebraic type that expresses this common semantics
 that procedures often have an expected path of behavior and a rarely taken unexpected path.
 * Of course, all the standard containers should have their [`at()` functions](https://en.cppreference.com/cpp/container/vector/at)
 with the expectation to not miss the boundaries.
@@ -159,15 +163,16 @@ There is a good talk about `std::expected` by Andrei ALexandrescu on CppCon 2018
 He meantions that it is pointless to worry about the performance impact of boundary checks,
 considering the modern processing hardware.
 
-I think, a comparison with `expected` also makes it clear that `[[likely]]` is not some brittle ad-hoc hack to tune the performance.
-They both provide semantic information about the meaning of the program to the compiler.
-Which is often the case in how high performance is achieved:
-you do not add radnom hacky bits, you express the requirements of your program more precisely and explicitly.
-It is very much like in ["Programming Pearls"](https://www.oreilly.com/library/view/programming-pearls-2nd/9780134498058/)
-example about implementing a sorting procedure for the telephone numbers.
-A concrete implementation is way faster, and it is also simpler and clearer to maintain.
+Considering `expected`, it is clear that `[[likely]]` is not some brittle ad-hoc hack to tune the performance.
+It provides real information about the program to the compiler.
+That is often the way how high performance is achieved:
+you do not add random hacky bits, you express the requirements of your program more precisely and explicitly.
+It is very much like in the ["Programming Pearls"](https://www.oreilly.com/library/view/programming-pearls-2nd/9780134498058/)
+example about that implements a sorting procedure for telephone numbers.
+In comparison with a library sorting algorithm,
+the custom implementation is way faster and is also simpler and clearer to maintain.
 It optimally fits the real world situation and its requirements.
-It is less generic than a library sort, sure. But that does not make it hacky.
+It is less generic than the library sort, sure. But that does not make it hacky.
 
 There is a nice talk on SSW conference by Richard Hipp about [testing SQLite][sqlite_reliability].
 Richard Hipp prises built-in testing harnesses.
@@ -180,7 +185,54 @@ while changing the plugins that talk with the OS VFS in order to emulate a power
 The ability to pass the `[[likely]]` info to the compiler is useful here.
 You can embed a run time test-mode with no cost in the nominal program.
 
-Check out the talk on [expected and monadic expressions and performance](https://youtu.be/cjw26MLaCCc?is=VU2trWAlNlIP9jKi)
+## Exception handling
+
+Another group of rarely-taken paths in programs are exceptions.
+C++ has two mechanisms for exceptions:
+`try {} catch {}` with `throw`ing them,
+and the `std::unexpected` part of `std::expected`.
+In either case, the semantics is explicit about what to expect.
+I think, compilers can detect when an `if` branch leads to a `throw` and generate the code accordingly.
+At least, that is the case in the [following example as seen on Godbolt](https://godbolt.org/z/nvs4Wo8K9):
+```cpp
+int main(int argc, char** argv) {
+    int res = 5;
+
+    if (argc == 3)
+    //[[unlikely]]
+    //[[likely]]
+    {
+        throw std::runtime_error("argc == 3");
+    }
+
+    return res;
+```
+
+I am not sure whether it is intentional,
+but when the attribute is commented out,
+the compiler generates the `[[unlikely]]` version as one would expect.
+
+In general, the `try catch` way should be optimal for the happy path.
+A `try catch` program has to take an `if` branch inside every sub-procedure
+that considers whether to throw an exception.
+An equivalent `std::expected` program will have an equivalent if branch
+in every sub-procedure that considers whether to return `std::unexpected`.
+The difference is that the `try catch` checks the exception only once, when it is thrown.
+But the `std::expected` program checks whether it got the value from every sub-procedure.
+However, since the compiler knows what to expect,
+the additional `if`s in the `std::expected`-based programs are practically free.
+And the happy path performance should be optimal with either exceptions or `std::expected`.
+
+There are more differences between exceptions and `std::expected`.
+Check out the CppCon 2025 talk ["Can std::expected with Monadic Operations REALLY Boost Your C++ Code Performance?"](https://youtu.be/cjw26MLaCCc?is=VU2trWAlNlIP9jKi)
+by Vitaly Fanaskov with a nice example and an overview.
+
+The largest difference is the performance in the bad path.
+When an exception is thrown, the program has to [unwind the call stack](https://learn.microsoft.com/en-us/cpp/cpp/exceptions-and-stack-unwinding-in-cpp?view=msvc-170) etc, which is a complex generic and painfully slow operation.
+On the other hand, using `std::expected` leans towards functional-style programming
+with practically o performance loss on the checks for the unexpected control flow path.
+However, functional programming tends to pass things by value or move values.
+It can introduce more constructor calls, copies and moves than absolutely necessary.
 
 [likely]: https://en.cppreference.com/cpp/language/attributes/likely
 [weekly_cpp_220_likely]: https://www.youtube.com/watch?v=ew3wt0g99kg "C++ Weekly - Ep 220 - C++20's [[likely]] and [[unlikely]] With Practical use Case"
