@@ -181,9 +181,9 @@ You can embed a run time test-mode with no cost for the nominal program executio
 
 A big group of rarely-taken paths in programs are exceptions.
 C++ has two mechanisms for exceptions:
-you can `throw` an exception within a `try{}` block
-to handle it in a `catch{}` block,
-and there is the `std::unexpected` part of `std::expected` return value.
+you can either `throw` an exception in a `try{}` block
+to handle it in a corresponding `catch{}` block,
+or there is the `std::unexpected` part of a `std::expected` return value.
 In either case, the semantics is clear on which control path is not expected.
 Compilers are able to detect when an `if` branch leads to a `throw` and generate the code accordingly.
 At least, that is the case in the [following example as seen on godbolt](https://godbolt.org/z/nvs4Wo8K9):
@@ -216,7 +216,7 @@ int main(int argc, char** argv) {
 ```
 
 If the `[[likely]]` attributes are commented out,
-the compiler generates code where the throw happens behind the `argc` condition jump,
+the compiler generates code where the throw is placed behind the jump of the `argc` condition,
 either under `if` or `else`, depending on the `constexpr bool`.
 So, the compiler assumes that the exception throw is unexpected, as it should be.
 
