@@ -185,7 +185,7 @@ You can embed a run time test-mode with no cost for the nominal program executio
 
 ## Exception handling
 
-Another group of rarely-taken paths in programs are exceptions.
+A big group of rarely-taken paths in programs are exceptions.
 C++ has two mechanisms for exceptions:
 `try {} catch {}` with `throw`ing them,
 and the `std::unexpected` part of `std::expected`.
