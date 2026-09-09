@@ -187,11 +187,12 @@ You can embed a run time test-mode with no cost for the nominal program executio
 
 A big group of rarely-taken paths in programs are exceptions.
 C++ has two mechanisms for exceptions:
-`try {} catch {}` with `throw`ing them,
-and the `std::unexpected` part of `std::expected`.
-In either case, the semantics is explicit about what to expect.
+you can `throw` an exception within a `try{}` block
+to handle it in a `catch{}` block,
+and there is the `std::unexpected` part of `std::expected` return value.
+In either case, the semantics is clear on which control path is not expected.
 Compilers are able to detect when an `if` branch leads to a `throw` and generate the code accordingly.
-At least, that is the case in the [following example as seen on Godbolt](https://godbolt.org/z/nvs4Wo8K9):
+At least, that is the case in the [following example as seen on godbolt](https://godbolt.org/z/nvs4Wo8K9):
 ```cpp
 constexpr bool throw_in_else = false; // true
 
@@ -230,9 +231,9 @@ A `try catch` program has to take an `if` branch inside every sub-procedure
 that considers whether to throw an exception.
 An equivalent `std::expected` program will have an equivalent if branch
 in every sub-procedure that considers whether to return `std::unexpected`.
-The difference is that the `try catch` checks the exception only once:
+The difference is that the `try catch` checks for an exception only once:
 when it is thrown, the control flow is interrupted and the call stack is unwound at run time.
-But the `std::expected` program checks whether it got the unexpected value from every sub-procedure call.
+On the other hand, the `std::expected` program checks whether it got the unexpected value from every sub-procedure call.
 The `std::expected` way basically doubles the number of `if` statements in the program.
 However, since the compiler knows what to expect,
 the additional `if`s in the `std::expected`-based programs are practically free.
@@ -245,10 +246,11 @@ by Vitaly Fanaskov.
 
 The largest difference is the performance in the bad path.
 When an exception is thrown, the program has to [unwind the call stack](https://learn.microsoft.com/en-us/cpp/cpp/exceptions-and-stack-unwinding-in-cpp?view=msvc-170) etc, which is a complex generic runtime-heavy and painfully slow operation.
-On the other hand, using `std::expected` leans towards functional style programming
-with practically no performance loss on the checks for the unexpected control flow path.
-However, functional style tends to pass things by value or move values.
-It can introduce more constructor calls, copies and moves than necessary.
+With `std::expected`, the bad case behavior is not much different from the good case.
+A caveat about `std::expected` is that it leans towards functional style programming.
+And typical functional style tends to pass things by value or move values.
+So, it can introduce more constructor calls, copies and moves than necessary.
+Which can be noticeable if you pass large objects.
 
 [likely]: https://en.cppreference.com/cpp/language/attributes/likely "CppReference for attribute likely"
 [weekly_cpp_220_likely]: https://www.youtube.com/watch?v=ew3wt0g99kg "C++ Weekly - Ep 220 - C++20's [[likely]] and [[unlikely]] With Practical use Case"
