@@ -86,15 +86,15 @@ they direct the CPU frontend to load code from the corresponding address
 without waiting for the condition to be resolved.
 A condition resolution can take a while,
 because it often involves reading some variable from the memory or something even slower.
-The speculative execution of branches allows the CPU to run without interruptions,
+Speculative execution of branches allows the CPU to run without interruptions,
 if the branches are predicted correctly.
 
-CPU uses different resources to handle the bad or the good case of speculative execution:
+In general, the bad and the good case of speculative execution affect the CPU in the following ways:
 * If a branch is mispredicted, the CPU has to roll back its speculative execution
 and process the correct branch.
-Which is obviously wastes a lot of resources and is bad for performance.
+Which obviously wastes a lot of resources and is bad for performance.
 It is also an issue for security.
-* If a branch is correctly predicted, but it is taken,
+* If a branch is correctly predicted and is taken,
 then the branching instruction occupies an entry in the Branch Target Buffer, BTB.
 BTB is a map from the addresses of branch instructions
 to the addresses of their expected jump targets.
@@ -105,15 +105,15 @@ It is a finite resource, and [if you use up all of BTB, the performance will deg
 When a branch instruction is not taken, it does not occupy space in BTB.
 And when the branch predictor sees a branch instruction with no entry in BTB,
 it assumes that the branch is not going to be taken.
-(This no-history case is called static branch prediciton, and the rules can be slightly more complex.
-CPU usually follows the backward taken, forward not taken rule, BTFNT.
-Which fits software loops perfectly.)
+This no-history speculation is called static branch prediciton, and the rules can be slightly more complex.
+CPUs usually follow the backward taken, forward not taken rule, BTFNT.
+Which fits loops perfectly.
+
 Hence, if the not-taken assumption is correct, it is the ideal case:
 the CPU executes the right code speculatively, and the branch does not occupy any space in BTB.
-The `[[likely]]` attribute guides the compiler to produce this ideal case for the CPU.
-
 The only thing that the CPU does with a not-taken branch instruction
 is a lookup in BTB, which is basically free.
+The `[[likely]]` attribute guides the compiler to produce this ideal case for the CPU.
 
 A collateral nice thing about the control flow with not-taken branches
 is that the execution goes through an uninterrupted sequence of instructions.
@@ -121,7 +121,7 @@ Which is generally good for the instruction prefetcher.
 Although, prefetchers are very efficient.
 It is rare to hit a case when the prefetcher is inefficient
 and makes a noticeable impact on performance.
-An example of such an edge case can be found on Intel's N150 processor
+An example of such an edge case can be found on Intel's N150 low-power processor
 [when the execution happens in a loop at a memory alignment boundary](https://stackoverflow.com/a/79740110/1420489).
 
 # Benchmarking branch predictors
@@ -145,12 +145,12 @@ And it should show that statically-predicted branches cost nothing at run time.
 
 # Related topics
 
-There are more ways to inform the CPU about the expected control flow pattern:
+There are more ways to inform the compiler about the expected control flow pattern:
 * [Profile-guided optimisation](https://en.wikipedia.org/wiki/Profile-guided_optimization).
 * [C++23 also has `std::expected`](https://en.cppreference.com/cpp/utility/expected)
 algebraic type that expresses this common semantics
 that procedures often have an expected path of behavior and a rarely taken unexpected path.
-* I guess, all the standard containers have their [`at()` functions](https://en.cppreference.com/cpp/container/vector/at)
+* I guess, all standard containers have their [`at()` functions](https://en.cppreference.com/cpp/container/vector/at)
 with the expectation to not miss the boundaries.
 The boundary check is practically free then.
 
@@ -163,12 +163,6 @@ Considering `std::expected`, it is clear that `[[likely]]` is not some brittle a
 It provides real information about the program to the compiler.
 And that is often the way how high performance is achieved:
 you do not add random hacky bits, you express the requirements of your program more precisely and explicitly.
-It is very much like in the ["Programming Pearls"](https://www.oreilly.com/library/view/programming-pearls-2nd/9780134498058/)
-example about sorting telephone numbers.
-In comparison with a library sorting algorithm,
-the custom implementation is way faster and is also simpler and clearer to maintain.
-It optimally fits the real world situation and its requirements.
-It is less generic than the library sort, sure. But that does not make it hacky.
 
 There is a nice [talk about testing SQLite by Richard Hipp on SSW conference][sqlite_reliability].
 Richard Hipp prises built-in testing harnesses.
@@ -246,11 +240,12 @@ by Vitaly Fanaskov.
 
 The largest difference is the performance in the bad path.
 When an exception is thrown, the program has to [unwind the call stack](https://learn.microsoft.com/en-us/cpp/cpp/exceptions-and-stack-unwinding-in-cpp?view=msvc-170) etc, which is a complex generic runtime-heavy and painfully slow operation.
-With `std::expected`, the bad case behavior is not much different from the good case.
+With `std::expected`, the bad case behavior is not very much different from the good case.
+
 A caveat about `std::expected` is that it leans towards functional style programming.
-And typical functional style tends to pass things by value or move values.
+In typical functional style, you tend to pass things by value or move values.
 So, it can introduce more constructor calls, copies and moves than necessary.
-Which can be noticeable if you pass large objects.
+Which can be noticeable if you pass large or complex objects.
 
 [likely]: https://en.cppreference.com/cpp/language/attributes/likely "CppReference for attribute likely"
 [weekly_cpp_220_likely]: https://www.youtube.com/watch?v=ew3wt0g99kg "C++ Weekly - Ep 220 - C++20's [[likely]] and [[unlikely]] With Practical use Case"
