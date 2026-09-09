@@ -176,7 +176,7 @@ He refers to the aviation guidelines for software
 [DO-178B](https://en.wikipedia.org/wiki/DO-178B)
 (or the newer [DO-178C](https://store.accuristech.com/standards/rtca-do-178c?product_id=2200105))
 and brings up their rule: test what you fly.
-So, SQLite has a built-in test mode. And they test it on the fly,
+So, SQLite has a built-in test mode. And they test the compiled binary on the fly,
 while changing the plugins that talk with the OS VFS in order to emulate power failures
 and that kind of things.
 
