@@ -25,7 +25,7 @@ such that the expected outcome corresponds to _not taken branches_
 and the expected control flow executes an uninterrupted sequence of instructions.
 Let's see [an example on godbolt][godbolt_shortlink]:
 
-<iframe width="800px" height="300px" style="height: 300px !important; min-height: 300px !important; max-height: 300px !important;" src="https://godbolt.org/e#g:!((g:!((g:!((h:codeEditor,i:(filename:'1',fontScale:12,fontUsePx:'0',j:1,lang:c%2B%2B,selection:(endColumn:11,endLineNumber:5,positionColumn:11,positionLineNumber:5,selectionStartColumn:11,selectionStartLineNumber:5,startColumn:11,startLineNumber:5),source:'int+big_procedure(void)+%7B%0A++++return+11%3B%0A%7D%0A%0Aint+main(int+argc,+char**+argv)+%7B%0A++++int+res+%3D+5%3B%0A%0A++++if+(argc+%3D%3D+3)%0A++++%5B%5Bunlikely%5D%5D%0A++++//%5B%5Blikely%5D%5D%0A++++%7B%0A++++++++res+%3D+big_procedure()%3B%0A++++%7D%0A%0A++++return+res%3B%0A%7D'),l:'5',n:'0',o:'C%2B%2B+source+%231',t:'0')),k:47.39123797109431,l:'4',n:'0',o:'',s:0,t:'0'),(g:!((h:compiler,i:(compiler:clang2010,filters:(b:'0',binary:'1',binaryObject:'1',commentOnly:'0',debugCalls:'1',demangle:'0',directives:'0',execute:'1',intel:'0',libraryCode:'1',trim:'0',verboseDemangling:'0'),flagsViewOpen:'1',fontScale:12,fontUsePx:'0',j:1,lang:c%2B%2B,libs:!((name:benchmark,ver:trunk)),options:'-Wall+-O3',overrides:!(),selection:(endColumn:1,endLineNumber:1,positionColumn:1,positionLineNumber:1,selectionStartColumn:1,selectionStartLineNumber:1,startColumn:1,startLineNumber:1),source:1),l:'5',n:'0',o:'+x86-64+clang+20.1.0+(Editor+%231)',t:'0')),k:52.60876202890571,l:'4',n:'0',o:'',s:0,t:'0')),l:'2',m:99.99999999999997,n:'0',o:'',t:'0')),version:4"></iframe>
+<iframe width="800px" height="350ps" style="height: 350ps !important; min-height: 350ps !important; max-height: 350ps !important;" src="https://godbolt.org/e#g:!((g:!((g:!((h:codeEditor,i:(filename:'1',fontScale:12,fontUsePx:'0',j:1,lang:c%2B%2B,selection:(endColumn:11,endLineNumber:5,positionColumn:11,positionLineNumber:5,selectionStartColumn:11,selectionStartLineNumber:5,startColumn:11,startLineNumber:5),source:'int+big_procedure(void)+%7B%0A++++return+11%3B%0A%7D%0A%0Aint+main(int+argc,+char**+argv)+%7B%0A++++int+res+%3D+5%3B%0A%0A++++if+(argc+%3D%3D+3)%0A++++%5B%5Bunlikely%5D%5D%0A++++//%5B%5Blikely%5D%5D%0A++++%7B%0A++++++++res+%3D+big_procedure()%3B%0A++++%7D%0A%0A++++return+res%3B%0A%7D'),l:'5',n:'0',o:'C%2B%2B+source+%231',t:'0')),k:47.39123797109431,l:'4',n:'0',o:'',s:0,t:'0'),(g:!((h:compiler,i:(compiler:clang2010,filters:(b:'0',binary:'1',binaryObject:'1',commentOnly:'0',debugCalls:'1',demangle:'0',directives:'0',execute:'1',intel:'0',libraryCode:'1',trim:'0',verboseDemangling:'0'),flagsViewOpen:'1',fontScale:12,fontUsePx:'0',j:1,lang:c%2B%2B,libs:!((name:benchmark,ver:trunk)),options:'-Wall+-O3',overrides:!(),selection:(endColumn:1,endLineNumber:1,positionColumn:1,positionLineNumber:1,selectionStartColumn:1,selectionStartLineNumber:1,startColumn:1,startLineNumber:1),source:1),l:'5',n:'0',o:'+x86-64+clang+20.1.0+(Editor+%231)',t:'0')),k:52.60876202890571,l:'4',n:'0',o:'',s:0,t:'0')),l:'2',m:99.99999999999997,n:'0',o:'',t:'0')),version:4"></iframe>
 
 The C++ source:
 ```cpp
@@ -89,13 +89,15 @@ because it often involves reading some variable from the memory or something eve
 The speculative execution of branches allows the CPU to run without interruptions,
 if the branches are predicted correctly.
 
-There are generally two groups of CPU resources that are involved in the speculative execution of branches:
-* If the branch is mispredicted, the CPU has to roll back its speculative execution.
-Which is as bad as it sounds for performance, and is also an issue for security.
-* If the branches are correctly predicted, but they are taken,
-then the branching instructions occupy entries in the Branch Target Buffer, BTB.
-BTB is a map from the addresses of branch instructions to the addresses
-of their expected jump targets.
+CPU uses different resources to handle the bad or the good case of speculative execution:
+* If a branch is mispredicted, the CPU has to roll back its speculative execution
+and process the correct branch.
+Which is obviously wastes a lot of resources and is bad for performance.
+It is also an issue for security.
+* If a branch is correctly predicted, but it is taken,
+then the branching instruction occupies an entry in the Branch Target Buffer, BTB.
+BTB is a map from the addresses of branch instructions
+to the addresses of their expected jump targets.
 BTBs are pretty large and can track multiple patterns of branching in the control flow.
 But, of course, BTB is limited in size.
 It is a finite resource, and [if you use up all of BTB, the performance will degrade](https://stackoverflow.com/questions/38811901/slow-jmp-instruction).
@@ -103,12 +105,12 @@ It is a finite resource, and [if you use up all of BTB, the performance will deg
 When a branch instruction is not taken, it does not occupy space in BTB.
 And when the branch predictor sees a branch instruction with no entry in BTB,
 it assumes that the branch is not going to be taken.
-(This no-history case is called static branch prediciton, and the rules can be more complex.
-CPU can follow the backward taken, forward not taken rule, BTFNT.
-Which kind of fits software loops perfectly.)
+(This no-history case is called static branch prediciton, and the rules can be slightly more complex.
+CPU usually follows the backward taken, forward not taken rule, BTFNT.
+Which fits software loops perfectly.)
 Hence, if the not-taken assumption is correct, it is the ideal case:
-the CPU executes the right code, and the branch does not occupy any space in BTB.
-The `[[likely]]` attribute guides the CPU towards this ideal case.
+the CPU executes the right code speculatively, and the branch does not occupy any space in BTB.
+The `[[likely]]` attribute guides the compiler to produce this ideal case for the CPU.
 
 The only thing that the CPU does with a not-taken branch instruction
 is a lookup in BTB, which is basically free.
@@ -116,16 +118,18 @@ is a lookup in BTB, which is basically free.
 A collateral nice thing about the control flow with not-taken branches
 is that the execution goes through an uninterrupted sequence of instructions.
 Which is generally good for the instruction prefetcher.
-Although,
-a noticeable impact on performance probably shows up only in rare edge cases,
-for example [when the execution happens in a loop at a memory alignment boundary](https://stackoverflow.com/a/79740110/1420489).
+Although, prefetchers are very efficient.
+It is rare to hit a case when the prefetcher is inefficient
+and makes a noticeable impact on performance.
+An example of such an edge case can be found on Intel's N150 processor
+[when the execution happens in a loop at a memory alignment boundary](https://stackoverflow.com/a/79740110/1420489).
 
 # Benchmarking branch predictors
 
 [Chips and Cheese](https://chipsandcheese.com/)
 include an evaluation of branch prediction performance
 in their review articles of different processor models,
-for example such as [this article on E-cores in Intel Lunar Lake](https://chipsandcheese.com/i/149874004/frontend-branch-prediction).
+such as [this article on E-cores in Intel Lunar Lake](https://chipsandcheese.com/i/149874004/frontend-branch-prediction).
 They estimate
 how many branch instructions
 and how many different branching patterns can be sustained by the branch predictor
@@ -150,7 +154,7 @@ that procedures often have an expected path of behavior and a rarely taken unexp
 with the expectation to not miss the boundaries.
 The boundary check is practically free then.
 
-There is a good talk about `std::expected` by Andrei ALexandrescu on CppCon 2018:
+There is a good talk about `std::expected` by Andrei Alexandrescu on CppCon 2018:
 ["Expect the expected"](https://www.youtube.com/watch?v=PH4WBuE1BHI).
 He meantions that it is pointless to worry about the performance impact of boundary checks,
 considering the modern processing hardware.
