@@ -127,7 +127,7 @@ An example of such an edge case can be found on Intel's N150 processor
 # Benchmarking branch predictors
 
 [Chips and Cheese](https://chipsandcheese.com/)
-include an evaluation of branch prediction performance
+include evaluations of branch prediction performance
 in their review articles of different processor models,
 such as [this article on E-cores in Intel Lunar Lake](https://chipsandcheese.com/i/149874004/frontend-branch-prediction).
 They estimate
