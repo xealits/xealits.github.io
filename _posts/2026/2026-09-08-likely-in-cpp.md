@@ -172,14 +172,15 @@ It is less generic than the library sort, sure. But that does not make it hacky.
 
 There is a nice [talk about testing SQLite by Richard Hipp on SSW conference][sqlite_reliability].
 Richard Hipp prises built-in testing harnesses.
-He refers to the aviation guidelines [DO-178B](https://en.wikipedia.org/wiki/DO-178B)
+He refers to the aviation guidelines for software
+[DO-178B](https://en.wikipedia.org/wiki/DO-178B)
 (or the newer [DO-178C](https://store.accuristech.com/standards/rtca-do-178c?product_id=2200105))
-for software (and everything else): test what you fly.
-So, SQLite has built-in test mode. And they test it on the fly,
+and brings up their rule: test what you fly.
+So, SQLite has a built-in test mode. And they test it on the fly,
 while changing the plugins that talk with the OS VFS in order to emulate power failures
 and that kind of things.
 
-The ability to pass the `[[likely]]` info to the compiler is useful here.
+The ability to pass the `[[likely]]` control flow info to the compiler is useful here.
 You can embed a run time test-mode with no cost for the nominal program execution.
 
 ## Exception handling
