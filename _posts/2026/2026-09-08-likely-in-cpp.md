@@ -177,6 +177,12 @@ and that kind of things.
 The ability to pass the `[[likely]]` control flow info to the compiler is useful here.
 You can embed a run time test-mode with no cost for the nominal program execution.
 
+More information about the runtime expectations can be passed to the compiler
+with the [`[[assume]]` attribute](https://en.cppreference.com/cpp/language/attributes/assume).
+The assumptions of the attribute can lead to undefined behavior.
+So, it should be used with care.
+Here is a [minimal godbolt example](https://godbolt.org/z/j7WfTafhP) showing it at work.
+
 ## Exception handling
 
 A big group of rarely-taken paths in programs are exceptions.
