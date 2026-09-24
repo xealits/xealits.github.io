@@ -229,35 +229,37 @@ either under `if` or `else`, depending on the `constexpr bool`.
 So, the compiler assumes that the exception throw is unexpected, as it should be.
 
 In general, the `try catch` way should be optimal for the happy path.
-A `try catch` program has to take an `if` branch inside every sub-procedure
-that considers whether to throw an exception.
-An equivalent `std::expected` program will have an equivalent if branch
-in every sub-procedure that considers whether to return `std::unexpected`.
-The difference is that the `try catch` checks for an exception only once:
-when it is thrown, the control flow is interrupted and the call stack is unwound at run time.
-On the other hand, the `std::expected` program checks whether it got the unexpected value from every sub-procedure call.
-The `std::expected` way basically doubles the number of `if` statements in the program.
+Both `try catch` and `std::expected`-based programs have to take a mandatory `if`
+branch inside every sub-procedure that considers whether to throw an exception.
+The difference is that the `try catch` does not check for an exception in the happy path,
+while
+the `std::expected` program checks whether it got the unexpected value from every sub-procedure call.
+The `std::expected` way basically doubles the number of `if` statements in the
+happy path of the execution.
 However, since the compiler knows what to expect,
-the additional `if`s in the `std::expected`-based programs are practically free.
-And the happy path performance should be optimal with either exceptions or `std::expected`.
-
-There are more differences between exceptions and `std::expected`.
-An overview and a performance example can be found in the CppCon 2025 talk
-["Can std::expected with Monadic Operations REALLY Boost Your C++ Code Performance?"](https://youtu.be/cjw26MLaCCc?is=VU2trWAlNlIP9jKi)
-by Vitaly Fanaskov.
-(Although, I am not sure whether his happy path benchmark is entirely correct.
-It seems that the `try catch` example makes unnecessary copies or moves,
-which make it somewhat slower.)
-
-The largest difference is the performance in the bad path.
-When an exception is thrown, the program has to [unwind the call stack](https://learn.microsoft.com/en-us/cpp/cpp/exceptions-and-stack-unwinding-in-cpp?view=msvc-170).
-Which is a complex generic runtime-heavy and painfully slow operation.
-With `std::expected`, the bad case behavior is not very much different from the good case.
+the additional `if`s in the `std::expected`-based programs are generated in the
+optimal way that is practically free.
+And the happy path performance should be very similar with either exceptions or `std::expected`.
 
 A caveat about `std::expected` is that it leans towards functional style programming.
 In typical functional style, you tend to pass things by value or move values.
 So, it can introduce more constructor calls, copies and moves than necessary.
 Which can be noticeable if you pass large or complex objects.
+
+But the largest difference is the performance in the bad path.
+When an exception is thrown, the program has to [unwind the call stack](https://learn.microsoft.com/en-us/cpp/cpp/exceptions-and-stack-unwinding-in-cpp?view=msvc-170).
+Which is a complex generic runtime-heavy and painfully slow operation.
+Just the fact that there is a huge timing difference between the good and the bad
+paths of the exceptions-based programs can be a deal-breaker in many applications.
+With `std::expected`, the bad case behavior is not very much different from the good case.
+
+The differences between exceptions and `std::expected`
+and a performance benchmark example can be found in the CppCon 2025 talk
+["Can std::expected with Monadic Operations REALLY Boost Your C++ Code Performance?"](https://youtu.be/cjw26MLaCCc?is=VU2trWAlNlIP9jKi)
+by Vitaly Fanaskov.
+(Although, I am not sure whether his happy path benchmark is entirely correct.
+It seems that the `try catch` example makes unnecessary copies or moves,
+which make it somewhat slower.)
 
 [likely]: https://en.cppreference.com/cpp/language/attributes/likely "CppReference for attribute likely"
 [weekly_cpp_220_likely]: https://www.youtube.com/watch?v=ew3wt0g99kg "C++ Weekly - Ep 220 - C++20's [[likely]] and [[unlikely]] With Practical use Case"
