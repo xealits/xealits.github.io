@@ -117,11 +117,11 @@ The only thing that the CPU does with a not taken branch instruction
 is a lookup in BTB, which is basically free.
 The `[[likely]]` attribute guides the compiler to produce this ideal case for the CPU.
 
-A collateral nice thing about the control flow with not taken branches
+A collateral nice thing about a control flow with not taken branches
 is that the execution goes through an uninterrupted sequence of instructions.
-Which is generally good for the instruction prefetcher.
+Which is generally good for the CPU instruction fetcher.
 Although,
-prefetchers are usually so efficient
+fetchers are usually so efficient
 that it is hard to hit a case when their performance noticeably degrades.
 An example of such an edge case can be found on Intel's N150 low-power processor
 [when the execution happens in a loop at a memory alignment boundary](https://stackoverflow.com/a/79740110/1420489).
@@ -139,7 +139,8 @@ without the program losing performance.
 
 These characteristics depend on the size of BTB.
 And not taken branches do not take any space in BTB.
-It could be interesting to somehow factor out the effect of statically-predicted branches.
+It could be interesting to somehow factor out and demonstrate
+the effect of statically-predicted branches.
 For example,
 rerun their benchmark for the branching patterns,
 but fix the pattern at compile time and compile with profile-guided optimization.
@@ -160,8 +161,9 @@ The boundary check is practically free then.
 
 There is a good presentation of `std::expected` by Andrei Alexandrescu:
 ["Expect the expected"](https://www.youtube.com/watch?v=PH4WBuE1BHI) on CppCon 2018.
-He meantions that it is pointless to worry about the performance impact of boundary checks,
-considering modern processing hardware.
+He meantions that
+modern processing hardware
+makes it practically pointless to worry about the performance impact of boundary checks.
 
 There is a nice [talk about testing SQLite by Richard Hipp on the SSW conference][sqlite_reliability].
 Richard Hipp prises built-in testing harnesses.
@@ -178,11 +180,12 @@ You can embed a run-time test mode with no cost for the nominal program executio
 
 More information about the run-time expectations can be passed to the compiler
 with [the `[[assume]]` attribute](https://en.cppreference.com/cpp/language/attributes/assume).
-You can pass some facts from a hardware specification to the compiler like that.
-Here are a couple [minimal examples on godbolt](https://godbolt.org/z/vEYjPc3Gn).
+If you work with some special hardware,
+you can pass facts from the hardware specification to the compiler like that.
+[Here are links to godbolt](https://godbolt.org/z/vEYjPc3Gn) with a couple minimal examples.
 Notice that the assumptions of the attribute can lead to undefined behavior,
-like in the examples where the compiler optimizes away whole `if` statements.
-So, it should be used with care.
+like when the compiler optimizes away whole `if` statements in the examples.
+This attribute must be used with care.
 
 ## Exception handling
 
@@ -197,7 +200,7 @@ There are two main mechanisms for the exceptions that are handled by the program
 to handle it in a corresponding `catch(){}` block,
 * or use the `std::unexpected` part of a `std::expected` return value.
 
-In either case, the semantics is clear on which control path is to expect and which is not.
+In either case, the semantics is clear on which control path is expected and which is not.
 Compilers can detect when an `if` branch leads to a `throw` and generate the code accordingly.
 At least, that is the case in the [following example as seen on godbolt](https://godbolt.org/z/nvs4Wo8K9):
 ```cpp
@@ -243,9 +246,9 @@ The `std::expected` way basically doubles the number of `if` statements in the
 happy path of the execution.
 However, since the compiler knows what to expect,
 the additional branches in the `std::expected`-based programs are generated in
-the optimal way and should be practically free.
+the optimal way and should be almost free.
 Both the exceptions and the `std::expected`
-should have a very similar happy path performance.
+should have very similar performance in the happy path.
 
 A caveat about `std::expected` is that it leans towards functional style programming.
 In typical functional style, you tend to pass things by value or move values.
@@ -263,10 +266,12 @@ With `std::expected`, the bad case behavior is not very much different from the 
 The differences between exceptions and `std::expected`
 and a performance benchmark example can be found in
 [the CppCon 2025 talk by Vitaly Fanaskov](https://youtu.be/cjw26MLaCCc?is=VU2trWAlNlIP9jKi "Can std::expected with Monadic Operations REALLY Boost Your C++ Code Performance?").
-The presented bad path benchmark is quite compelling.
-But I am not sure whether the presented happy path benchmark is entirely correct.
+The presented bad path benchmark is quite compelling
+and reveals the difference sharply.
+I am not sure whether the presented happy path benchmark is entirely correct.
 It seems like the `try catch` example makes unnecessary copies or moves,
 which make it somewhat slower.
+But the overall happy path behavior is very similar in both cases.
 
 # Wrap up
 
