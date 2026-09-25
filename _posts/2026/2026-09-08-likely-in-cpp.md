@@ -8,11 +8,11 @@ tags: c++ cpu performance
 <summary>
 <a href="https://en.cppreference.com/cpp/language/attributes/likely">Attribute <code class="language-cpp highlighter-rouge">[[likely]]</code></a>
 is a good minimal example
-of how software can exploit processor features for maximum performance
+of how software can leverage processor features to achieve maximum performance
 by providing more information about the program to the compiler.
 This post shows an example how <code>[[likely]]</code> affects
-the compiled machine code,
-points out how it improves utilisation of CPU branch predictors,
+compiled machine code,
+discusses how it improves utilisation of CPU branch predictors,
 and brings up a couple topics in C++ program design where it is useful.
 </summary>
 
@@ -276,7 +276,7 @@ It is not some brittle ad-hoc hack to tune the performance.
 It helps to fully express semantics of such constructions as `std::expected`.
 And that is often the way how high performance is achieved:
 you do not add random hacky bits,
-you express the requirements of your program more precisely and explicitly.
+you express your program more precisely and explicitly.
 
 The `[[likely]]` attribute also serves as a good primer
 on how CPU features support common patterns of software behavior,
