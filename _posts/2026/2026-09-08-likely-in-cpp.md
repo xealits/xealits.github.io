@@ -12,8 +12,8 @@ of how software can exploit processor features for maximum performance
 by providing more information about the program to the compiler.
 This post shows an example how <code>[[likely]]</code> affects
 the compiled machine code,
-talks about how it helps CPU branch predictors,
-and points out some of related topics in C++ program design.
+points out how it improves utilisation of CPU branch predictors,
+and brings up a couple topics in C++ program design where it is useful.
 </summary>
 
 [The `[[likely]]` and `[[unlikely]]` attributes][likely] tell the compiler
@@ -81,25 +81,25 @@ based on the hint from the provided `[[likely]]` attribute.
 # Branch predictors and corresponding CPU resources
 
 Modern CPUs contain sophisticated branch predictor units.
-The branch predictors speculatively assume
+The branch predictors speculate
 whether a given branch instruction might be taken (the control flow might jump to another address in the program)
 and
-they direct the CPU frontend to load code from the corresponding address
+they accordingly direct the CPU frontend to load code from the corresponding address
 without waiting for the condition to be resolved.
 A condition resolution can take a while,
-because it often involves reading some variable from the memory or something even slower.
+because it often involves reading some variable from the memory or doing something slower.
 Speculative execution of branches allows the CPU to run without interruptions,
 if the branches are predicted correctly.
 
 In general, the bad and the good case of speculative execution affect the CPU in the following ways:
-* If a branch is mispredicted, the CPU has to roll back its speculative execution
+* If a branch is mispredicted, the CPU has to roll back the speculative execution
 and process the correct branch.
 Which obviously wastes a lot of resources and is bad for performance.
 It is also an issue for security.
 * If a branch is correctly predicted and is taken,
 then the branching instruction occupies an entry in the Branch Target Buffer, BTB.
 BTB is a map from the addresses of branch instructions
-to the addresses of their expected jump targets.
+to the addresses of the jump targets.
 BTBs are pretty large and can track multiple patterns of branching in the control flow.
 But, of course, BTB is limited in size.
 It is a finite resource, and [if you use up all of BTB, the performance will degrade](https://stackoverflow.com/questions/38811901/slow-jmp-instruction).
@@ -121,7 +121,7 @@ A collateral nice thing about the control flow with not taken branches
 is that the execution goes through an uninterrupted sequence of instructions.
 Which is generally good for the instruction prefetcher.
 Although,
-prefetchers are usually so efficient,
+prefetchers are usually so efficient
 that it is hard to hit a case when their performance noticeably degrades.
 An example of such an edge case can be found on Intel's N150 low-power processor
 [when the execution happens in a loop at a memory alignment boundary](https://stackoverflow.com/a/79740110/1420489).
@@ -154,12 +154,12 @@ algebraic type that expresses this common semantics
 that procedures often have an expected path of behavior
 and a rarely taken unexpected path where some run-time exception has to be handled.
 * I guess, all standard containers already use `[[likely]]` and
-have their [`at()` functions](https://en.cppreference.com/cpp/container/vector/at)
-with the expectation to not miss the boundaries.
+set the expectation for the [`at()` functions](https://en.cppreference.com/cpp/container/vector/at)
+to not miss the boundaries.
 The boundary check is practically free then.
 
-There is a good talk about `std::expected` by Andrei Alexandrescu on CppCon 2018:
-["Expect the expected"](https://www.youtube.com/watch?v=PH4WBuE1BHI).
+There is a good presentation of `std::expected` by Andrei Alexandrescu:
+["Expect the expected"](https://www.youtube.com/watch?v=PH4WBuE1BHI) on CppCon 2018.
 He meantions that it is pointless to worry about the performance impact of boundary checks,
 considering modern processing hardware.
 
@@ -173,8 +173,8 @@ So, SQLite has a built-in test mode. And they test the compiled binary on the fl
 while changing the plugins that talk with the OS VFS in order to emulate power failures
 and that kind of things.
 
-The ability to pass the `[[likely]]` control flow info to the compiler is useful here.
-You can embed a run-time test-mode with no cost for the nominal program execution.
+The ability to pass the `[[likely]]` control flow info to the compiler is useful in this case.
+You can embed a run-time test mode with no cost for the nominal program execution.
 
 More information about the run-time expectations can be passed to the compiler
 with [the `[[assume]]` attribute](https://en.cppreference.com/cpp/language/attributes/assume).
@@ -238,14 +238,13 @@ Both `try catch` and `std::expected`-based programs have to take a mandatory `if
 branch inside every sub-procedure that considers whether to throw an exception.
 The difference is that the `try catch` does not check for an exception in the happy path,
 while
-the `std::expected` program checks whether it got the unexpected value from every sub-procedure call.
+the `std::expected` program checks whether it got an unexpected value from every sub-procedure call.
 The `std::expected` way basically doubles the number of `if` statements in the
 happy path of the execution.
 However, since the compiler knows what to expect,
 the additional branches in the `std::expected`-based programs are generated in
 the optimal way and should be practically free.
-Therefore,
-both the exceptions and the `std::expected`
+Both the exceptions and the `std::expected`
 should have a very similar happy path performance.
 
 A caveat about `std::expected` is that it leans towards functional style programming.
@@ -263,25 +262,25 @@ With `std::expected`, the bad case behavior is not very much different from the 
 
 The differences between exceptions and `std::expected`
 and a performance benchmark example can be found in
-[the CppCon 2025 talk by Vitaly Fanaskov](https://youtu.be/cjw26MLaCCc?is=VU2trWAlNlIP9jKi "Can std::expected with Monadic Operations REALLY Boost Your C++ Code Performance?")
+[the CppCon 2025 talk by Vitaly Fanaskov](https://youtu.be/cjw26MLaCCc?is=VU2trWAlNlIP9jKi "Can std::expected with Monadic Operations REALLY Boost Your C++ Code Performance?").
 The presented bad path benchmark is quite compelling.
-Although, I am not sure whether the presented happy path benchmark is entirely correct.
-It seems that the `try catch` example makes unnecessary copies or moves,
+But I am not sure whether the presented happy path benchmark is entirely correct.
+It seems like the `try catch` example makes unnecessary copies or moves,
 which make it somewhat slower.
 
 # Wrap up
 
 The `[[likely]]` attribute
 provides real information about the program to the compiler.
-It helps to fully express the semantics of such constructions as `std::expected`.
 It is not some brittle ad-hoc hack to tune the performance.
+It helps to fully express semantics of such constructions as `std::expected`.
 And that is often the way how high performance is achieved:
 you do not add random hacky bits,
 you express the requirements of your program more precisely and explicitly.
 
 The `[[likely]]` attribute also serves as a good primer
 on how CPU features support common patterns of software behavior,
-and how well fitted software-hardware systems achieve optimal performance.
+and how well-fitted software-hardware systems achieve optimal performance.
 
 [likely]: https://en.cppreference.com/cpp/language/attributes/likely "CppReference for attribute likely"
 [weekly_cpp_220_likely]: https://www.youtube.com/watch?v=ew3wt0g99kg "C++ Weekly - Ep 220 - C++20's [[likely]] and [[unlikely]] With Practical use Case"
