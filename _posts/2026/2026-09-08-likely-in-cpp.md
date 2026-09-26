@@ -67,7 +67,7 @@ main:
   ret
 ```
 
-The compiler puts the _likely_ control path into a single uninterupted sequence
+The compiler puts the _likely_ control path into a single uninterrupted sequence
 of instructions, from `main:` to its `ret`.
 The unlikely path is behind a conditional jump.
 
@@ -107,11 +107,11 @@ It is a finite resource, and [if you use up all of BTB, the performance will deg
 When a branch instruction is not taken, it does not occupy space in BTB.
 And when the branch predictor sees a branch instruction with no entry in BTB,
 it assumes that the branch is not going to be taken.
-This no-history speculation is called static branch prediciton, and the rules can be slightly more complex.
+This no-history speculation is called static branch prediction, and the rules can be slightly more complex.
 CPUs usually follow the backward taken, forward not taken rule, BTFNT.
 (Which fits loops perfectly.)
 
-Hence, if the static not-taken assumption is correct, it is the ideal case:
+If the static not-taken assumption is correct, it is the ideal case:
 the CPU executes the right code speculatively, and the branch does not occupy any space in BTB.
 The only thing that the CPU does with a not taken branch instruction
 is a lookup in BTB, which is basically free.
@@ -159,13 +159,18 @@ set the expectation for the [`at()` functions](https://en.cppreference.com/cpp/c
 to not miss the boundaries.
 The boundary check is practically free then.
 
-There is a good presentation of `std::expected` by Andrei Alexandrescu:
-["Expect the expected"](https://www.youtube.com/watch?v=PH4WBuE1BHI) on CppCon 2018.
-He meantions that
+For the semantics and motivation of `std::expected`,
+check out the
+["Expect the expected"](https://www.youtube.com/watch?v=PH4WBuE1BHI)
+presentation
+by Andrei Alexandrescu
+on CppCon 2018.
+He mentions along the way that
 modern processing hardware
 makes it practically pointless to worry about the performance impact of boundary checks.
 
-There is a nice [talk about testing SQLite by Richard Hipp on the SSW conference][sqlite_reliability].
+There is a nice talk ["Reliability Lessons From SQLite"][sqlite_reliability]
+by Richard Hipp on the SSW conference.
 Richard Hipp prises built-in testing harnesses.
 He refers to the aviation guidelines for software
 [DO-178B](https://en.wikipedia.org/wiki/DO-178B)
