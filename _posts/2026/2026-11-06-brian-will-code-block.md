@@ -8,19 +8,136 @@ tags: c++
 <summary>
 Back 10 years ago, Brian Will made a series of YouTube posts
 on various practical issues in programming.
-In the video on OOP,
+In a video on OOP,
 he suggested
-<a hreff="https://www.youtube.com/watch?v=QM1iUe6IofM&t=2435s">a "code block" language feature</a>
+<a hreff="https://www.youtube.com/watch?v=QM1iUe6IofM&t=2435s">
+a "code block" language feature</a>
 that works as
 "an anonymous function that does not see anything in its enclosing scope".
 Such code blocks are useful for structuring long procedures,
-expressing the logic more explicitly in the lexical structure.
-C++11 introduced lambdas with very similar name scoping rules.
-Since then, C++ lambdas got improved and expanded into quite a capable semantic vehicle.
+using the lexical name scoping to better express the logic.
+<a hreff="https://en.cppreference.com/cpp/language/lambda">
+C++11 introduced lambdas</a> with very similar scoping rules.
+Since then, C++ lambdas got improved and extended.
+It is quite a capable feature of the language.
 This post takes a look at lambdas
-as a tool to structure sections of code.
+as a means to write more expressive code sections.
 </summary>
 
+Brian Will suggested anonymous and immediately-called functions
+that work like the following pseudocode:
+```
+function MyFunc() {
+  int x, y;
+
+  a = use x {
+    // sees only a copy or a reference of x from the outer name scope
+    println("got x = {}", x);
+    user_input = getln("enter factor: ");
+    return x * user_input;
+  }
+
+  // further procedure on a, x, y
+}
+```
+
+The `use <names>` block limits the visible outer scope names to the explicit list.
+And it can return a value.
+
+The C++ lambdas are anonymous functions that follow very similar scoping rules.
+A basic lambda looks like this: `[captures] (params) {body}`.
+The visible outer names are defined by
+[the lambda captures](https://en.cppreference.com/cpp/language/lambda#Lambda_capture):
+> The captures defines the outside variables that are accessible from within the lambda function body.
+
+So, you can explicitly define what the lambda sees from the outer scope:
+```cpp
+#include <iostream>
+
+int main() {
+  // a long procedure with many stages
+  int x = 5, y = 10;
+
+  // one of sub-procedures
+  auto a = [x] (void) {
+    // x is there:
+    std::cout << "got x = " << x << "\n";
+    // y is not captured:
+    //std::cout << "got y = " << y << "\n";
+
+    std::cout << "enter a factor: ";
+    int input_factor; // un-initialized
+    std::cin >> input_factor;
+    if (std::cin.fail()) {...}
+
+    return x * input_factor;
+  } (); // don't forget to call the lambda
+
+  // further procedure on a, x, y
+}
+```
+
+The global namespace is visible inside the lambda body.
+For example, `std::cout` and `std::cin` are visible.
+Internally, lambdas are sort of anonymous objects
+that are declared in the global scope.
+But it also makes sense semantically:
+the global namespace is sort of the language of the program.
+So, it is reasonable that everything in the program can talk that language.
+
+The `[x]` captures `x` by copy, but you still cannot modify it in this lambda:
+```cpp
+auto a = [x] (void) {
+  ...
+  // return x * input_factor;
+  x *= input_factor;
+  std::cout << "modified x inside the lambda to: " << x << "\n";
+  return x;
+} ();
+
+// clang:
+// error: cannot assign to a variable captured by copy in a non-mutable lambda
+// |     x *= input_factor;
+// |     ~ ^
+```
+
+The point is that lambda's `operator ()` is `const` by default.
+And the captures are like members of the lambda object.
+You can declare lambdas with the `mutable` specifier to avoid the `const` function call:
+```cpp
+auto a = [x] (void) mutable {
+  ...
+  // return x * input_factor;
+  x *= input_factor;
+  std::cout << "modified x inside the lambda to: " << x << "\n";
+  return x;
+} ();
+```
+
+Another option is to pass `x` as a simple argument:
+```cpp
+auto a = [] (auto x) {
+  x *= input_factor;
+  std::cout << "modified x inside the lambda to: " << x << "\n";
+  return x;
+} (x);
+```
+
+It is a bit cumbersome to write `x` two times.
+An overall, the lambda captures are a better fit for the procedural style of writing
+that Brian Will suggested.
+What you want is just the usual `{...}` compound statements
+with a fine and explicit control of the name scope.
+And lambdas provide exactly that.
+
+There are caveats though.
+For example, lamdas are not called immediately.
+They are not tailor-made to enhance the compound statements.
+Instead, lambdas combine a bunch of already existing and known C++ features
+into a useful multi-use semantics.
+Which is a reasonable and practical choice for the language development.
+
+# outline and "surface area of the code"
 
 * Introduce what Brian Will was talking about.
 Rewatch his description of the code blocks. - Done.
@@ -33,24 +150,6 @@ Re-check the definitions.
 He suggests defining anonymous functions inside other functions,
 but limit the name scope that they see.
 He writes pseudocode (based on Go?), which means the following:
-```
-function MyFunc() {
-  int x, y;
-
-  // we want to execute an anonymous function here
-  function () {
-    // but the anonymous function does see x and y
-    // - I am not sure, is that how sub-functions in Go or Javascript work?
-    // it is true for C++ code blocks {}
-  } ();
-}
-
-a = use x, y {
-  ...
-  // sees only x and y copies or references from the outer name scope
-  return x + y;
-}
-```
 
 Brian Will [points out](https://youtu.be/QM1iUe6IofM?t=1955) a good idea of "surface area of the code".
 When you split large functions into small ones, you increase the surface area for no good reason.
@@ -116,8 +215,6 @@ then with lambdas for getting output from the code blocks,
 then you want to test it,
 you want to express the fact that the functionality and the interface factor out.
 
-
-# Name scope of a C++ lambda
 
 
 # Jotted down idioms:
