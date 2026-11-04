@@ -71,7 +71,7 @@ int main() {
     if (std::cin.fail()) {...}
 
     return x * input_factor;
-  } (); // don't forget to call the lambda
+  } (); // call the lambda immediately
 
   // further procedure on a, x, y
 }
@@ -79,11 +79,14 @@ int main() {
 
 The global namespace is visible inside the lambda body.
 For example, `std::cout` and `std::cin` are visible.
-Internally, lambdas are sort of anonymous objects
-that are declared in the global scope.
-But it also makes sense semantically:
+Which makes sense semantically:
 the global namespace is sort of the language of the program.
 So, it is reasonable that everything in the program can talk that language.
+Also, lambdas are implemented as anonymous structs
+that are declared in the global scope.
+Lambdas are a sort of syntactic sugar that
+works as a shortcut to
+a bunch of nicely put together basic C++ features.
 
 The `[x]` captures `x` by copy, but you still cannot modify it in this lambda:
 ```cpp
@@ -132,16 +135,15 @@ And lambdas provide exactly that.
 
 There are small differences with the `use` block.
 For example, lamdas are not called immediately.
-They are just not a tailor-made enhanced version of the compound statements.
+They are just not tailor-made to enhance compound statements.
 Instead, lambdas combine a bunch of already existing and known C++ features
-into a closure semantics that serves many use-cases.
-Which is a reasonable and practical choice for the language development.
+for building anonymous closures and serving many use-cases.
 
 
 # Expressive code blocks
 
-One simple and nice thing you can do with a lambda is
-a clean initialization procedure of a `const` value:
+One simple and nice thing that you can do with a lambda is
+a clean initialization procedure for a `const` value:
 ```cpp
 // in a really simple case:
 const int simple_value = condition ? 0 : 1;
