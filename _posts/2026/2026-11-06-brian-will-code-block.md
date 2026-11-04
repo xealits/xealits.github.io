@@ -130,91 +130,136 @@ What you want is just the usual `{...}` compound statements
 with a fine and explicit control of the name scope.
 And lambdas provide exactly that.
 
-There are caveats though.
+There are small differences with the `use` block.
 For example, lamdas are not called immediately.
-They are not tailor-made to enhance the compound statements.
+They are just not a tailor-made enhanced version of the compound statements.
 Instead, lambdas combine a bunch of already existing and known C++ features
-into a useful multi-use semantics.
+into a closure semantics that serves many use-cases.
 Which is a reasonable and practical choice for the language development.
 
-# outline and "surface area of the code"
 
-* Introduce what Brian Will was talking about.
-Rewatch his description of the code blocks. - Done.
-* Introduce the name scoping rules of C++ lambdas.
-Re-check the definitions.
-  - Point out that the global name space is still visible.
-  Show that the static file scope and the global scope are visible.
-* Go for the idiom. The point is to structure a procedure.
+# Expressive code blocks
 
-He suggests defining anonymous functions inside other functions,
-but limit the name scope that they see.
-He writes pseudocode (based on Go?), which means the following:
+One simple and nice thing you can do with a lambda is
+a clean initialization procedure of a `const` value:
+```cpp
+// in a really simple case:
+const int simple_value = condition ? 0 : 1;
 
-Brian Will [points out](https://youtu.be/QM1iUe6IofM?t=1955) a good idea of "surface area of the code".
-When you split large functions into small ones, you increase the surface area for no good reason.
-This is exceellent.
+// in more complex cases:
+const int complex_value = [&condition](void) {
+  int res;
+  SomeTempValue temp1, temp2;
+  ...
+  return res;
+} ();
+```
 
-One issue with it is testability.
-When you expose a larger surface area than what is actually used,
-you expose more internals for the testing tools.
-That's probably what is meant sometimes when people say "write programs that are testable".
-However, I'd argue that it is not a good idea to expose more interface than is actually used,
-just because that is the only way to get testing tools to run on internal control flow branches.
-It is not great to modify the logic of the program, its interface surfaces,
-just to fit a testing tool.
-It would show more green checkmarks, sure. But what is the value in those checkmarks?
-Also, could there be another way to test, that reaches internal structures somehow?
+It is nice because the code says exactly what it does
+and
+the name scoping also contributes to saying what the code does.
+The lambda pocedure takes only a `const` reference of the `condition` from the outer scope,
+executes some procedure without leaking its internal variable names,
+and returns a value for the initialization of the `const` variable.
+It also profits from the [return value optimization](https://en.cppreference.com/cpp/language/copy_elision)
+and constructs the `complex_value` only once, inside the lambda.
+You can check it with the following `Lifetime` struct:
 
-The issue here, if the program exposes only the minimal interface of its own logic,
-then the tests must be able to reach all the internal control flow branches.
-And if a procedure is large and there are many branches, the combinatorics of
-internal branchs grows fast, even if the internal structure of the procedure is trivial.
-In principle, breaking stuff up into small units works against this combinatorics.
-Even if a large procedure is a trivial combination of small sub-procedures,
-the testing tool does not know that. The tool sees the interface of a large procedure,
-and it does not know that the interface somehow factors out.
-So, in order to test some internal branch,
-it has to pass the inputs that affect that branch together with each variant of all other inputs.
+```cpp
+#include <iostream>
 
-The unitification of functions, splitting them into small units,
-expresses how the internal functionality and interfaces factor out.
-It makes the testing run easier. And it is useful information in general.
-You just do not want it to be exposed to the normal program as if that internal
-structure can be used elsewhere in the overall program.
-**So, it is a good question how to do it well, aside of the the usual exposing the internal stuff.**
-Like, does just a class with a bunch of members fit here? A static class?
-Instead of defining a function, define a static class with `operator()` and private members.
-The sub-functions go into private members.
-Yeah, you still break up the main code inside `operator()`,
-but you clearly show that these procedures are used only here, and they are defined for testing too.
-**Maybe it could go into a "use static classes" post.**
+struct Lifetime {
+  int data{0};
+  operator int() const {return data;}
 
-It may be indeed a bad influence of tooling:
-you run a procedure only as a sub-procedure in a single place in the program,
-but testing to test it, you need to expose it as a part of the interface...
-Can you _declare_ it as a part of the interface, but _define_ it only where it actually runs?
-No, I don't think that's possible.
+  // unused constructors and operator=
+  Lifetime() = delete;
+  Lifetime(const Lifetime&) = delete;
+  Lifetime(Lifetime&&) = delete;
+  Lifetime& operator=(const Lifetime&) = delete;
+  Lifetime& operator=(Lifetime&&) = delete;
 
-* I should mention this whole thing here and make another post on it.
-Carefully and simply describe the combinatorics and procedure interfaces there.
-  - Brial Will shows `void (*)(void)` procedures. There are no inputs. Hence,
-  there are no problems with factoring them out for testing.
-  So, mention this too.
+  // the only used constructor
+  Lifetime(int inp) : data{inp} {std::cout << "Lifetime(int)\n";}
+};
 
-* Thesis: exposing more of the internal interface surface
-  describes how that surface factors out, which greatly reduces the combinatorics of testing.
-  The important part is not that you expose the internal interfaces just to make
-  them available for testing tools. Testing tools could run on the large procedure
-  and scan its input parameter space.
-  The point is that space is way too large, unless you somehow describe that it factors out.
+int main() {
+  bool condition = true;
 
-* Maybe also show a progression of procedure evolution?
-Just a procedure, then with simple code blocks for sections,
-then with lambdas for getting output from the code blocks,
-then you want to test it,
-you want to express the fact that the functionality and the interface factor out.
+  const Lifetime complex_value = [&condition](void)
+  {
+    int res;
+    if (condition) res = 11;
+    else res = 12;
+    std::cout << "lambda init procedure is done\n";
+    return Lifetime{res}; // the only construction of a Lifetime object
+  } ();
 
+  std::cout << "got:\n"
+    << " complex_value = " << (int) complex_value << "\n";
+}
+```
+
+The assignment `.. complex_value = [](){}();` does not do something like this:
+```cpp
+Lifetime complex_value{};
+complex_value = [&condition](void) {...} ();
+```
+
+```cpp
+#include <iostream>
+
+void CheckWindowSize(int* width, int* height);
+
+void SetupWindow(void) {
+  struct WindowSize {
+    int width{-1};
+    int height{-1};
+  };
+
+  const WindowSize wh_sizes = []() {
+    WindowSize res{};
+    CheckWindowSize(&res.width, &res.height);
+    return res;
+  }();
+
+  std::cout << "got sizes:"
+    << " " << wh_sizes.width
+    << " " << wh_sizes.height << "\n";
+}
+
+int main() {
+  std::cout << "main launches SetupWindow\n";
+  SetupWindow();
+  return 0;
+}
+
+void CheckWindowSize(int* width, int* height) {
+  *width = 500;
+  *height = 300;
+}
+```
+
+In a cleverly reactive GUI:
+```cpp
+constexpr bool enable_cursor_tracking = true;
+
+void UpdateCursorPosition(float screen_x, float screen_y) {
+  const float direction_factor = [](void) {
+    if constexpr (enable_cursor_tracking) {
+      const auto dir_current = ...;
+      const auto dir_new = ...;
+      return dot(dir_current, dir_new);
+    }
+
+    else 1.0;
+  } ();
+
+  const float tilt_view = [&direction_factor](void) {
+    ...
+  } ();
+}
+```
 
 
 # Jotted down idioms:
@@ -317,6 +362,86 @@ auto fn = []<typename T>(T, T) {};
 In principle, the template parameters are not useful for this post,
 because here I do not pass any parameters.
 I capture or no stuff
+
+# outline and "surface area of the code"
+
+* Introduce what Brian Will was talking about.
+Rewatch his description of the code blocks. - Done.
+* Introduce the name scoping rules of C++ lambdas.
+Re-check the definitions.
+  - Point out that the global name space is still visible.
+  Show that the static file scope and the global scope are visible.
+* Go for the idiom. The point is to structure a procedure.
+
+He suggests defining anonymous functions inside other functions,
+but limit the name scope that they see.
+He writes pseudocode (based on Go?), which means the following:
+
+Brian Will [points out](https://youtu.be/QM1iUe6IofM?t=1955) a good idea of "surface area of the code".
+When you split large functions into small ones, you increase the surface area for no good reason.
+This is exceellent.
+
+One issue with it is testability.
+When you expose a larger surface area than what is actually used,
+you expose more internals for the testing tools.
+That's probably what is meant sometimes when people say "write programs that are testable".
+However, I'd argue that it is not a good idea to expose more interface than is actually used,
+just because that is the only way to get testing tools to run on internal control flow branches.
+It is not great to modify the logic of the program, its interface surfaces,
+just to fit a testing tool.
+It would show more green checkmarks, sure. But what is the value in those checkmarks?
+Also, could there be another way to test, that reaches internal structures somehow?
+
+The issue here, if the program exposes only the minimal interface of its own logic,
+then the tests must be able to reach all the internal control flow branches.
+And if a procedure is large and there are many branches, the combinatorics of
+internal branchs grows fast, even if the internal structure of the procedure is trivial.
+In principle, breaking stuff up into small units works against this combinatorics.
+Even if a large procedure is a trivial combination of small sub-procedures,
+the testing tool does not know that. The tool sees the interface of a large procedure,
+and it does not know that the interface somehow factors out.
+So, in order to test some internal branch,
+it has to pass the inputs that affect that branch together with each variant of all other inputs.
+
+The unitification of functions, splitting them into small units,
+expresses how the internal functionality and interfaces factor out.
+It makes the testing run easier. And it is useful information in general.
+You just do not want it to be exposed to the normal program as if that internal
+structure can be used elsewhere in the overall program.
+**So, it is a good question how to do it well, aside of the the usual exposing the internal stuff.**
+Like, does just a class with a bunch of members fit here? A static class?
+Instead of defining a function, define a static class with `operator()` and private members.
+The sub-functions go into private members.
+Yeah, you still break up the main code inside `operator()`,
+but you clearly show that these procedures are used only here, and they are defined for testing too.
+**Maybe it could go into a "use static classes" post.**
+
+It may be indeed a bad influence of tooling:
+you run a procedure only as a sub-procedure in a single place in the program,
+but testing to test it, you need to expose it as a part of the interface...
+Can you _declare_ it as a part of the interface, but _define_ it only where it actually runs?
+No, I don't think that's possible.
+
+* I should mention this whole thing here and make another post on it.
+Carefully and simply describe the combinatorics and procedure interfaces there.
+  - Brial Will shows `void (*)(void)` procedures. There are no inputs. Hence,
+  there are no problems with factoring them out for testing.
+  So, mention this too.
+
+* Thesis: exposing more of the internal interface surface
+  describes how that surface factors out, which greatly reduces the combinatorics of testing.
+  The important part is not that you expose the internal interfaces just to make
+  them available for testing tools. Testing tools could run on the large procedure
+  and scan its input parameter space.
+  The point is that space is way too large, unless you somehow describe that it factors out.
+
+* Maybe also show a progression of procedure evolution?
+Just a procedure, then with simple code blocks for sections,
+then with lambdas for getting output from the code blocks,
+then you want to test it,
+you want to express the fact that the functionality and the interface factor out.
+
+
 
 # Wrap up
 
