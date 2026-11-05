@@ -105,8 +105,8 @@ auto a = [x] (void) {
 ```
 
 The reason is that lambda's `operator ()` is `const` by default.
-And the captures are members of the lambda object,
-so a `const` member function cannot modify them.
+And the captures are members of the lambda object.
+So a `const` member function cannot modify them.
 You can declare lambdas with the `mutable` specifier to avoid the `const` function call:
 ```cpp
 auto a = [x] (void) mutable {
@@ -192,6 +192,45 @@ to further improve the readability in some cases:
 }
 ```
 
+Lambdas lead into functional programming.
+Indeed, one can try adding some processing stages to these procedural blocks:
+```cpp
+using Data = int;
+using Err = std::runtime_error;
+using DataOrErr = std::expected<Data, Err>;
+
+{
+  Data final_result = [argc](void) -> DataOrErr {
+    ...;
+  } ()
+  .transform(...)
+  .transform_error(...)
+  .value_or(Data{}); // unfortunately value_or does not take a lambda
+}
+```
+
+But I don't think this makes sense for the sub-procedures
+and the use-case that Brian Will suggested.
+Monadic operations are about combining reusable components in the program,
+therefore they are about handling the connections between the components.
+That needs to account for the possibility of errors in the reusable components,
+which leads to "railway-oriented programming".
+But Brian Will's talk is about declining to try to invent reusable components
+when there is no visible need for them.
+
+The main use-case of sub-procedures is to improve
+readability and maintainability
+of a complex procedure that is _unique_ in your program.
+It is not about things like handling a `parse_int(string)`
+which may encounter different error conditions
+and which may be used in many places throughout the program.
+It is about a procedure that starts up some hardware or some complex software framework.
+Maybe certain parts of the start-up will become reusable in the future.
+But if that has not happened yet, there is no point in making them reusable speculatively.
+(If there is a clear view of the future architecture, then it can work.
+Because you are not speculating in that case, you are planning.)
+
+Finish with an example with C error codes.
 
 
 ## Return value optimization side-example
@@ -330,7 +369,7 @@ then the point of the code block should be to return something.
 
 * Show lambda initializing a `constexpr`. Get a new GCC or Clang and initialize a constexpr `std::vector` or `std::set`.
 The point is that you can generate and built-in content into your binary like that.
-For example, you could pre-generate some textures or meshes for a game like that.
+For example, you could pregenerate some textures or meshes for a game like that.
 Mention `consteval` code blocks can `return` a `constexpr` value too.
   - All this should be verified. In case of a lambda and `constexpr`,
   a compiler is allowed to convert it into a runtime procedure, right?
@@ -355,10 +394,14 @@ Add a link. It is a good source.
   - Multi-name binding, this could unpack a tuple, and a tuple is weirdly a polymorphic data structure.
   Is there something here? Run a templated loop on a tuple, then unpack? Why do that inside a lambda?
 
-* (Try) Main extra 2. Code block with a possible exception:
+* (Done?) Main extra 2. Code block with a possible exception:
 `std::expected` monadic operations
 to initialize a variable and handle exceptions
 from [Phil Nash](https://youtu.be/n1sJtsjbkKo?t=1227&is=BwJeY0u50CNJ-yNE).
+
+  - It is nice, but I do not see a clean good example to add it.
+  - I kind of see an argument can be made that the sub-procedures are the opposite end of spectrum.
+  They kind of do not have the need of combining reusable functions.
 
 * Also to note: lambda lets you define a function inside another function.
 So, if you want to call something a few times inside a function,
@@ -411,7 +454,7 @@ I capture or no stuff
 * Introduce what Brian Will was talking about.
 Rewatch his description of the code blocks. - Done.
 * Introduce the name scoping rules of C++ lambdas.
-Re-check the definitions.
+Recheck the definitions.
   - Point out that the global name space is still visible.
   Show that the static file scope and the global scope are visible.
 * Go for the idiom. The point is to structure a procedure.
