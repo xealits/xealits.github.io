@@ -230,8 +230,95 @@ But if that has not happened yet, there is no point in making them reusable spec
 (If there is a clear view of the future architecture, then it can work.
 Because you are not speculating in that case, you are planning.)
 
-Finish with an example with C error codes.
+An example from personal experience
+where this style of writing sub-procedures with lambdas
+could have been handy.
+I worked on an application
+that talked to instrumentation hardware, VME bus cards from CAEN.
+The hardware came with a C library,
+and our application was written mostly in C style.
+So, the application had one place where it would set up the hardware
+with a bunch of calls to its library,
+checking the return codes for errors.
+Which looked something like this:
+```cpp
+int Setup(enum Param setting) {
+  int param = LookupSetting(setting);
+  int data_call_a;
+  int status = call_a(param, ..., &data_call_a);
+  if (status < 0) {
+    ...;
+    throw ...;
+  }
 
+  // perform call_b, call_c
+  // ...
+
+  return 0;
+}
+```
+
+Most of the lines of code were about handling errors and other bits,
+not the main logic of the program.
+And the whole project was at a prototyping stage,
+where the main logic of the setup was a subject of work and change.
+Sub-procedures let you wrap the handling of C-style calls
+and focus on the main logic:
+```cpp
+int Setup(enum Param setting) {
+  int data_call_a = [setting](void) {
+    // LookupSetting could also be a nested sub-procedure:
+    int param = [setting](void) {
+      switch (setting) {
+        case Param::A:
+          return 1;
+        ...
+      };
+    } ();
+
+    // C-style call
+    int data;
+    int status = call_a(param, ..., &data);
+    if (status < 0) {
+      ...;
+      throw ...;
+    }
+
+    return data;
+  } ();
+
+  // ...
+  return 0;
+}
+```
+
+The name space is cleaner.
+The exceptional cases are handled inside the sub-procedure blocks,
+instead of everything happening in the same name space.
+And you can easily fold the `{}` blocks in your text editor
+to look only at the main control flow of the program.
+
+
+# Final comments
+
+Check this.
+[Immediately invoked _coroutine_ lambdas: lifetime pitfalls etc](https://www.youtube.com/watch?v=mF2YMIKZUMg).
+
+Mention that lambdas are useful in many more situations.
+And show the perf counter parameter as an example?
+
+Also, mention that there are other ways to statically structure code.
+RAII for code blocks.
+And `if` initializers, for example `dynamic_cast<>` or lock in an if.
+Check [Josuttis on a new lock in C++17](https://www.youtube.com/watch?v=e2ZQyYr0Oi0&t=638s).
+
+Do mention Brian Will's "code surface area" and that it will be a future post.
+That it is useful to decrease the surface area for readability,
+but it is useful to increase the surface area for testability.
+Why so, how come the two conflict? That's another post.
+
+
+# Scrap
 
 ## Return value optimization side-example
 
@@ -527,17 +614,3 @@ then with lambdas for getting output from the code blocks,
 then you want to test it,
 you want to express the fact that the functionality and the interface factor out.
 
-
-
-# Wrap up
-
-Check this.
-[Immediately invoked _coroutine_ lambdas: lifetime pitfalls etc](https://www.youtube.com/watch?v=mF2YMIKZUMg).
-
-Mention that lambdas are useful in many more situations.
-And show the perf counter parameter as an example?
-
-Also, mention that there are other ways to statically structure code.
-RAII for code blocks.
-And `if` initializers, for example `dynamic_cast<>` or lock in an if.
-Check [Josuttis on a new lock in C++17](https://www.youtube.com/watch?v=e2ZQyYr0Oi0&t=638s).
