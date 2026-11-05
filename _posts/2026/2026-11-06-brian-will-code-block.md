@@ -79,8 +79,8 @@ int main() {
 
 The global namespace is visible inside the lambda body.
 For example, `std::cout` and `std::cin` are visible.
-Which makes sense semantically:
-the global namespace is sort of the language of the program.
+Which makes sense.
+The global namespace is sort of the language of the program.
 So, it is reasonable that everything in the program can talk that language.
 Also, lambdas are implemented as anonymous structs
 that are declared in the global scope.
@@ -104,8 +104,9 @@ auto a = [x] (void) {
 // |     ~ ^
 ```
 
-The point is that lambda's `operator ()` is `const` by default.
-And the captures are like members of the lambda object.
+The reason is that lambda's `operator ()` is `const` by default.
+And the captures are members of the lambda object,
+so a `const` member function cannot modify them.
 You can declare lambdas with the `mutable` specifier to avoid the `const` function call:
 ```cpp
 auto a = [x] (void) mutable {
@@ -137,7 +138,7 @@ There are small differences with the `use` block.
 For example, lamdas are not called immediately.
 They are just not tailor-made to enhance compound statements.
 Instead, lambdas combine a bunch of already existing and known C++ features
-for building anonymous closures and serving many use-cases.
+for building anonymous closures that serve many use-cases.
 
 
 # Expressive code blocks
@@ -159,12 +160,42 @@ const int complex_value = [&condition](void) {
 
 It is nice because the code says exactly what it does
 and
-the name scoping also contributes to saying what the code does.
+the name scoping also meaningfully contributes to saying what the code does.
 The lambda pocedure takes only a `const` reference of the `condition` from the outer scope,
 executes some procedure without leaking its internal variable names,
 and returns a value for the initialization of the `const` variable.
+
 It also profits from the [return value optimization](https://en.cppreference.com/cpp/language/copy_elision)
 and constructs the `complex_value` only once, inside the lambda.
+You can check it out
+[in this example on godbolt](https://godbolt.org/z/4ec9G6fWd)
+that uses a typical `Lifetime` struct,
+but with most constructors deleted.
+
+The return value of a lambda can be unpacked
+with a [structured binding](https://en.cppreference.com/cpp/language/structured_binding),
+to further improve the readability in some cases:
+```cpp
+{
+  int x = 5, y = 10;
+
+  auto [a, b, c] = [x] (void) {
+    float input_factor{1.1};
+    return std::tuple{x, input_factor, x * input_factor};
+  } ();
+
+  std::cout << "got:"
+    << " a = " << a
+    << " b = " << b
+    << " c = " << c << "\n";
+  // got: a = 5 b = 1.1 c = 5.5
+}
+```
+
+
+
+## Return value optimization side-example
+
 You can check it with the following `Lifetime` struct:
 
 ```cpp
@@ -207,6 +238,8 @@ The assignment `.. complex_value = [](){}();` does not do something like this:
 Lifetime complex_value{};
 complex_value = [&condition](void) {...} ();
 ```
+
+## Another example
 
 ```cpp
 #include <iostream>
@@ -268,7 +301,7 @@ void UpdateCursorPosition(float screen_x, float screen_y) {
 
 My motivation for initializing a `const`:
 
-* In general, I am not sure whether lambda with `ref&` is that much better than just a code block.
+* (Musing) In general, I am not sure whether lambda with `&ref` is that much better than just a code block.
   Yeah, a lambda limits the name scope. It is nice. But it is not such a big deal on practice.
   On the contrary, a code block does not return anything, and lambda does return stuff.
   Lambdas are more useful with return values here.
@@ -280,7 +313,12 @@ but then lambdas also return stuff.
 You control the scope for input and output of this block.
 And proceed to this section with idioms.
 
-Brian Will's original point was to just do stuff in the function, make some side effects.
+Brian Will's original point was to just do some procedural stuff in a long function.
+For the procedure readability, you want to limit its name scope.
+Then he gets to returning stuff immediately after that.
+So, he is interesting in the return value,
+but the goal could also be some side effects of the procedure.
+Like, "call the setup function of this component of the program" etc.
 
 * Are there some handy idioms for a procedure with side effects?
 
@@ -297,7 +335,7 @@ Mention `consteval` code blocks can `return` a `constexpr` value too.
   - All this should be verified. In case of a lambda and `constexpr`,
   a compiler is allowed to convert it into a runtime procedure, right?
 
-* Show capture by constant.
+* (Done?) Show capture by constant.
 It could also pass a parameter by const-ref.
 But that changes the meaning to a wrong one.
 The lambdas in this post are just code blocks,
@@ -305,16 +343,19 @@ they are not called multiple times.
 Hence, they must not have parameters and the parameters must not be passed.
 These lambdas must only capture the needed stuff from the name scope.
 
-* Show the return value optimisation.
+* (Done?) Show the return value optimisation.
 So, make a Godbolt example, show assembly. Show a complex custom object.
 Add a pointer or just a string or a vector inside the object.
   - It also shows that you can have complex return values in C++.
 
-* Combine it with the multi-name [structured binding](https://en.cppreference.com/cpp/language/structured_binding)?
+* **Check out [learncpp on assignment and initialization](https://www.learncpp.com/cpp-tutorial/variable-assignment-and-initialization/).**
+Add a link. It is a good source.
+
+* (Done?) Main extra 1. Combine it with the multi-name [structured binding](https://en.cppreference.com/cpp/language/structured_binding)?
   - Multi-name binding, this could unpack a tuple, and a tuple is weirdly a polymorphic data structure.
   Is there something here? Run a templated loop on a tuple, then unpack? Why do that inside a lambda?
 
-* Code block with a possible exception:
+* (Try) Main extra 2. Code block with a possible exception:
 `std::expected` monadic operations
 to initialize a variable and handle exceptions
 from [Phil Nash](https://youtu.be/n1sJtsjbkKo?t=1227&is=BwJeY0u50CNJ-yNE).
@@ -457,4 +498,3 @@ Also, mention that there are other ways to statically structure code.
 RAII for code blocks.
 And `if` initializers, for example `dynamic_cast<>` or lock in an if.
 Check [Josuttis on a new lock in C++17](https://www.youtube.com/watch?v=e2ZQyYr0Oi0&t=638s).
-
