@@ -36,9 +36,7 @@
           <time datetime="{{post.date}}">
             {{post.date | date: "%b %d, %Y"}}
           </time>
-          <summary>
-            {{ post.excerpt }}
-          </summary>
+          {{ post.excerpt }}
           <div>
             {% if post.tags %}
               {%- for tag in post.tags -%} <a class="smallcaps nav tag" href="{{site.url}}/tags.html#{{tag | slugify}}">#{{tag}}</a> {%- endfor -%}
@@ -51,6 +49,9 @@
 
     <section>
         <a class="nav" href="https://xealits.github.io/feed.xml">RSS feed</a>
+    </section>
+
+    <section class="colem-5 leave-four-lines" id="ending">
     </section>
 
   </body>

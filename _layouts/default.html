@@ -62,12 +62,15 @@
     {% endif %}
 
     {% if page.tags %}
-    <section class="colem-8 leave-four-lines" id="tags">
+    <section class="colem-8" id="tags">
       Tags:
       {% for tag in page.tags %}
         <a class="nav" href="{{site.baseurl}}/tags.html#{{tag | slugify}}"> #{{tag}}</a>
       {% endfor %}
     </section>
     {% endif %}
+
+    <section class="colem-8 leave-four-lines" id="ending">
+    </section>
   </body>
 </html>
