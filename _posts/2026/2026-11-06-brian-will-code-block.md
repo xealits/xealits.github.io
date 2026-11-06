@@ -8,14 +8,17 @@ tags: c++
 <summary>
 Back 10 years ago, Brian Will made a series of YouTube videos
 on various practical issues in programming.
-In a video on OOP, he suggested
-<a hreff="https://www.youtube.com/watch?v=QM1iUe6IofM&t=2435s">
+In a video on issues with OOP,
+he pointed out that well-structured long procedures
+can be more readable and maintainable than a bunch of encapsulated objects,
+and suggested
+<a href="https://www.youtube.com/watch?v=QM1iUe6IofM&t=2435s">
 a "<code>use</code> code block" language feature</a>
 that works as
-"an anonymous function that does not see anything in its enclosing scope".
-Such code blocks are useful for structuring long procedures,
-using the lexical name scoping to express the logic better.
-<a hreff="https://en.cppreference.com/cpp/language/lambda">
+"an anonymous function that does not see anything in its enclosing scope"
+and helps to express the logic of a procedure better
+by structuring its name space.
+<a href="https://en.cppreference.com/cpp/language/lambda">
 C++11 introduced lambdas</a> with very similar scoping rules.
 This post takes a look at how lambdas
 can organise the name space of long procedures
