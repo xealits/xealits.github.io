@@ -6,26 +6,24 @@ tags: c++
 ---
 
 <summary>
-Back 10 years ago, Brian Will made a series of YouTube posts
+Back 10 years ago, Brian Will made a series of YouTube videos
 on various practical issues in programming.
-In a video on OOP,
-he suggested
+In a video on OOP, he suggested
 <a hreff="https://www.youtube.com/watch?v=QM1iUe6IofM&t=2435s">
-a "code block" language feature</a>
+a "<code>use</code> code block" language feature</a>
 that works as
 "an anonymous function that does not see anything in its enclosing scope".
 Such code blocks are useful for structuring long procedures,
-using the lexical name scoping to better express the logic.
+using the lexical name scoping to express the logic better.
 <a hreff="https://en.cppreference.com/cpp/language/lambda">
 C++11 introduced lambdas</a> with very similar scoping rules.
-Since then, C++ lambdas got improved and extended.
-It is quite a capable feature of the language.
-This post takes a look at lambdas
-as a means to write more expressive code sections.
+This post takes a look at how lambdas
+can organise the name space of long procedures
+in order to make them more readable.
 </summary>
 
-Brian Will suggested anonymous and immediately-called functions
-that work like the following pseudocode:
+Brian Will suggested anonymous and immediately-called closure functions
+that work like the following pseudocode `use` block:
 ```
 function MyFunc() {
   int x, y;
@@ -41,14 +39,17 @@ function MyFunc() {
 }
 ```
 
-The `use <names>` block limits the visible outer scope names to the explicit list.
+The `use <names>` block limits the visible outer scope names
+to the given explicit list.
+It executes a procedure, like a regular `{...}` compound statement,
+but with a finely defined view of the outer scope.
 And it can return a value.
 
 The C++ lambdas are anonymous functions that follow very similar scoping rules.
 A basic lambda looks like this: `[captures] (params) {body}`.
 The visible outer names are defined by
 [the lambda captures](https://en.cppreference.com/cpp/language/lambda#Lambda_capture):
-> The captures defines the outside variables that are accessible from within the lambda function body.
+> The `captures` defines the outside variables that are accessible from within the lambda function body.
 
 So, you can explicitly define what the lambda sees from the outer scope:
 ```cpp
@@ -87,6 +88,21 @@ that are declared in the global scope.
 Lambdas are a sort of syntactic sugar that
 works as a shortcut to
 a bunch of nicely put together basic C++ features.
+
+Interestingly, `constexpr`s do not need to be captured:
+```cpp
+int x = 5;
+constexpr int z = 2;
+
+auto a = [x] (void) {
+  // both x and z are there:
+  std::cout << "got x = " << x << "\n";
+  std::cout << "got z = " << z << "\n";
+}();
+
+std::cout << "got a = " << a << "\n";
+// got a = 7
+```
 
 The `[x]` captures `x` by copy, but you still cannot modify it in this lambda:
 ```cpp
@@ -128,7 +144,7 @@ auto a = [] (auto x) {
 ```
 
 It is a bit cumbersome to write `x` two times.
-An overall, the lambda captures are a better fit for the procedural style of writing
+Lambda captures are a better fit for the procedural style
 that Brian Will suggested.
 What you want is just the usual `{...}` compound statements
 with a fine and explicit control of the name scope.
@@ -205,45 +221,47 @@ using DataOrErr = std::expected<Data, Err>;
   } ()
   .transform(...)
   .transform_error(...)
-  .value_or(Data{}); // unfortunately value_or does not take a lambda
+  .value_or(Data{});
+  // it could be handy if value_or took a lambda as an argument
 }
 ```
 
-But I don't think this makes sense for the sub-procedures
-and the use-case that Brian Will suggested.
+But I do not think that it makes sense for the sub-procedures
+and the use-case that Brian Will discussed.
 Monadic operations are about combining reusable components in the program,
 therefore they are about handling the connections between the components.
-That needs to account for the possibility of errors in the reusable components,
+You need to account for the possibility of errors in the reusable components,
 which leads to "railway-oriented programming".
-But Brian Will's talk is about declining to try to invent reusable components
+But Brian Will's talk is all about declining to try to invent reusable components
 when there is no visible need for them.
 
 The main use-case of sub-procedures is to improve
 readability and maintainability
 of a complex procedure that is _unique_ in your program.
+
 It is not about things like handling a `parse_int(string)`
 which may encounter different error conditions
-and which may be used in many places throughout the program.
+and which may be used in multiple places in a program.
 It is about a procedure that starts up some hardware or some complex software framework.
 Maybe certain parts of the start-up will become reusable in the future.
 But if that has not happened yet, there is no point in making them reusable speculatively.
 (If there is a clear view of the future architecture, then it can work.
-Because you are not speculating in that case, you are planning.)
+Because you are not speculating in that case, you are competently planning.)
 
 An example from personal experience
 where this style of writing sub-procedures with lambdas
-could have been handy.
+could have helped.
 I worked on an application
-that talked to instrumentation hardware, VME bus cards from CAEN.
+that talked to instrumentation hardware, VME bus cards from [CAEN](https://caen.it/).
 The hardware came with a C library,
 and our application was written mostly in C style.
 So, the application had one place where it would set up the hardware
 with a bunch of calls to its library,
-checking the return codes for errors.
+checking the return codes for errors etc.
 Which looked something like this:
 ```cpp
 int Setup(enum Param setting) {
-  int param = LookupSetting(setting);
+  int param = TranslateSetting(setting);
   int data_call_a;
   int status = call_a(param, ..., &data_call_a);
   if (status < 0) {
@@ -253,22 +271,24 @@ int Setup(enum Param setting) {
 
   // perform call_b, call_c
   // ...
+  // check something on data_call_a, _b, _c
 
   return 0;
 }
 ```
 
-Most of the lines of code were about handling errors and other bits,
-not the main logic of the program.
+Most of the code lines were about handling errors and other bits.
+The main logic of the program was dimly glittering through that.
 And the whole project was at a prototyping stage,
 where the main logic of the setup was a subject of work and change.
-Sub-procedures let you wrap the handling of C-style calls
+
+Sub-procedures could wrap the handling of the C-style calls
 and focus on the main logic:
 ```cpp
 int Setup(enum Param setting) {
-  int data_call_a = [setting](void) {
-    // LookupSetting could also be a nested sub-procedure:
-    int param = [setting](void) {
+  const int data_call_a = [setting](void) {
+    // TranslateSetting could also be a nested sub-procedure:
+    const int param = [setting](void) {
       switch (setting) {
         case Param::A:
           return 1;
@@ -310,22 +330,22 @@ And C++ allows you to instrument a `{...}` block with a RAII-style object:
 the lifetime of an object is tied to the name scope,
 the constructor is executed at the beginning and the destructor at the end of the scope,
 with correct behavior in case of thrown exceptions.
-Mention that there are other ways to statically structure code.
-RAII for code blocks.
 
 C++17 introduced [init-statements for the `if` statement](https://en.cppreference.com/cpp/language/if):
 you can write `if (Type obj{}; condition) {}` now, and the `obj` is defined only for the `{}` body.
 [Here is a good 2016 post about it from Steven Lorimer](https://skebanga.github.io/if-with-initializer/).
-C++17 also introduced a very welcome `if constexpr`, which allows init-statements.
-Josuttis' talk on ACCU 2018 ["C++17 - The Best Features"](https://youtu.be/e2ZQyYr0Oi0?t=251)
+C++17 also introduced a very welcome `if constexpr`, with init-statements included.
+Nicolai Josuttis' talk on ACCU 2018 ["C++17 - The Best Features"](https://youtu.be/e2ZQyYr0Oi0?t=251)
 includes a bunch of excellent examples that demonstrate these and other features,
 and also show their combinations.
 
 It goes without saying that lambdas have many more uses than just arranging the name space.
 Among many things, they can be template arguments. Which brings them to compile-time programming.
 
-Finally, Brian Will mentioned an interesting idea of "surface area of the code" in the original video.
-If you take a look at the name space of a program,
+Finally, Brian Will mentioned
+an interesting idea of ["surface area of the code"](https://youtu.be/QM1iUe6IofM?t=1910)
+in the same original video.
+If you consider the name space of a program,
 the number of individual names and how their visibility is structured,
 it gives you a good idea about the complexity and readability of the program.
 (One could also call it "surface area of the _interface_".)
@@ -334,5 +354,5 @@ It is an interesting topic, and I will get back to it in a future post.
 
 One curious point about it is to also consider the testability of a program.
 In principle, a large surface area of the interface is better for testability.
-So, is there a conflict between the two, and if so then what really causes it?
+So, is there a conflict between the two, and if so then what drives it?
 That will be another post.
