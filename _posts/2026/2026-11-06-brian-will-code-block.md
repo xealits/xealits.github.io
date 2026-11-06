@@ -233,8 +233,6 @@ But I do not think that it makes sense for the sub-procedures
 and the use-case that Brian Will discussed.
 Monadic operations are about combining reusable components in the program,
 therefore they are about handling the connections between the components.
-You need to account for the possibility of errors in the reusable components,
-which leads to "railway-oriented programming".
 But Brian Will's talk is all about declining to try to invent reusable components
 when there is no visible need for them.
 
@@ -249,7 +247,8 @@ It is about a procedure that starts up some hardware or some complex software fr
 Maybe certain parts of the start-up will become reusable in the future.
 But if that has not happened yet, there is no point in making them reusable speculatively.
 (If there is a clear view of the future architecture, then it can work.
-Because you are not speculating in that case, you are competently planning.)
+Because you are not speculating in that case, you are planning,
+hopefully competently planning.)
 
 An example from personal experience
 where this style of writing sub-procedures with lambdas
@@ -261,7 +260,7 @@ and our application was written mostly in C style.
 So, the application had one place where it would set up the hardware
 with a bunch of calls to its library,
 checking the return codes for errors etc.
-Which looked something like this:
+It looked something like this:
 ```cpp
 int Setup(enum Param setting) {
   int param = TranslateSetting(setting);
@@ -282,11 +281,11 @@ int Setup(enum Param setting) {
 
 Most of the code lines were about handling errors and other bits.
 The main logic of the program was dimly glittering through that.
-And the whole project was at a prototyping stage,
-where the main logic of the setup was a subject of work and change.
+And that was at a time when the whole project was at a prototyping stage.
+So the main logic of the setup was a subject of work and change.
 
-Sub-procedures could wrap the handling of the C-style calls
-and focus on the main logic:
+Sub-procedures can wrap the handling of the C-style calls
+and let the top procedure focus on the main logic:
 ```cpp
 int Setup(enum Param setting) {
   const int data_call_a = [setting](void) {
@@ -329,14 +328,14 @@ Basics are often sufficient to improve readibility.
 And basics have the advantage of compiling faster.
 
 Appropriate name-scoping with `{...}` compound statements can be all you need.
-And C++ allows you to instrument a `{...}` block with a RAII-style object:
+And C++ allows you to instrument `{...}` blocks with RAII-style objects:
 the lifetime of an object is tied to the name scope,
 the constructor is executed at the beginning and the destructor at the end of the scope,
 with correct behavior in case of thrown exceptions.
 
 C++17 introduced [init-statements for the `if` statement](https://en.cppreference.com/cpp/language/if):
-you can write `if (Type obj{}; condition) {}` now, and the `obj` is defined only for the `{}` body.
-[Here is a good 2016 post about it from Steven Lorimer](https://skebanga.github.io/if-with-initializer/).
+now you can write `if (Type obj{}; condition) {}` and the `obj` is defined only for the `{}` body.
+[Here is a good 2016 post from Steven Lorimer about it](https://skebanga.github.io/if-with-initializer/).
 C++17 also introduced a very welcome `if constexpr`, with init-statements included.
 Nicolai Josuttis' talk on ACCU 2018 ["C++17 - The Best Features"](https://youtu.be/e2ZQyYr0Oi0?t=251)
 includes a bunch of excellent examples that demonstrate these and other features,
