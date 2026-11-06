@@ -16,7 +16,7 @@ and suggested
 a "<code>use</code> code block" language feature</a>
 that works as
 "an anonymous function that does not see anything in its enclosing scope"
-and helps to express the logic of a procedure better
+and helps to better express the logic of a procedure
 by structuring its name space.
 <a href="https://en.cppreference.com/cpp/language/lambda">
 C++11 introduced lambdas</a> with very similar scoping rules.
