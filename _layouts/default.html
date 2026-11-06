@@ -4,9 +4,8 @@
     <meta charset="utf-8">
     <!-- this should prevent mobile phones from randomly scaling everything -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ page.title }}</title>
+    <title>{{ page.title }} - Alex Toldaiev - Blog</title>
     <link rel="stylesheet" href="/css/all.css">
-    <link rel="stylesheet" href="/css/post.css">
     <link rel="stylesheet" href="/css/syntax_highlighting.css">
   </head>
 
@@ -63,7 +62,7 @@
     {% endif %}
 
     {% if page.tags %}
-    <section class="colem-8" id="tags">
+    <section class="colem-8 leave-four-lines" id="tags">
       Tags:
       {% for tag in page.tags %}
         <a class="nav" href="{{site.baseurl}}/tags.html#{{tag | slugify}}"> #{{tag}}</a>

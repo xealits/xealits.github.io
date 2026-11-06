@@ -243,7 +243,7 @@ readability and maintainability
 of a complex procedure that is _unique_ in your program.
 
 It is not about things like handling a `parse_int(string)`
-which may encounter different error conditions
+which may hit different error conditions
 and which may be used in multiple places in a program.
 It is about a procedure that starts up some hardware or some complex software framework.
 Maybe certain parts of the start-up will become reusable in the future.
