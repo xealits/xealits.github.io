@@ -62,7 +62,7 @@ title: home
   </summary>
 
   <div>
-  <a class="nav smallcaps float-right" href="{{post.url}}">rest>></a>
+  <a class="nav smallcaps float-right" href="{{post.url}}">full post</a>
 
   {%- if post.categories.first == "projects" -%}
     {%- assign proj_name = post.categories.last -%}
@@ -90,9 +90,9 @@ title: home
 
   <summary>
     The website:
-    a static <a href="https://jekyllrb.com/">Jekyll</a> website
+    a static website on <a href="https://jekyllrb.com/">Jekyll</a>
     with an adjustable grid-based layout.
-    It contains a blog, a bunch of project pages, and an index page.
+    It includes a couple project pages, a blog, and an index page.
   </summary>
   </article>
 
@@ -107,7 +107,7 @@ title: home
       {{ project.description }}
     </summary>
 
-    <a class="float-right smallcaps nav" href="{{project.url}}">rest>></a>
+    <a class="float-right smallcaps nav" href="{{project.url}}">project page</a>
     {% if project.tags %}
     {%- for tag in project.tags -%} <a class="smallcaps tag nav" href="{{site.url}}/tags.html#{{tag | slugify}}">#{{tag}}</a> {%- endfor -%}
     {% endif %}
