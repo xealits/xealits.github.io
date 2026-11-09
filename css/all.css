@@ -543,7 +543,7 @@ article h1 {
 */
 
 .post-content h1 {
-  margin-top: 4rem;
+  margin-top: 3rem; /* 3 lines - one-line empty paragraph */
 }
 
 figure {
