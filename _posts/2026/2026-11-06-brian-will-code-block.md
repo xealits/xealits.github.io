@@ -6,11 +6,13 @@ tags: c++
 ---
 
 <summary>
-Back 10 years ago, Brian Will made a series of YouTube videos
+Back 10 years ago,
+<a href="https://www.youtube.com/@briantwill">Brian Will</a>
+made a series of YouTube videos
 on various practical issues in programming.
-In a video on issues with OOP,
+In a video about OOP,
 he pointed out that well-structured long procedures
-can be more readable and maintainable than a bunch of encapsulated objects,
+can be more readable and maintainable than a bunch of different objects,
 and suggested
 <a href="https://www.youtube.com/watch?v=QM1iUe6IofM&t=2435s">
 a "<code>use</code> code block" language feature</a>
@@ -18,11 +20,14 @@ that works as
 "an anonymous function that does not see anything in its enclosing scope"
 and helps to better express the logic of a procedure
 by structuring its name space.
-<a href="https://en.cppreference.com/cpp/language/lambda">
-C++11 introduced lambdas</a> with very similar scoping rules.
-This post takes a look at how lambdas
-can organise the name space of long procedures
-in order to make them more readable.
+Very similar scoping rules
+apply in the
+<a href="https://en.cppreference.com/cpp/language/lambda">C++ lambdas</a>
+that were introduced in the 2011 standard.
+This post takes a look at how
+lambdas can organise
+the name space in long procedures
+to make them more readable.
 </summary>
 
 Brian Will suggested anonymous and immediately-called closure functions
