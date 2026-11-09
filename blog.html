@@ -7,47 +7,51 @@
     <meta charset="utf-8">
     <!-- this should prevent mobile phones from randomly scaling everything -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog</title>
+    <title>List of blogs - Alex Toldaiev - Blog</title>
     <link rel="stylesheet" href="/css/all.css">
     <link rel="stylesheet" href="/css/blog.css">
     <link rel="stylesheet" href="/css/syntax_highlighting.css">
   </head>
 
   <body class="colem-5">
-    <nav class="float-right clear-a-line leave-a-line">
-      <a href="/">Home</a>
-      <span class="quartergutter"> </span>
-      <a href="/blog">Blog</a>
-      <span class="quartergutter"> </span>
-      <a href="/about">About</a>
+    <section class="colem-5 clear-a-line leave-a-line">
+    <nav>
+      <a href="https://xealits.github.io/feed.xml">RSS feed</a>
+      <div class="float-right">
+        <a href="/">Home</a>
+        <span class="quartergutter"> </span>
+        <a href="/blog">Blog</a>
+        <span class="quartergutter"> </span>
+        <a href="/about">About</a>
+      </div>
     </nav>
+    </section>
 
     <section class="colem-5">
       {% for post in site.posts %}
-        <summary class="post-meta">
+        <article class="post-meta">
           <h1>
             <a class="nav" href="{{ post.url }}">{{ post.title }}</a>
           </h1>
           <time datetime="{{post.date}}">
             {{post.date | date: "%b %d, %Y"}}
           </time>
-          <p>
-            {{ post.excerpt }}
-          </p>
+          {{ post.excerpt }}
           <div>
             {% if post.tags %}
-              {%- for tag in post.tags -%} <a class="smallcaps nav tag" href="{{site.baseurl}}/tags.html#{{tag | slugify}}">#{{tag}}</a> {%- endfor -%}
+              {%- for tag in post.tags -%} <a class="smallcaps nav tag" href="{{site.url}}/tags.html#{{tag | slugify}}">#{{tag}}</a> {%- endfor -%}
             {% endif %}
           </div>
-        </summary>
+        </article>
 
       {% endfor %}
     </section>
 
     <section>
-      <footer>
         <a class="nav" href="https://xealits.github.io/feed.xml">RSS feed</a>
-      </footer>
+    </section>
+
+    <section class="colem-5 leave-four-lines" id="ending">
     </section>
 
   </body>
