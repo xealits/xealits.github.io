@@ -21,7 +21,7 @@ that works as
 and helps to better express the logic of a procedure
 by structuring its name space.
 Very similar scoping rules
-apply in the
+apply to
 <a href="https://en.cppreference.com/cpp/language/lambda">C++ lambdas</a>
 that were introduced in the 2011 standard.
 This post takes a look at how
