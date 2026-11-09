@@ -14,8 +14,7 @@ In a video about OOP,
 he pointed out that well-structured long procedures
 can be more readable and maintainable than a bunch of different objects,
 and suggested
-a <a href="https://www.youtube.com/watch?v=QM1iUe6IofM&t=2435s">
-"<code>use</code> code block"</a>
+a "<a href="https://www.youtube.com/watch?v=QM1iUe6IofM&t=2435s"><code>use</code> code block</a>"
 language feature
 that works as
 "an anonymous function that does not see anything in its enclosing scope"
@@ -358,7 +357,7 @@ Here is a good 2016 [post about it by Steven Lorimer](https://skebanga.github.io
 C++17 also introduced a very welcome `if constexpr`, with init-statements included.
 Nicolai Josuttis' talk
 at ACCU 2018
-["C++17 - The Best Features"](https://youtu.be/e2ZQyYr0Oi0?t=251)
+"[C++17 - The Best Features](https://youtu.be/e2ZQyYr0Oi0?t=251)"
 includes a bunch of excellent examples that demonstrate these and other features,
 together with their combinations.
 
@@ -366,7 +365,7 @@ It goes without saying that lambdas have many more uses than just arranging the 
 Among many things, they can be template arguments. Which brings them to compile-time programming.
 
 Finally, Brian Will mentioned
-an interesting idea of ["surface area of the code"](https://youtu.be/QM1iUe6IofM?t=1910)
+an interesting idea of "[surface area of the code](https://youtu.be/QM1iUe6IofM?t=1910)"
 in the same original video.
 If you consider the name space of a program,
 the number of individual names and how their visibility is structured,

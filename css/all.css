@@ -112,7 +112,7 @@ h1, h2, h3 {
 code:not(h1 code, h2 code, h3 code, h4 code) {
 	font-size: var(--code-font-size);
 	text-align: left;
-	display: inline-block;
+	display: inline; /* why was it online-block? */
 }
 
 kbd {
