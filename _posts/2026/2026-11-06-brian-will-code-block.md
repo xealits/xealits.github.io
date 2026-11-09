@@ -123,12 +123,12 @@ auto a = [x] (void) {
   ...
   // return x * input_factor;
   x *= input_factor;
-  std::cout << "modified x inside the lambda to: " << x << "\n";
   return x;
 } ();
 
 // clang:
-// error: cannot assign to a variable captured by copy in a non-mutable lambda
+// error: cannot assign to a variable
+// captured by copy in a non-mutable lambda
 // |     x *= input_factor;
 // |     ~ ^
 ```
@@ -142,7 +142,9 @@ auto a = [x] (void) mutable {
   ...
   // return x * input_factor;
   x *= input_factor;
-  std::cout << "modified x inside the lambda to: " << x << "\n";
+  std::cout
+    << "modified x inside the lambda: "
+    << x << "\n";
   return x;
 } ();
 ```
@@ -151,7 +153,9 @@ Another option is to pass `x` as a simple argument:
 ```cpp
 auto a = [] (auto x) {
   x *= input_factor;
-  std::cout << "modified x inside the lambda to: " << x << "\n";
+  std::cout
+    << "modified x inside the lambda: "
+    << x << "\n";
   return x;
 } (x);
 ```
@@ -208,7 +212,9 @@ to further improve readability in some cases:
 
   auto [a, b, c] = [x] (void) {
     float input_factor{1.1};
-    return std::tuple{x, input_factor, x * input_factor};
+    return std::tuple{
+      x, input_factor, x * input_factor
+    };
   } ();
 
   std::cout << "got:"
@@ -235,7 +241,8 @@ using DataOrErr = std::expected<Data, Err>;
   .transform(...)
   .transform_error(...)
   .value_or(Data{});
-  // it could be handy if value_or took a lambda as an argument
+  // it could be handy if value_or took
+  // a lambda as an argument
 }
 ```
 
