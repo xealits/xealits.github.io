@@ -57,6 +57,9 @@ title: home
     {{ post.title }}
   </h1>
   {% endif %}
+  <time datetime="{{post.date}}">
+    {{post.date | date: "%b %d, %Y"}}
+  </time>
   <summary class="{{ post.layout }}">
   {{ post.excerpt }}
   </summary>
