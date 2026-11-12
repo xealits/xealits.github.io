@@ -12,6 +12,7 @@ of how Bus Pirate 3.6 works
 and how to talk to an I2C bus with it.
 As an example,
 how to read the ID register 0xD0 of the barometric sensor BMP280 from Bosch.
+<img class="Figure" alt="Bus Pirate v3.6" src="/dir/2026-02-buspirate/buspirate-3p6-image.jpeg"/>
 </summary>
 
 [Bus Pirate][ian_site] is a gadget that talks serial protocols, such as I2C, SPI, etc.
@@ -33,10 +34,8 @@ when you hook it up and use it to send a couple I2C commands:
 i.e. when a scan of the bus addresses finds no devices.
 * Connect a board with the [BMP280 sensor][bmp280_datasheet] chip and read its ID register.
 
-My BusPirate is version v3.6 (the firmware is v5.10 (r559)).
-Here is its photo:
-
-<img class="Figure" alt="Bus Pirate v3.6" src="/dir/2026-02-buspirate/buspirate-3p6-image.jpeg"/>
+My BusPirate is on the photo at the beginning of the post.
+It is version v3.6, the firmware is v5.10 (r559).
 
 
 # Talking to Bus Pirate over `screen`
