@@ -11,8 +11,8 @@ Back 10 years ago,
 made a series of YouTube videos
 on various practical issues in programming.
 In a video about OOP,
-he pointed out that well-structured long procedures
-can be more readable and maintainable than a bunch of different objects,
+he pointed out that a well-structured long procedure
+can be more readable and maintainable than a bunch of objects,
 and suggested
 a "<a href="https://www.youtube.com/watch?v=QM1iUe6IofM&t=2435s"><code>use</code> code block</a>"
 language feature
@@ -24,10 +24,9 @@ Very similar scoping rules
 apply to
 <a href="https://en.cppreference.com/cpp/language/lambda">C++ lambdas</a>
 that were introduced in the 2011 standard.
-This post takes a look at how
-lambdas can organise
-the name space in long procedures
-to make them more readable.
+This post takes a look at
+how lambdas can make
+long procedures more readable and expressive.
 </summary>
 
 Brian Will suggested anonymous and immediately-called closure functions
