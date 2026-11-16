@@ -72,7 +72,12 @@ html {
 	left: 0;
 	height: 100%;
 	font-size: 12pt;
+	line-height: 1.5;
 	--code-font-size: 10pt;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	line-height: 1.0;
 }
 
 /* disable mobile phone adjustments in landscape mode */
