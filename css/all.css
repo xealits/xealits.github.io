@@ -123,6 +123,9 @@ code:not(h1 code, h2 code, h3 code, h4 code) {
 
 time {
 	font-family: Helvetica, Arial, sans-serif;
+	font-weight: bold;
+	font-variant: small-caps;
+	font-variant-numeric: tabular-nums;
 }
 
 kbd {

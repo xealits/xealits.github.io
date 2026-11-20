@@ -34,7 +34,7 @@
             <a class="nav" href="{{ post.url }}">{{ post.title }}</a>
           </h1>
           <time datetime="{{post.date}}">
-            {{post.date | date: "%b %d, %Y"}}
+            {{post.date | date: "%Y - %b - %d"}}
           </time>
           {{ post.excerpt }}
           <div>
