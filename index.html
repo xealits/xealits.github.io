@@ -58,7 +58,7 @@ title: home
   </h1>
   {% endif %}
   <time datetime="{{post.date}}">
-    {{post.date | date: "%Y - %b - %d"}}
+    {{post.date | date: "%Y %b %d"}}
   </time>
   <summary class="{{ post.layout }}">
   {{ post.excerpt }}
