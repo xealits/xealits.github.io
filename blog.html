@@ -7,7 +7,7 @@
     <meta charset="utf-8">
     <!-- this should prevent mobile phones from randomly scaling everything -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>List of blogs - Alex Toldaiev - IO page</title>
+    <title>List of blogs - Alex Toldaiev</title>
     <link rel="stylesheet" href="/css/all.css">
     <link rel="stylesheet" href="/css/blog.css">
     <link rel="stylesheet" href="/css/syntax_highlighting.css">
@@ -39,7 +39,7 @@
           {{ post.excerpt }}
           <div>
             {% if post.tags %}
-              {%- for tag in post.tags -%} <a class="smallcaps nav tag" href="{{site.url}}/tags.html#{{tag | slugify}}">#{{tag}}</a> {%- endfor -%}
+              {%- for tag in post.tags -%} <a class="smallcaps nav tag" href="{{site.baseurl}}/tags.html#{{tag | slugify}}">#{{tag}}</a> {%- endfor -%}
             {% endif %}
           </div>
         </article>

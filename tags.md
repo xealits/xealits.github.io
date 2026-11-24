@@ -55,7 +55,7 @@ permalink: /tags
   {%- elsif project_slugs contains cat_slug -%}
   {%- else -%}
   <a name="{{cat_slug}}"></a>
-  <a class="smallcaps nav" href="{{site.url}}/tags.html#{{ cat_slug }}">{{cat_name}}:</a>
+  <a class="smallcaps nav" href="{{site.baseurl}}/tags.html#{{ cat_slug }}">{{cat_name}}:</a>
   {%- for post in site_posts_sorted -%}
     {%- if post.categories contains cat_name -%}
 <span class="eighthgutter"> </span> [{{ post.title }}]({{post.url}})
@@ -72,7 +72,7 @@ permalink: /tags
   {% assign tag_name = tag | first %}
   {% assign tag_slug = tag_name | slugify %}
   <a name="{{tag_slug}}"></a>
-  <a class="smallcaps nav" href="{{site.url}}/tags.html#{{tag_slug}}">#{{tag_name}}:</a>
+  <a class="smallcaps nav" href="{{site.baseurl}}/tags.html#{{tag_slug}}">#{{tag_name}}:</a>
   {%- for post in site_posts_sorted -%}
     {%- if post.tags contains tag_name -%}
 <span class="eighthgutter"> </span> [{{ post.title }}]({{post.url}})
