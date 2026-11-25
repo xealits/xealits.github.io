@@ -394,9 +394,15 @@ And the BMP280 sensor has an excellent [datasheet][bmp280_datasheet].
 
 
 [ian_site]: http://dangerousprototypes.com/docs/Bus_Pirate "Bus Pirate - DP"
+{: data-versionurl="https://archive.ph/qjplu" data-versiondate="2026-11-25"}
 [seeed_3p6]: https://www.seeedstudio.com/Bus-Pirate-v3-6-universal-serial-interface-p-609.html "Bus Pirate 3.6 - Seeed Studio Store"
+{: data-versionurl="https://archive.ph/hiMDb" data-versiondate="2026-11-25"}
 [new_buspirate]: https://docs.buspirate.com/docs/overview/hardware/ "buspirate dot com"
+{: data-versionurl="https://archive.ph/JsDVU" data-versiondate="2026-11-25"}
 [sparkfun_tutorial]: https://learn.sparkfun.com/tutorials/bus-pirate-v36a-hookup-guide/all "BusPirate 3.6a Hookup Guide - Sparkfun Learn"
+{: data-versionurl="https://archive.ph/LfeSW" data-versiondate="2026-11-25"}
 [bmp280_datasheet]: https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmp280-ds001.pdf "Bosch BMP280 datasheet"
+{: data-versionurl="https://web.archive.org/web/20260919093543/https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmp280-ds001.pdf" data-versiondate="2026-11-25"}
 [community_legacy_buspirate]: https://github.com/ElderlyPirate/Bus_Pirate "Community developed firmware for Bus Pirate version 3 and 4"
+{: data-versionurl="https://web.archive.org/web/20261125173503/https://github.com/ElderlyPirate/Bus_Pirate" data-versiondate="2026-11-25"}
 

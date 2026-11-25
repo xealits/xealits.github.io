@@ -15,6 +15,15 @@ html { color-scheme: dark light; }
 	--text-bkg-color: dark;
 }
 
+@media (prefers-color-scheme: dark) {
+  div.RLIcon {
+    filter: invert(100%);
+  }
+  a.RLArrow {
+    filter: invert(100%);
+  }
+}
+
 /*
 :root {
 	color-scheme: light;
