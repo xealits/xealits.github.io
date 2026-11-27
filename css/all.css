@@ -81,7 +81,7 @@ html {
 	left: 0;
 	height: 100%;
 	font-size: 12pt;
-	line-height: 1.5;
+	line-height: 24px;
 	--code-font-size: 12pt;
 }
 
@@ -127,7 +127,15 @@ code:not(h1 code, h2 code, h3 code, h4 code) {
 	font-size: var(--code-font-size);
 	text-align: left;
 	display: inline; /* why was it online-block? */
-  font-family: Courier New;
+	font-family: Courier New, Courier, monospace;
+	vertical-align: top;
+}
+
+/* remove the {verticle-align: top trick} for standalone code blocks
+ * so that they do not slide by 0.5px for different fonts */
+pre code {
+	display: block;
+	vertical-align: baseline;
 }
 
 time {
