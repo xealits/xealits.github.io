@@ -1,0 +1,6 @@
+rule /-800w-compressed\.jpeg$/ => ->(name) { name.sub(/-800w-compressed\.jpeg$/, '.jpeg') } do |t|
+  sh 'sips', '--resampleWidth', '800',
+     '-s', 'format', 'jpeg',
+     '-s', 'formatOptions', '10',
+     t.source, '--out', t.name
+end

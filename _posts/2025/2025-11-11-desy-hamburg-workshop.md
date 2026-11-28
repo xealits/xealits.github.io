@@ -7,7 +7,13 @@ tags: physics Germany
 
 <summary>
 Quite productive week in a workshop on building the future ATLAS ITk Strips detector
-<img class="Figure" alt="DESY team" src="/dir/2025-11-desy-workshop/photo_2025-11-11 21.58.47.jpeg"/>
+<img class="Figure" alt="DESY team"
+  src="/dir/2025-11-desy-workshop/photo_2025-11-11_21.58.47.jpeg"
+  srcset="/dir/2025-11-desy-workshop/photo_2025-11-11_21.58.47.jpeg 1280w,
+          /dir/2025-11-desy-workshop/photo_2025-11-11_21.58.47-800w-compressed.jpeg 800w"
+  ondblclick='window.open("/dir/2025-11-desy-workshop/photo_2025-11-11_21.58.47.jpeg")'
+  sizes="min(calc(100vw - 4rem), 25rem, 75rem)"
+  loading="lazy"/>
 </summary>
 
 <!--more-->
